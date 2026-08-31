@@ -1,614 +1,571 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
 
-    <link rel="icon" type="image/png" href="icon-192.png">
 
-    <meta charset="UTF-8">
+<link rel="icon" type="image/png" href="icon-192.png">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-    <meta name="theme-color"
-          content="#111827">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <link rel="manifest"
-          href="manifest.json">
+<meta name="theme-color"
+      content="#111827">
 
-    <title>Sonido Chicago - Agenda</title>
+<link rel="manifest"
+      href="manifest.json">
 
-    <link rel="stylesheet"
-          href="estilos.css">
-    <link rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<title>Sonido Chicago - Agenda</title>
+
+<link rel="stylesheet"
+      href="estilos.css">
+
 
 </head>
 
-
 <body>
-
-
-<!-- =========================================
-     ENCABEZADO
-     ========================================= -->
 
 <header>
 
-    <img src="logo.png"
-         alt="Sonido Chicago">
 
-    <h1>SONIDO CHICAGO</h1>
+<img src="logo.png"
+     alt="Sonido Chicago">
 
-    <p>Agenda de Contratos</p>
+<h1>SONIDO CHICAGO</h1>
+
+<p>Agenda de Contratos</p>
+
 
 </header>
 
-
-
 <!-- =========================================
-     NAVEGACIÓN DE CALENDARIO
+     VISTAS
      ========================================= -->
 
 <div class="barra-vistas">
 
-    <button class="vista-btn activo"
-            data-vista="año">
-        AÑO
-    </button>
 
-    <button class="vista-btn"
-            data-vista="mes">
-        MES
-    </button>
+<button class="vista-btn activo"
+        data-vista="año">
+    AÑO
+</button>
 
-    <button class="vista-btn"
-            data-vista="semana">
-        SEMANA
-    </button>
+<button class="vista-btn"
+        data-vista="mes">
+    MES
+</button>
 
-    <button class="vista-btn"
-            data-vista="dia">
-        DÍA
-    </button>
+<button class="vista-btn"
+        data-vista="semana">
+    SEMANA
+</button>
 
-    <button class="vista-btn"
-            data-vista="eventos">
-        EVENTOS
-    </button>
+<button class="vista-btn"
+        data-vista="dia">
+    DÍA
+</button>
+
+<button class="vista-btn"
+        data-vista="eventos">
+    EVENTOS
+</button>
+
+<button class="vista-btn"
+        data-vista="contratos">
+    CONTRATOS
+</button>
+
 
 </div>
-
-
-
-<!-- =========================================
-     CONTENIDO PRINCIPAL
-     ========================================= -->
 
 <main>
 
 
-    <!-- CABECERA CALENDARIO -->
+<div class="navegacion-fecha">
 
-    <div class="navegacion-fecha">
-
-        <button id="anterior">
-            ◀
-        </button>
-
-        <h2 id="tituloCalendario"></h2>
-
-        <button id="siguiente">
-            ▶
-        </button>
-
-    </div>
-
-
-    <!-- BOTÓN HOY -->
-
-    <button id="btnHoy"
-            class="btn-hoy">
-
-        HOY
-
+    <button id="anterior">
+        ◀
     </button>
 
+    <h2 id="tituloCalendario"></h2>
 
-    <!-- =====================================
-         VISTA AÑO
-         ===================================== -->
-
-    <section id="vistaAño">
-
-        <div id="calendarioAnual"
-             class="calendario-anual">
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================
-         VISTA MES
-         ===================================== -->
-
-    <section id="vistaMes"
-             class="oculto">
-
-        <div id="calendarioMes"></div>
-
-    </section>
-
-
-
-    <!-- =====================================
-         VISTA SEMANA
-         ===================================== -->
-
-    <section id="vistaSemana"
-             class="oculto">
-
-        <div id="calendarioSemana"></div>
-
-    </section>
-
-
-
-    <!-- =====================================
-         VISTA DÍA
-         ===================================== -->
-
-    <section id="vistaDia"
-             class="oculto">
-
-        <div id="calendarioDia"></div>
-
-    </section>
-
-
-
-    <!-- =====================================
-         VISTA EVENTOS
-         ===================================== -->
-
-    <section id="vistaEventos"
-             class="oculto">
-
-        <div id="listaContratos"></div>
-
-    </section>
-
-
-
-    <!-- NUEVO CONTRATO -->
-
-    <button id="nuevoContrato"
-            class="btn-principal">
-
-        ＋ AGREGAR NUEVO CONTRATO
-
+    <button id="siguiente">
+        ▶
     </button>
-
-
-</main>
-
-
-
-<!-- =========================================
-     LEYENDA
-     ========================================= -->
-
-<div class="leyenda">
-
-    <div>
-        <span class="punto reservado"></span>
-        Reservado
-    </div>
-
-    <div>
-        <span class="punto confirmado"></span>
-        Confirmado
-    </div>
-
-    <div>
-        <span class="punto realizado"></span>
-        Realizado
-    </div>
-
-    <div>
-        <span class="punto cancelado"></span>
-        Cancelado
-    </div>
 
 </div>
 
 
+<button id="btnHoy"
+        class="btn-hoy">
+    HOY
+</button>
 
-<!-- =========================================
-     MENÚ INFERIOR
-     ========================================= -->
+
+<!-- AÑO -->
+
+<section id="vistaAño">
+
+    <div id="calendarioAnual"
+         class="calendario-anual">
+    </div>
+
+</section>
+
+
+<!-- MES -->
+
+<section id="vistaMes"
+         class="oculto">
+
+    <div id="calendarioMes"></div>
+
+</section>
+
+
+<!-- SEMANA -->
+
+<section id="vistaSemana"
+         class="oculto">
+
+    <div id="calendarioSemana"></div>
+
+</section>
+
+
+<!-- DÍA -->
+
+<section id="vistaDia"
+         class="oculto">
+
+    <div id="calendarioDia"></div>
+
+</section>
+
+
+<!-- EVENTOS PENDIENTES -->
+
+<section id="vistaEventos"
+         class="oculto">
+
+    <div id="listaContratos"></div>
+
+</section>
+
+
+<!-- TODOS LOS CONTRATOS -->
+
+<section id="vistaContratos"
+         class="oculto">
+
+    <div id="listaTodosContratos"></div>
+
+</section>
+
+
+<button id="nuevoContrato"
+        class="btn-principal">
+
+    ＋ AGREGAR NUEVO CONTRATO
+
+</button>
+
+
+</main>
+
+<!-- LEYENDA -->
+
+<div class="leyenda">
+
+
+<div>
+    <span class="punto reservado"></span>
+    Reservado
+</div>
+
+<div>
+    <span class="punto confirmado"></span>
+    Confirmado
+</div>
+
+<div>
+    <span class="punto realizado"></span>
+    Realizado
+</div>
+
+<div>
+    <span class="punto cancelado"></span>
+    Cancelado
+</div>
+
+
+</div>
+
+<!-- MENÚ INFERIOR -->
 
 <nav>
 
-    <button id="btnCalendario">
-        📅
-        <span>Calendario</span>
-    </button>
 
-    <button id="btnContratos">
-        📋
-        <span>Contratos</span>
-    </button>
+<button id="btnCalendario">
 
-    <button id="btnNuevo">
-        ＋
-        <span>Nuevo Contrato</span>
-    </button>
+    📅
+
+    <span>
+        Calendario
+    </span>
+
+</button>
+
+
+<button id="btnContratos">
+
+    📋
+
+    <span>
+        Contratos
+    </span>
+
+</button>
+
+
+<button id="btnNuevo">
+
+    ＋
+
+    <span>
+        Nuevo Contrato
+    </span>
+
+</button>
+
 
 </nav>
 
-
-
 <!-- =========================================
-     VENTANA FORMULARIO
+     FORMULARIO
      ========================================= -->
 
 <div id="ventanaContrato"
      class="modal">
 
-    <div class="formulario">
+
+<div class="formulario">
 
 
-        <div class="titulo-formulario">
+    <div class="titulo-formulario">
 
-            <h2 id="tituloFormulario">
-                📝 Nuevo Evento
-            </h2>
+        <h2 id="tituloFormulario">
+            📝 Nuevo Evento
+        </h2>
 
-            <button id="cerrarFormulario"
-                    class="cerrar"
-                    type="button">
-                ✕
-            </button>
+        <button id="cerrarFormulario"
+                class="cerrar"
+                type="button">
+            ✕
+        </button>
 
-        </div>
-
-
-        <!-- CLIENTE -->
-
-        <label for="cliente">
-            Cliente
-        </label>
-
-        <input type="text"
-               id="cliente"
-               placeholder="Nombre del Cliente">
+    </div>
 
 
-        <!-- TELÉFONO -->
+    <label for="cliente">
+        Nombre del cliente
+    </label>
 
-        <label for="telefono">
-            Teléfono
-        </label>
-
-        <input type="tel"
-               id="telefono"
-               placeholder="Telefono">
+    <input type="text"
+           id="cliente"
+           placeholder="Nombre del Cliente">
 
 
-        <!-- FECHA -->
+    <label for="nombreEvento">
+        Nombre del evento
+    </label>
 
-        <label for="fechaContrato">
-            Fecha
-        </label>
-
-        <input type="date"
-               id="fechaContrato">
-
-
-        <!-- HORA -->
-
-        <label for="horaContrato">
-            Hora
-        </label>
-
-        <input type="time"
-               id="horaContrato">
+    <input type="text"
+           id="nombreEvento"
+           placeholder="Ej: Matrimonio de Juan y María">
 
 
-        <!-- TIPO -->
+    <label for="telefono">
+        Teléfono
+    </label>
 
-        <label for="tipoEvento">
-            Tipo de evento
-        </label>
-
-        <select id="tipoEvento">
-
-            <option value="">
-                Sin especificar
-            </option>
-
-            <option>Matrimonio</option>
-
-            <option>15 años</option>
-
-            <option>Cumpleaños</option>
-
-            <option>Graduación</option>
-
-            <option>Bautizo</option>
-
-            <option>Evento empresarial</option>
-
-            <option>Fiesta Patronal</option>
-
-            <option>Otro</option>
-
-        </select>
+    <input type="tel"
+           id="telefono"
+           placeholder="Teléfono">
 
 
-        <!-- ESTADO -->
+    <label for="fechaContrato">
+        Fecha
+    </label>
 
-        <label for="estado">
-            Estado
-        </label>
-
-        <select id="estado">
-
-            <option value="reservado">
-                🟡 Reservado
-            </option>
-
-            <option value="confirmado">
-                🟢 Confirmado
-            </option>
-
-            <option value="realizado">
-                🔵 Realizado
-            </option>
-
-            <option value="cancelado">
-                🔴 Cancelado
-            </option>
-
-        </select>
+    <input type="date"
+           id="fechaContrato">
 
 
-        <!-- LUGAR -->
+    <label for="horaContrato">
+        Hora
+    </label>
 
-        <label for="lugar">
-            Lugar
-        </label>
-
-        <input type="text"
-               id="lugar"
-               placeholder="Salon de eventos - Domicilio">
+    <input type="time"
+           id="horaContrato">
 
 
-      <!-- DIRECCIÓN Y UBICACIÓN -->
+    <label for="tipoEvento">
+        Tipo de evento
+    </label>
 
-<label for="direccion">
-    Dirección
-</label>
+    <select id="tipoEvento">
 
-<div class="direccion-container">
+        <option value="">
+            Sin especificar
+        </option>
+
+        <option>Matrimonio</option>
+        <option>15 años</option>
+        <option>Cumpleaños</option>
+        <option>Graduación</option>
+        <option>Bautizo</option>
+        <option>Evento empresarial</option>
+        <option>Fiesta Patronal</option>
+        <option>Alquiler de equipo</option>
+        <option>Alquiler de luces</option>
+        <option>Alquiler de sonido</option>
+        <option>Amplificación</option>
+        <option>Otro</option>
+
+    </select>
+
+
+    <label for="estado">
+        Estado
+    </label>
+
+    <select id="estado">
+
+        <option value="reservado">
+            🟡 Reservado
+        </option>
+
+        <option value="confirmado">
+            🟢 Confirmado
+        </option>
+
+        <option value="realizado">
+            🔵 Realizado
+        </option>
+
+        <option value="cancelado">
+            🔴 Cancelado
+        </option>
+
+    </select>
+
+
+    <label for="lugar">
+        Lugar
+    </label>
+
+    <input type="text"
+           id="lugar"
+           placeholder="Salón de eventos - Domicilio">
+
+
+    <label for="direccion">
+        Dirección
+    </label>
 
     <input type="text"
            id="direccion"
-           placeholder="Dirección del Evento">
+           placeholder="Dirección del evento">
 
-    <button id="ubicacionBtn"
-            type="button"
-            class="btn-ubicacion"
-            title="Seleccionar ubicación">
 
-        <img src="google-maps.png"
-             alt="Google Maps">
+    <label for="servicio">
+        Servicio
+    </label>
 
-    </button>
+    <input type="text"
+           id="servicio"
+           placeholder="Ej: Amplificación + luces">
 
-</div>
 
-<!-- UBICACIÓN GPS -->
+    <label for="precio">
+        Precio total (Bs.)
+    </label>
 
-<div id="mapaUbicacion"
-     class="mapa-ubicacion"
-     style="display: none;">
+    <input type="number"
+           id="precio"
+           min="0"
+           step="0.01"
+           placeholder="0">
 
-    <p>
-        📍 Selecciona la ubicación exacta del evento
-    </p>
 
-    <div id="mapa">
-    </div>
+    <label for="adelanto">
+        Adelanto (Bs.)
+    </label>
 
-</div>
+    <input type="number"
+           id="adelanto"
+           min="0"
+           step="0.01"
+           placeholder="0">
 
-<input type="hidden"
-       id="latitud"
-       value="">
 
-<input type="hidden"
-       id="longitud"
-       value="">
-<input type="hidden"
-       id="ubicacion"
-       value="">
+    <label for="saldo">
+        Saldo pendiente (Bs.)
+    </label>
 
-        <!-- SERVICIO -->
+    <input type="number"
+           id="saldo"
+           readonly>
 
-        <label for="servicio">
-            Servicio
+
+    <div class="pago-container">
+
+        <label class="checkbox-pagado">
+
+            <input type="checkbox"
+                   id="pagado">
+
+            <span>
+                ✅ PAGADO
+            </span>
+
         </label>
 
-        <input type="text"
-               id="servicio"
-               placeholder="Ej: Amplificación + luces">
-
-
-        <!-- PRECIO -->
-
-        <label for="precio">
-            Precio total (Bs.)
-        </label>
-
-        <input type="number"
-               id="precio"
-               min="0"
-               step="0.01"
-               placeholder="0">
-
-
-        <!-- ADELANTO -->
-
-        <label for="adelanto">
-            Adelanto (Bs.)
-        </label>
-
-        <input type="number"
-               id="adelanto"
-               min="0"
-               step="0.01"
-               placeholder="0">
-
-        <label>Saldo (Bs.)</label>
-
-                <input type="number"
-                id="saldo"
-                readonly>
-
-
-        <!-- OBSERVACIONES -->
-
-        <label for="observaciones">
-            Observaciones
-        </label>
-
-        <textarea id="observaciones"
-                  placeholder="Ingrese alguna observacion"></textarea>
-
-
-        <!-- FOTO -->
-
-        <label for="fotoContrato">
-            📎 Foto del contrato
-            <small>(Opcional)</small>
-        </label>
-
-        <input type="file"
-               id="fotoContrato"
-               accept="image/*">
-
-
-        <img id="vistaPrevia"
-             class="vista-previa"
-             alt="Vista previa del contrato"
-             style="display: none;">
-
-
-        <!-- BOTONES -->
-
-        <div class="botones-formulario">
-
-            <button id="guardarContrato"
-                    class="btn-guardar"
-                    type="button">
-
-                💾 GUARDAR
-
-            </button>
-
-            <button id="cancelarFormulario"
-                    class="btn-cancelar"
-                    type="button">
-
-                CANCELAR
-
-            </button>
-
+        <div id="estadoPago"
+             class="estado-pago">
         </div>
 
+    </div>
+
+
+    <label for="observaciones">
+        Observaciones
+    </label>
+
+    <textarea id="observaciones"
+              placeholder="Ingrese alguna observación"></textarea>
+
+
+    <label for="fotoContrato">
+
+        📎 Foto del contrato
+
+        <small>
+            (Opcional)
+        </small>
+
+    </label>
+
+    <input type="file"
+           id="fotoContrato"
+           accept="image/*">
+
+
+    <img id="vistaPrevia"
+         class="vista-previa"
+         alt="Vista previa del contrato"
+         style="display: none;">
+
+
+    <div class="botones-formulario">
+
+        <button id="guardarContrato"
+                class="btn-guardar"
+                type="button">
+
+            💾 GUARDAR
+
+        </button>
+
+
+        <button id="cancelarFormulario"
+                class="btn-cancelar"
+                type="button">
+
+            CANCELAR
+
+        </button>
 
     </div>
 
 </div>
 
 
+</div>
 
 <!-- =========================================
-     VENTANA DETALLE
+     DETALLE
      ========================================= -->
 
 <div id="ventanaDetalle"
      class="modal">
 
-    <div class="detalle">
 
-        <div class="titulo-formulario">
-
-            <h2>📋 Evento</h2>
-
-            <button id="cerrarDetalle"
-                    class="cerrar"
-                    type="button">
-
-                ✕
-
-            </button>
-
-        </div>
+<div class="detalle">
 
 
-        <div id="contenidoDetalle"></div>
+    <div class="titulo-formulario">
+
+        <h2>
+            📋 Evento
+        </h2>
+
+        <button id="cerrarDetalle"
+                class="cerrar"
+                type="button">
+
+            ✕
+
+        </button>
+
+    </div>
 
 
-        <div class="botones-detalle">
-
-            <button id="editarDesdeDetalle"
-                    class="btn-editar"
-                    type="button">
-
-                ✏️ EDITAR
-
-            </button>
-
-            <button id="eliminarDesdeDetalle"
-                    class="btn-eliminar"
-                    type="button">
-
-                🗑️ ELIMINAR
-
-            </button>
-
-        </div>
+    <div id="contenidoDetalle"></div>
 
 
-        <div class="botones-extra">
+    <div class="botones-detalle">
 
-            <button id="whatsappBtn"
-                    type="button">
+        <button id="editarDesdeDetalle"
+                class="btn-editar"
+                type="button">
 
-                📱 WhatsApp
+            ✏️ EDITAR
 
-            </button>
+        </button>
 
-            <button id="mapsBtn"
-                    type="button">
 
-                🗺️ Maps
+        <button id="eliminarDesdeDetalle"
+                class="btn-eliminar"
+                type="button">
 
-            </button>
+            🗑️ ELIMINAR
 
-        </div>
+        </button>
 
+    </div>
+
+
+    <div class="botones-extra">
+
+        <button id="whatsappBtn"
+                type="button">
+
+            📱 WhatsApp
+
+        </button>
 
     </div>
 
 </div>
 
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</div>
+
 <script src="app.js"></script>
 
 </body>

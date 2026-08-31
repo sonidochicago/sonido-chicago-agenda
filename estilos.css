@@ -1,0 +1,1362 @@
+/* =========================================
+   CONFIGURACIÓN GENERAL
+   ========================================= */
+@font-face {
+    font-family: "Ethnocentric";
+    src: url("fuentes/ethnocentric\ rg.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        #eef2f7;
+
+    color:
+        #1f2937;
+
+    padding-bottom:
+        85px;
+
+}
+
+
+/* =========================================
+   ENCABEZADO
+   ========================================= */
+
+header {
+
+    background:
+        linear-gradient(
+            135deg,
+            #111827,
+            #273449
+        );
+
+    color:
+        white;
+
+    text-align:
+        center;
+
+    padding:
+        18px 10px;
+
+}
+
+
+header img {
+    width: 250px;
+    max-width: 70%;
+    height: auto;
+    display: block;
+    margin: auto;
+
+    opacity: 1;
+    filter: none;
+}
+
+
+header h1 {
+    font-family: "Ethnocentric", sans-serif;
+    font-size: 24px;
+    font-weight: normal;
+    letter-spacing: 1px;
+
+    /* Evita efectos que puedan engrosar la letra */
+    text-shadow: none;
+    -webkit-text-stroke: 0;
+}
+
+
+header p {
+
+    color:
+        #d1d5db;
+
+    margin-top:
+        5px;
+
+}
+
+
+/* =========================================
+   BOTONES DE VISTA
+   ========================================= */
+
+.barra-vistas {
+
+    display:
+        flex;
+
+    gap:
+        5px;
+
+    padding:
+        10px;
+
+    background:
+        white;
+
+    overflow-x:
+        auto;
+
+}
+
+
+.vista-btn {
+
+    flex:
+        1;
+
+    min-width:
+        70px;
+
+    padding:
+        10px 5px;
+
+    border:
+        none;
+
+    border-radius:
+        8px;
+
+    background:
+        #e5e7eb;
+
+    font-size:
+        12px;
+
+    font-weight:
+        bold;
+
+}
+
+
+.vista-btn.activo {
+
+    background:
+        #d4a017;
+
+    color:
+        white;
+
+}
+
+
+/* =========================================
+   CONTENIDO
+   ========================================= */
+
+main {
+
+    width:
+        100%;
+
+    max-width:
+        1000px;
+
+    margin:
+        auto;
+
+    padding:
+        12px;
+
+}
+
+
+/* =========================================
+   NAVEGACIÓN FECHA
+   ========================================= */
+
+.navegacion-fecha {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    margin-bottom:
+        8px;
+
+}
+
+
+.navegacion-fecha h2 {
+
+    font-size:
+        20px;
+
+    text-align:
+        center;
+
+}
+
+
+.navegacion-fecha button {
+
+    width:
+        40px;
+
+    height:
+        40px;
+
+    border:
+        none;
+
+    border-radius:
+        50%;
+
+    background:
+        #1f2937;
+
+    color:
+        white;
+
+    font-size:
+        16px;
+
+}
+
+
+.btn-hoy {
+
+    display:
+        block;
+
+    margin:
+        0 auto 12px auto;
+
+    border:
+        1px solid #d4a017;
+
+    background:
+        white;
+
+    color:
+        #8a6800;
+
+    border-radius:
+        20px;
+
+    padding:
+        7px 18px;
+
+    font-weight:
+        bold;
+
+}
+
+
+/* =========================================
+   CALENDARIO ANUAL
+   ========================================= */
+
+.calendario-anual {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap:
+        12px;
+
+}
+
+
+.mes {
+
+    background:
+        white;
+
+    border-radius:
+        12px;
+
+    padding:
+        9px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,.08);
+
+}
+
+
+.mes h3 {
+
+    text-align:
+        center;
+
+    margin-bottom:
+        8px;
+
+    color:
+        #374151;
+
+}
+
+
+.dias-semana {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(7, 1fr);
+
+    text-align:
+        center;
+
+    font-size:
+        9px;
+
+    font-weight:
+        bold;
+
+}
+
+
+.dias-mes {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(7, 1fr);
+
+    gap:
+        2px;
+
+}
+
+
+.dia {
+
+    min-height:
+        28px;
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    align-items:
+        center;
+
+    border-radius:
+        6px;
+
+    cursor:
+        pointer;
+
+    font-size:
+        11px;
+
+    position:
+        relative;
+
+}
+
+
+.dia:hover {
+
+    background:
+        #f1f5f9;
+
+}
+
+
+.dia.hoy {
+
+    border:
+        2px solid #d4a017;
+
+    font-weight:
+        bold;
+
+}
+
+
+/* =========================================
+   COLORES DE ESTADOS
+   ========================================= */
+
+.dia.reservado {
+
+    background:
+        #fef3c7;
+
+    color:
+        #92400e;
+
+}
+
+
+.dia.confirmado {
+
+    background:
+        #dcfce7;
+
+    color:
+        #166534;
+
+}
+
+
+.dia.realizado {
+
+    background:
+        #dbeafe;
+
+    color:
+        #1e40af;
+
+}
+
+
+.dia.cancelado {
+
+    background:
+        #fee2e2;
+
+    color:
+        #991b1b;
+
+}
+
+
+/* =========================================
+   LEYENDA
+   ========================================= */
+
+.leyenda {
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        12px;
+
+    background:
+        white;
+
+    padding:
+        10px;
+
+    font-size:
+        11px;
+
+}
+
+
+.punto {
+
+    display:
+        inline-block;
+
+    width:
+        10px;
+
+    height:
+        10px;
+
+    border-radius:
+        50%;
+
+    margin-right:
+        3px;
+
+}
+
+
+.punto.reservado {
+
+    background:
+        #f59e0b;
+
+}
+
+
+.punto.confirmado {
+
+    background:
+        #22c55e;
+
+}
+
+
+.punto.realizado {
+
+    background:
+        #3b82f6;
+
+}
+
+
+.punto.cancelado {
+
+    background:
+        #ef4444;
+
+}
+
+
+/* =========================================
+   BOTÓN PRINCIPAL
+   ========================================= */
+
+.btn-principal {
+
+    width:
+        100%;
+
+    margin-top:
+        15px;
+
+    padding:
+        15px;
+
+    border:
+        none;
+
+    border-radius:
+        12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #d4a017,
+            #f0c84b
+        );
+
+    color:
+        #111827;
+
+    font-weight:
+        bold;
+
+    font-size:
+        16px;
+
+}
+
+
+/* =========================================
+   SEMANA
+   ========================================= */
+
+.semana-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(7, 1fr);
+
+    gap:
+        5px;
+
+}
+
+
+.columna-dia {
+
+    background:
+        white;
+
+    border-radius:
+        8px;
+
+    min-height:
+        180px;
+
+    padding:
+        5px;
+
+}
+
+
+.columna-dia h3 {
+
+    font-size:
+        11px;
+
+    text-align:
+        center;
+
+    margin-bottom:
+        7px;
+
+}
+
+
+.evento-mini {
+
+    padding:
+        6px;
+
+    border-radius:
+        6px;
+
+    margin-bottom:
+        5px;
+
+    font-size:
+        10px;
+
+    cursor:
+        pointer;
+
+}
+
+
+.evento-mini.reservado {
+
+    background:
+        #fef3c7;
+
+}
+
+
+.evento-mini.confirmado {
+
+    background:
+        #dcfce7;
+
+}
+
+
+.evento-mini.realizado {
+
+    background:
+        #dbeafe;
+
+}
+
+
+.evento-mini.cancelado {
+
+    background:
+        #fee2e2;
+
+}
+
+
+/* =========================================
+   VISTA DÍA
+   ========================================= */
+
+.dia-grande {
+
+    background:
+        white;
+
+    border-radius:
+        14px;
+
+    padding:
+        15px;
+
+}
+
+
+.dia-grande h3 {
+
+    text-align:
+        center;
+
+    margin-bottom:
+        15px;
+
+}
+
+
+/* =========================================
+   TARJETAS EVENTOS
+   ========================================= */
+
+.tarjeta-evento {
+
+    background:
+        white;
+
+    border-radius:
+        14px;
+
+    padding:
+        15px;
+
+    margin-bottom:
+        12px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,.08);
+
+    border-left:
+        5px solid #d4a017;
+
+}
+
+
+.tarjeta-evento.reservado {
+
+    border-left-color:
+        #f59e0b;
+
+}
+
+
+.tarjeta-evento.confirmado {
+
+    border-left-color:
+        #22c55e;
+
+}
+
+
+.tarjeta-evento.realizado {
+
+    border-left-color:
+        #3b82f6;
+
+}
+
+
+.tarjeta-evento.cancelado {
+
+    border-left-color:
+        #ef4444;
+
+}
+
+
+.tarjeta-evento h3 {
+
+    margin-bottom:
+        8px;
+
+}
+
+
+.tarjeta-evento p {
+
+    margin:
+        5px 0;
+
+    font-size:
+        14px;
+
+}
+
+
+.estado {
+
+    display:
+        inline-block;
+
+    padding:
+        4px 9px;
+
+    border-radius:
+        20px;
+
+    font-size:
+        11px;
+
+    font-weight:
+        bold;
+
+}
+
+
+.estado.reservado {
+
+    background:
+        #fef3c7;
+
+    color:
+        #92400e;
+
+}
+
+
+.estado.confirmado {
+
+    background:
+        #dcfce7;
+
+    color:
+        #166534;
+
+}
+
+
+.estado.realizado {
+
+    background:
+        #dbeafe;
+
+    color:
+        #1e40af;
+
+}
+
+
+.estado.cancelado {
+
+    background:
+        #fee2e2;
+
+    color:
+        #991b1b;
+
+}
+
+
+/* =========================================
+   MENÚ INFERIOR
+   ========================================= */
+
+nav {
+
+    position:
+        fixed;
+
+    bottom:
+        0;
+
+    left:
+        0;
+
+    width:
+        100%;
+
+    height:
+        70px;
+
+    background:
+        white;
+
+    border-top:
+        1px solid #ddd;
+
+    display:
+        flex;
+
+    z-index:
+        100;
+
+}
+
+
+nav button {
+
+    flex:
+        1;
+
+    border:
+        none;
+
+    background:
+        white;
+
+    font-size:
+        20px;
+
+}
+
+
+nav span {
+
+    display:
+        block;
+
+    font-size:
+        11px;
+
+    margin-top:
+        3px;
+
+}
+
+
+/* =========================================
+   MODAL
+   ========================================= */
+
+.modal {
+
+    display:
+        none;
+
+    position:
+        fixed;
+
+    inset:
+        0;
+
+    background:
+        rgba(0,0,0,.65);
+
+    z-index:
+        200;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    padding:
+        12px;
+
+}
+
+
+.formulario,
+.detalle {
+
+    background:
+        white;
+
+    width:
+        100%;
+
+    max-width:
+        480px;
+
+    max-height:
+        92vh;
+
+    overflow-y:
+        auto;
+
+    border-radius:
+        18px;
+
+    padding:
+        18px;
+
+}
+
+
+.titulo-formulario {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    margin-bottom:
+        12px;
+
+}
+
+
+.titulo-formulario h2 {
+
+    font-size:
+        19px;
+
+}
+
+
+.cerrar {
+
+    border:
+        none;
+
+    background:
+        #f3f4f6;
+
+    width:
+        35px;
+
+    height:
+        35px;
+
+    border-radius:
+        50%;
+
+    font-size:
+        18px;
+
+}
+
+
+/* =========================================
+   FORMULARIO
+   ========================================= */
+
+.formulario label {
+
+    display:
+        block;
+
+    margin-top:
+        11px;
+
+    margin-bottom:
+        5px;
+
+    font-weight:
+        bold;
+
+    font-size:
+        13px;
+
+}
+
+
+.formulario small {
+
+    color:
+        #6b7280;
+
+}
+
+
+.formulario input,
+.formulario select,
+.formulario textarea {
+
+    width:
+        100%;
+
+    padding:
+        11px;
+
+    border:
+        1px solid #d1d5db;
+
+    border-radius:
+        9px;
+
+    font-size:
+        15px;
+
+    background:
+        white;
+
+}
+
+
+.formulario textarea {
+
+    min-height:
+        80px;
+
+    resize:
+        vertical;
+
+}
+
+
+/* =========================================
+   FOTO
+   ========================================= */
+
+.vista-previa {
+
+    display:
+        none;
+
+    max-width:
+        100%;
+
+    max-height:
+        220px;
+
+    margin:
+        10px auto;
+
+    border-radius:
+        10px;
+
+}
+
+
+/* =========================================
+   BOTONES FORMULARIO
+   ========================================= */
+
+.botones-formulario {
+
+    display:
+        flex;
+
+    gap:
+        8px;
+
+    margin-top:
+        18px;
+
+}
+
+
+.botones-formulario button {
+
+    flex:
+        1;
+
+    padding:
+        13px;
+
+    border:
+        none;
+
+    border-radius:
+        9px;
+
+    font-weight:
+        bold;
+
+}
+
+
+.btn-guardar {
+
+    background:
+        #1f2937;
+
+    color:
+        white;
+
+}
+
+
+.btn-cancelar {
+
+    background:
+        #e5e7eb;
+
+}
+
+
+/* =========================================
+   DETALLE
+   ========================================= */
+
+.detalle-info p {
+
+    margin:
+        9px 0;
+
+    font-size:
+        14px;
+
+}
+
+
+.foto-detalle {
+
+    width:
+        100%;
+
+    max-height:
+        300px;
+
+    object-fit:
+        contain;
+
+    margin-top:
+        12px;
+
+    border-radius:
+        10px;
+
+}
+
+
+.botones-detalle,
+.botones-extra {
+
+    display:
+        flex;
+
+    gap:
+        8px;
+
+    margin-top:
+        15px;
+
+}
+
+
+.botones-detalle button,
+.botones-extra button {
+
+    flex:
+        1;
+
+    padding:
+        12px;
+
+    border:
+        none;
+
+    border-radius:
+        9px;
+
+    font-weight:
+        bold;
+
+}
+
+
+.btn-editar {
+
+    background:
+        #e5e7eb;
+
+}
+
+
+.btn-eliminar {
+
+    background:
+        #ef4444;
+
+    color:
+        white;
+
+}
+
+
+.botones-extra button {
+
+    background:
+        #dbeafe;
+
+}
+
+
+/* =========================================
+   OCULTO
+   ========================================= */
+
+.oculto {
+
+    display:
+        none !important;
+
+}
+
+
+/* =========================================
+   CELULAR
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .calendario-anual {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap:
+            7px;
+
+    }
+
+
+    .mes {
+
+        padding:
+            6px;
+
+    }
+
+
+    .mes h3 {
+
+        font-size:
+            12px;
+
+    }
+
+
+    .dia {
+
+        min-height:
+            27px;
+
+        font-size:
+            10px;
+
+    }
+
+
+    .semana-grid {
+
+        gap:
+            2px;
+
+    }
+
+
+    .columna-dia {
+
+        min-height:
+            150px;
+
+    }
+
+}
+
+
+@media (max-width: 380px) {
+
+    .calendario-anual {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .semana-grid {
+
+        overflow-x:
+            auto;
+
+    }
+
+
+    .columna-dia {
+
+        min-width:
+            90px;
+
+    }
+
+}

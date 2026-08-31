@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <link rel="icon" type="image/png" href="icon-192.png">
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#111827">
+
+    <link rel="manifest"
+          href="manifest.json">
+
+    <title>Sonido Chicago - Agenda</title>
+
+    <link rel="stylesheet"
+          href="estilos.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     ENCABEZADO
+     ========================================= -->
+
+<header>
+
+    <img src="logo.png"
+         alt="Sonido Chicago">
+
+    <h1>SONIDO CHICAGO</h1>
+
+    <p>Agenda de Contratos</p>
+
+</header>
+
+
+
+<!-- =========================================
+     NAVEGACIÓN DE CALENDARIO
+     ========================================= -->
+
+<div class="barra-vistas">
+
+    <button class="vista-btn activo"
+            data-vista="año">
+        AÑO
+    </button>
+
+    <button class="vista-btn"
+            data-vista="mes">
+        MES
+    </button>
+
+    <button class="vista-btn"
+            data-vista="semana">
+        SEMANA
+    </button>
+
+    <button class="vista-btn"
+            data-vista="dia">
+        DÍA
+    </button>
+
+    <button class="vista-btn"
+            data-vista="eventos">
+        EVENTOS
+    </button>
+
+</div>
+
+
+
+<!-- =========================================
+     CONTENIDO PRINCIPAL
+     ========================================= -->
+
+<main>
+
+
+    <!-- CABECERA CALENDARIO -->
+
+    <div class="navegacion-fecha">
+
+        <button id="anterior">
+            ◀
+        </button>
+
+        <h2 id="tituloCalendario"></h2>
+
+        <button id="siguiente">
+            ▶
+        </button>
+
+    </div>
+
+
+    <!-- BOTÓN HOY -->
+
+    <button id="btnHoy"
+            class="btn-hoy">
+
+        HOY
+
+    </button>
+
+
+    <!-- =====================================
+         VISTA AÑO
+         ===================================== -->
+
+    <section id="vistaAño">
+
+        <div id="calendarioAnual"
+             class="calendario-anual">
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================
+         VISTA MES
+         ===================================== -->
+
+    <section id="vistaMes"
+             class="oculto">
+
+        <div id="calendarioMes"></div>
+
+    </section>
+
+
+
+    <!-- =====================================
+         VISTA SEMANA
+         ===================================== -->
+
+    <section id="vistaSemana"
+             class="oculto">
+
+        <div id="calendarioSemana"></div>
+
+    </section>
+
+
+
+    <!-- =====================================
+         VISTA DÍA
+         ===================================== -->
+
+    <section id="vistaDia"
+             class="oculto">
+
+        <div id="calendarioDia"></div>
+
+    </section>
+
+
+
+    <!-- =====================================
+         VISTA EVENTOS
+         ===================================== -->
+
+    <section id="vistaEventos"
+             class="oculto">
+
+        <div id="listaContratos"></div>
+
+    </section>
+
+
+
+    <!-- NUEVO CONTRATO -->
+
+    <button id="nuevoContrato"
+            class="btn-principal">
+
+        ＋ AGREGAR NUEVO CONTRATO
+
+    </button>
+
+
+</main>
+
+
+
+<!-- =========================================
+     LEYENDA
+     ========================================= -->
+
+<div class="leyenda">
+
+    <div>
+        <span class="punto reservado"></span>
+        Reservado
+    </div>
+
+    <div>
+        <span class="punto confirmado"></span>
+        Confirmado
+    </div>
+
+    <div>
+        <span class="punto realizado"></span>
+        Realizado
+    </div>
+
+    <div>
+        <span class="punto cancelado"></span>
+        Cancelado
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     MENÚ INFERIOR
+     ========================================= -->
+
+<nav>
+
+    <button id="btnCalendario">
+        📅
+        <span>Calendario</span>
+    </button>
+
+    <button id="btnContratos">
+        📋
+        <span>Contratos</span>
+    </button>
+
+    <button id="btnNuevo">
+        ＋
+        <span>Nuevo Contrato</span>
+    </button>
+
+</nav>
+
+
+
+<!-- =========================================
+     VENTANA FORMULARIO
+     ========================================= -->
+
+<div id="ventanaContrato"
+     class="modal">
+
+    <div class="formulario">
+
+
+        <div class="titulo-formulario">
+
+            <h2 id="tituloFormulario">
+                📝 Nuevo Evento
+            </h2>
+
+            <button id="cerrarFormulario"
+                    class="cerrar"
+                    type="button">
+                ✕
+            </button>
+
+        </div>
+
+
+        <!-- CLIENTE -->
+
+        <label for="cliente">
+            Cliente
+        </label>
+
+        <input type="text"
+               id="cliente"
+               placeholder="Opcional">
+
+
+        <!-- TELÉFONO -->
+
+        <label for="telefono">
+            Teléfono
+        </label>
+
+        <input type="tel"
+               id="telefono"
+               placeholder="Opcional">
+
+
+        <!-- FECHA -->
+
+        <label for="fechaContrato">
+            Fecha
+        </label>
+
+        <input type="date"
+               id="fechaContrato">
+
+
+        <!-- HORA -->
+
+        <label for="horaContrato">
+            Hora
+        </label>
+
+        <input type="time"
+               id="horaContrato">
+
+
+        <!-- TIPO -->
+
+        <label for="tipoEvento">
+            Tipo de evento
+        </label>
+
+        <select id="tipoEvento">
+
+            <option value="">
+                Sin especificar
+            </option>
+
+            <option>Matrimonio</option>
+
+            <option>15 años</option>
+
+            <option>Cumpleaños</option>
+
+            <option>Graduación</option>
+
+            <option>Bautizo</option>
+
+            <option>Evento empresarial</option>
+
+            <option>Fiesta Patronal</option>
+
+            <option>Otro</option>
+
+        </select>
+
+
+        <!-- ESTADO -->
+
+        <label for="estado">
+            Estado
+        </label>
+
+        <select id="estado">
+
+            <option value="reservado">
+                🟡 Reservado
+            </option>
+
+            <option value="confirmado">
+                🟢 Confirmado
+            </option>
+
+            <option value="realizado">
+                🔵 Realizado
+            </option>
+
+            <option value="cancelado">
+                🔴 Cancelado
+            </option>
+
+        </select>
+
+
+        <!-- LUGAR -->
+
+        <label for="lugar">
+            Lugar
+        </label>
+
+        <input type="text"
+               id="lugar"
+               placeholder="Puede quedar vacío">
+
+
+        <!-- DIRECCIÓN -->
+
+        <label for="direccion">
+            Dirección
+        </label>
+
+        <input type="text"
+               id="direccion"
+               placeholder="Puede quedar vacío">
+
+
+        <!-- SERVICIO -->
+
+        <label for="servicio">
+            Servicio
+        </label>
+
+        <input type="text"
+               id="servicio"
+               placeholder="Ej: Amplificación + luces">
+
+
+        <!-- PRECIO -->
+
+        <label for="precio">
+            Precio total (Bs.)
+        </label>
+
+        <input type="number"
+               id="precio"
+               min="0"
+               step="0.01"
+               placeholder="Opcional">
+
+
+        <!-- ADELANTO -->
+
+        <label for="adelanto">
+            Adelanto (Bs.)
+        </label>
+
+        <input type="number"
+               id="adelanto"
+               min="0"
+               step="0.01"
+               placeholder="Opcional">
+
+
+        <!-- OBSERVACIONES -->
+
+        <label for="observaciones">
+            Observaciones
+        </label>
+
+        <textarea id="observaciones"
+                  placeholder="Opcional"></textarea>
+
+
+        <!-- FOTO -->
+
+        <label for="fotoContrato">
+            📎 Foto del contrato
+            <small>(Opcional)</small>
+        </label>
+
+        <input type="file"
+               id="fotoContrato"
+               accept="image/*">
+
+
+        <img id="vistaPrevia"
+             class="vista-previa"
+             alt="Vista previa del contrato"
+             style="display: none;">
+
+
+        <!-- BOTONES -->
+
+        <div class="botones-formulario">
+
+            <button id="guardarContrato"
+                    class="btn-guardar"
+                    type="button">
+
+                💾 GUARDAR
+
+            </button>
+
+            <button id="cancelarFormulario"
+                    class="btn-cancelar"
+                    type="button">
+
+                CANCELAR
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     VENTANA DETALLE
+     ========================================= -->
+
+<div id="ventanaDetalle"
+     class="modal">
+
+    <div class="detalle">
+
+        <div class="titulo-formulario">
+
+            <h2>📋 Evento</h2>
+
+            <button id="cerrarDetalle"
+                    class="cerrar"
+                    type="button">
+
+                ✕
+
+            </button>
+
+        </div>
+
+
+        <div id="contenidoDetalle"></div>
+
+
+        <div class="botones-detalle">
+
+            <button id="editarDesdeDetalle"
+                    class="btn-editar"
+                    type="button">
+
+                ✏️ EDITAR
+
+            </button>
+
+            <button id="eliminarDesdeDetalle"
+                    class="btn-eliminar"
+                    type="button">
+
+                🗑️ ELIMINAR
+
+            </button>
+
+        </div>
+
+
+        <div class="botones-extra">
+
+            <button id="whatsappBtn"
+                    type="button">
+
+                📱 WhatsApp
+
+            </button>
+
+            <button id="mapsBtn"
+                    type="button">
+
+                🗺️ Maps
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<script src="app.js"></script>
+
+</body>
+
+</html>

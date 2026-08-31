@@ -9,14 +9,6 @@ let vistaActual = "año";
 let contratoSeleccionado = null;
 
 let fotoTemporal = "";
-// =========================================
-// UBICACIÓN DEL EVENTO
-// =========================================
-
-let mapa = null;
-let marcador = null;
-let latitudSeleccionada = "";
-let longitudSeleccionada = "";
 
 
 // =========================================
@@ -119,128 +111,6 @@ function obtenerContratos() {
     ) || [];
 
 }
-// =========================================
-// MAPA - SELECCIONAR UBICACIÓN
-// =========================================
-
-document.getElementById("ubicacionBtn").onclick = function () {
-
-    const mapaContenedor =
-        document.getElementById("mapaUbicacion");
-
-    mapaContenedor.style.display = "block";
-
-    // Crear mapa solamente una vez
-    if (!mapa) {
-
-        mapa = L.map("mapa").setView(
-            [-17.3935, -66.1570],
-            13
-        );
-
-        L.tileLayer(
-            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            {
-                attribution: "© OpenStreetMap"
-            }
-        ).addTo(mapa);
-
-
-        mapa.on("click", function (e) {
-
-            latitudSeleccionada =
-                e.latlng.lat;
-
-            longitudSeleccionada =
-                e.latlng.lng;
-
-
-            if (marcador) {
-
-                mapa.removeLayer(
-                    marcador
-                );
-
-            }
-
-
-            marcador =
-                L.marker([
-                    latitudSeleccionada,
-                    longitudSeleccionada
-                ])
-                .addTo(mapa);
-
-
-            document.getElementById(
-                "latitud"
-            ).value =
-                latitudSeleccionada;
-
-
-            document.getElementById(
-                "longitud"
-            ).value =
-                longitudSeleccionada;
-
-
-            console.log(
-                "Ubicación seleccionada:",
-                latitudSeleccionada,
-                longitudSeleccionada
-            );
-
-        });
-
-    }
-
-
-    // Si ya existe una ubicación guardada,
-    // mostrarla nuevamente
-
-    if (
-        latitudSeleccionada &&
-        longitudSeleccionada
-    ) {
-
-        mapa.setView(
-            [
-                Number(latitudSeleccionada),
-                Number(longitudSeleccionada)
-            ],
-            17
-        );
-
-
-        if (marcador) {
-
-            mapa.removeLayer(
-                marcador
-            );
-
-        }
-
-
-        marcador =
-            L.marker([
-                Number(latitudSeleccionada),
-                Number(longitudSeleccionada)
-            ])
-            .addTo(mapa);
-
-    }
-
-
-    setTimeout(
-        function () {
-
-            mapa.invalidateSize();
-
-        },
-        200
-    );
-
-};
 
 
 // =========================================
@@ -1640,9 +1510,9 @@ function abrirFormulario(
 
     document.getElementById(
         "direccion"
-    
     ).value = "";
-   
+
+
     document.getElementById(
         "servicio"
     ).value = "";
@@ -1675,18 +1545,6 @@ function abrirFormulario(
 
 
     fotoTemporal = "";
-    latitudSeleccionada = "";
-    longitudSeleccionada = "";
-
-    document.getElementById("latitud").value = "";
-    document.getElementById("longitud").value = "";
-
-    document.getElementById("mapaUbicacion").style.display = "none";
-
-if (marcador) {
-    mapa.removeLayer(marcador);
-    marcador = null;
-}
 
 
     ventanaContrato.style.display =
@@ -1910,84 +1768,70 @@ document.getElementById(
 
         const datos = {
 
-    cliente:
-        document.getElementById(
-            "cliente"
-        ).value.trim(),
+            cliente:
+                document.getElementById(
+                    "cliente"
+                ).value.trim(),
 
-    telefono:
-        document.getElementById(
-            "telefono"
-        ).value.trim(),
+            telefono:
+                document.getElementById(
+                    "telefono"
+                ).value.trim(),
 
-    fecha:
-        fecha,
+            fecha:
+                fecha,
 
-    hora:
-        document.getElementById(
-            "horaContrato"
-        ).value,
+            hora:
+                document.getElementById(
+                    "horaContrato"
+                ).value,
 
-    tipoEvento:
-        document.getElementById(
-            "tipoEvento"
-        ).value,
+            tipoEvento:
+                document.getElementById(
+                    "tipoEvento"
+                ).value,
 
-    estado:
-        document.getElementById(
-            "estado"
-        ).value,
+            estado:
+                document.getElementById(
+                    "estado"
+                ).value,
 
-    lugar:
-        document.getElementById(
-            "lugar"
-        ).value.trim(),
+            lugar:
+                document.getElementById(
+                    "lugar"
+                ).value.trim(),
 
-    direccion:
-        document.getElementById(
-            "direccion"
-        ).value.trim(),
+            direccion:
+                document.getElementById(
+                    "direccion"
+                ).value.trim(),
 
-    ubicacion:
-        latitudSeleccionada && longitudSeleccionada
-            ? `https://www.google.com/maps?q=${latitudSeleccionada},${longitudSeleccionada}`
-            : document.getElementById(
-                "ubicacion"
-            ).value.trim(),
+            servicio:
+                document.getElementById(
+                    "servicio"
+                ).value.trim(),
 
-    latitud:
-        latitudSeleccionada,
+            precio:
+                Number(
+                    document.getElementById(
+                        "precio"
+                    ).value
+                ) || 0,
 
-    longitud:
-        longitudSeleccionada,
+            adelanto:
+                Number(
+                    document.getElementById(
+                        "adelanto"
+                    ).value
+                ) || 0,
 
-    servicio:
-        document.getElementById(
-            "servicio"
-        ).value.trim(),
+            observaciones:
+                document.getElementById(
+                    "observaciones"
+                ).value.trim(),
 
-    precio:
-        Number(
-            document.getElementById(
-                "precio"
-            ).value
-        ) || 0,
-
-    adelanto:
-        Number(
-            document.getElementById(
-                "adelanto"
-            ).value
-        ) || 0,
-
-    observaciones:
-        document.getElementById(
-            "observaciones"
-        ).value.trim(),
-
-    foto:
-        fotoTemporal
-
+            foto:
+                fotoTemporal
 
         };
 
@@ -2085,38 +1929,6 @@ function cerrarFormulario() {
         "none";
 
 }
-// =========================================
-// CALCULAR SALDO AUTOMÁTICAMENTE
-// =========================================
-
-function calcularSaldo() {
-
-    const precio =
-        Number(
-            document.getElementById("precio").value
-        ) || 0;
-
-    const adelanto =
-        Number(
-            document.getElementById("adelanto").value
-        ) || 0;
-
-    const saldo =
-        precio - adelanto;
-
-    document.getElementById("saldo").value =
-        saldo.toFixed(2);
-
-}
-document.getElementById("precio").addEventListener(
-    "input",
-    calcularSaldo
-);
-
-document.getElementById("adelanto").addEventListener(
-    "input",
-    calcularSaldo
-);
 
 
 // =========================================
@@ -2230,26 +2042,6 @@ function mostrarDetalle(
                     "Sin especificar"
                 }
             </p>
-    ${
-    contrato.ubicacion
-    ?
-    `
-    <p>
-        <b>📍 Ubicación exacta:</b><br>
-
-        <button
-            type="button"
-            onclick="window.open('${contrato.ubicacion}', '_blank')">
-
-            🗺️ VER UBICACIÓN
-
-        </button>
-
-    </p>
-    `
-    :
-    ""
-    }
 
             <p>
                 <b>🎧 Servicio:</b>
@@ -2436,16 +2228,6 @@ document.getElementById(
             "direccion"
         ).value =
             c.direccion || "";
-        document.getElementById(
-           "ubicacion"
-        ).value =
-           c.ubicacion || "";
-
-        latitudSeleccionada =
-        c.latitud || "";
-
-        longitudSeleccionada =
-        c.longitud || "";
 
 
         document.getElementById(
@@ -2685,6 +2467,7 @@ document.getElementById(
         );
 
     };
+
 
 // =========================================
 // MENÚ CALENDARIO

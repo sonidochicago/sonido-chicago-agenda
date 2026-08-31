@@ -1,3 +1,10 @@
+
+// =========================================
+// SONIDO CHICAGO - AGENDA
+// APP.JS COMPLETO
+// =========================================
+
+
 // =========================================
 // VARIABLES
 // =========================================
@@ -9,12 +16,15 @@ let vistaActual = "año";
 let contratoSeleccionado = null;
 
 let fotoTemporal = "";
+
+
 // =========================================
 // UBICACIÓN DEL EVENTO
 // =========================================
 
 let mapa = null;
 let marcador = null;
+
 let latitudSeleccionada = "";
 let longitudSeleccionada = "";
 
@@ -24,7 +34,6 @@ let longitudSeleccionada = "";
 // =========================================
 
 const meses = [
-
     "ENERO",
     "FEBRERO",
     "MARZO",
@@ -37,12 +46,9 @@ const meses = [
     "OCTUBRE",
     "NOVIEMBRE",
     "DICIEMBRE"
-
 ];
 
-
 const diasSemana = [
-
     "LUN",
     "MAR",
     "MIÉ",
@@ -50,60 +56,92 @@ const diasSemana = [
     "VIE",
     "SÁB",
     "DOM"
-
 ];
 
 
 // =========================================
-// ELEMENTOS
+// FUNCIÓN SEGURA PARA OBTENER ELEMENTOS
+// =========================================
+
+function elemento(id) {
+    return document.getElementById(id);
+}
+
+function obtenerValor(id, valorPorDefecto = "") {
+
+    const campo = document.getElementById(id);
+
+    if (!campo) {
+        console.warn("No existe el elemento:", id);
+        return valorPorDefecto;
+    }
+
+    return campo.value;
+}
+
+
+// =========================================
+// OBTENER VALOR DE UN ELEMENTO
+// =========================================
+
+function obtenerValor(id, valorPorDefecto = "") {
+
+    const el = elemento(id);
+
+    if (!el) {
+        console.warn(
+            "No existe el elemento con id:",
+            id
+        );
+
+        return valorPorDefecto;
+    }
+
+    return el.value;
+}
+
+
+// =========================================
+// COLOCAR VALOR
+// =========================================
+
+function ponerValor(id, valor = "") {
+
+    const el = elemento(id);
+
+    if (el) {
+        el.value = valor;
+    }
+}
+
+
+// =========================================
+// ELEMENTOS PRINCIPALES
 // =========================================
 
 const tituloCalendario =
-    document.getElementById(
-        "tituloCalendario"
-    );
-
+    elemento("tituloCalendario");
 
 const calendarioAnual =
-    document.getElementById(
-        "calendarioAnual"
-    );
-
+    elemento("calendarioAnual");
 
 const calendarioMes =
-    document.getElementById(
-        "calendarioMes"
-    );
-
+    elemento("calendarioMes");
 
 const calendarioSemana =
-    document.getElementById(
-        "calendarioSemana"
-    );
-
+    elemento("calendarioSemana");
 
 const calendarioDia =
-    document.getElementById(
-        "calendarioDia"
-    );
-
+    elemento("calendarioDia");
 
 const listaContratos =
-    document.getElementById(
-        "listaContratos"
-    );
-
+    elemento("listaContratos");
 
 const ventanaContrato =
-    document.getElementById(
-        "ventanaContrato"
-    );
-
+    elemento("ventanaContrato");
 
 const ventanaDetalle =
-    document.getElementById(
-        "ventanaDetalle"
-    );
+    elemento("ventanaDetalle");
 
 
 // =========================================
@@ -112,150 +150,35 @@ const ventanaDetalle =
 
 function obtenerContratos() {
 
-    return JSON.parse(
-        localStorage.getItem(
-            "contratos"
-        )
-    ) || [];
+    try {
+
+        return JSON.parse(
+            localStorage.getItem("contratos")
+        ) || [];
+
+    } catch (error) {
+
+        console.error(
+            "Error leyendo contratos:",
+            error
+        );
+
+        return [];
+
+    }
 
 }
-// =========================================
-// MAPA - SELECCIONAR UBICACIÓN
-// =========================================
-
-document.getElementById("ubicacionBtn").onclick = function () {
-
-    const mapaContenedor =
-        document.getElementById("mapaUbicacion");
-
-    mapaContenedor.style.display = "block";
-
-    // Crear mapa solamente una vez
-    if (!mapa) {
-
-        mapa = L.map("mapa").setView(
-            [-17.3935, -66.1570],
-            13
-        );
-
-        L.tileLayer(
-            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            {
-                attribution: "© OpenStreetMap"
-            }
-        ).addTo(mapa);
-
-
-        mapa.on("click", function (e) {
-
-            latitudSeleccionada =
-                e.latlng.lat;
-
-            longitudSeleccionada =
-                e.latlng.lng;
-
-
-            if (marcador) {
-
-                mapa.removeLayer(
-                    marcador
-                );
-
-            }
-
-
-            marcador =
-                L.marker([
-                    latitudSeleccionada,
-                    longitudSeleccionada
-                ])
-                .addTo(mapa);
-
-
-            document.getElementById(
-                "latitud"
-            ).value =
-                latitudSeleccionada;
-
-
-            document.getElementById(
-                "longitud"
-            ).value =
-                longitudSeleccionada;
-
-
-            console.log(
-                "Ubicación seleccionada:",
-                latitudSeleccionada,
-                longitudSeleccionada
-            );
-
-        });
-
-    }
-
-
-    // Si ya existe una ubicación guardada,
-    // mostrarla nuevamente
-
-    if (
-        latitudSeleccionada &&
-        longitudSeleccionada
-    ) {
-
-        mapa.setView(
-            [
-                Number(latitudSeleccionada),
-                Number(longitudSeleccionada)
-            ],
-            17
-        );
-
-
-        if (marcador) {
-
-            mapa.removeLayer(
-                marcador
-            );
-
-        }
-
-
-        marcador =
-            L.marker([
-                Number(latitudSeleccionada),
-                Number(longitudSeleccionada)
-            ])
-            .addTo(mapa);
-
-    }
-
-
-    setTimeout(
-        function () {
-
-            mapa.invalidateSize();
-
-        },
-        200
-    );
-
-};
 
 
 // =========================================
 // GUARDAR CONTRATOS
 // =========================================
 
-function guardarTodos(
-    contratos
-) {
+function guardarTodos(contratos) {
 
     localStorage.setItem(
         "contratos",
-        JSON.stringify(
-            contratos
-        )
+        JSON.stringify(contratos)
     );
 
 }
@@ -265,18 +188,17 @@ function guardarTodos(
 // FORMATO FECHA
 // =========================================
 
-function fechaTexto(
-    fecha
-) {
+function fechaTexto(fecha) {
 
     if (!fecha) {
-
         return "Sin fecha";
-
     }
 
-    const partes =
-        fecha.split("-");
+    const partes = fecha.split("-");
+
+    if (partes.length !== 3) {
+        return fecha;
+    }
 
     return (
         partes[2] +
@@ -293,9 +215,7 @@ function fechaTexto(
 // NOMBRE DEL ESTADO
 // =========================================
 
-function nombreEstado(
-    estado
-) {
+function nombreEstado(estado) {
 
     const nombres = {
 
@@ -322,12 +242,222 @@ function nombreEstado(
 
 
 // =========================================
+// CREAR FECHA
+// =========================================
+
+function crearFecha(
+    año,
+    mes,
+    dia
+) {
+
+    return (
+        año +
+        "-" +
+        String(mes + 1).padStart(2, "0") +
+        "-" +
+        String(dia).padStart(2, "0")
+    );
+
+}
+
+
+// =========================================
+// ES HOY
+// =========================================
+
+function esHoy(fecha) {
+
+    const hoy = new Date();
+
+    const texto = crearFecha(
+        hoy.getFullYear(),
+        hoy.getMonth(),
+        hoy.getDate()
+    );
+
+    return fecha === texto;
+
+}
+
+
+// =========================================
+// FORMATO CORTO
+// =========================================
+
+function formatoCorto(fecha) {
+
+    return (
+        fecha.getDate() +
+        "/" +
+        (fecha.getMonth() + 1)
+    );
+
+}
+
+
+// =========================================
+// MAPA - SELECCIONAR UBICACIÓN
+// =========================================
+
+const ubicacionBtn =
+    elemento("ubicacionBtn");
+
+if (ubicacionBtn) {
+
+    ubicacionBtn.onclick = function () {
+
+        const mapaContenedor =
+            elemento("mapaUbicacion");
+
+        if (!mapaContenedor) {
+            return;
+        }
+
+        mapaContenedor.style.display =
+            "block";
+
+
+        // Crear mapa solamente una vez
+
+        if (!mapa) {
+
+            if (
+                typeof L === "undefined"
+            ) {
+
+                alert(
+                    "No se pudo cargar Google Maps/Leaflet."
+                );
+
+                return;
+            }
+
+
+            mapa =
+                L.map("mapa").setView(
+                    [-17.3935, -66.1570],
+                    13
+                );
+
+
+            L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                    attribution:
+                        "© OpenStreetMap"
+                }
+            ).addTo(mapa);
+
+
+            mapa.on(
+                "click",
+                function (e) {
+
+                    latitudSeleccionada =
+                        e.latlng.lat;
+
+                    longitudSeleccionada =
+                        e.latlng.lng;
+
+
+                    if (marcador) {
+
+                        mapa.removeLayer(
+                            marcador
+                        );
+
+                    }
+
+
+                    marcador =
+                        L.marker([
+                            latitudSeleccionada,
+                            longitudSeleccionada
+                        ])
+                        .addTo(mapa);
+
+
+                    ponerValor(
+                        "latitud",
+                        latitudSeleccionada
+                    );
+
+
+                    ponerValor(
+                        "longitud",
+                        longitudSeleccionada
+                    );
+
+
+                    console.log(
+                        "Ubicación seleccionada:",
+                        latitudSeleccionada,
+                        longitudSeleccionada
+                    );
+
+                }
+            );
+
+        }
+
+
+        // Mostrar ubicación guardada
+
+        if (
+            latitudSeleccionada !== "" &&
+            longitudSeleccionada !== ""
+        ) {
+
+            mapa.setView(
+                [
+                    Number(latitudSeleccionada),
+                    Number(longitudSeleccionada)
+                ],
+                17
+            );
+
+
+            if (marcador) {
+
+                mapa.removeLayer(
+                    marcador
+                );
+
+            }
+
+
+            marcador =
+                L.marker([
+                    Number(latitudSeleccionada),
+                    Number(longitudSeleccionada)
+                ])
+                .addTo(mapa);
+
+        }
+
+
+        setTimeout(
+            function () {
+
+                if (mapa) {
+                    mapa.invalidateSize();
+                }
+
+            },
+            200
+        );
+
+    };
+
+}
+
+
+// =========================================
 // CAMBIAR VISTA
 // =========================================
 
-function cambiarVista(
-    vista
-) {
+function cambiarVista(vista) {
 
     vistaActual = vista;
 
@@ -346,43 +476,35 @@ function cambiarVista(
     );
 
 
-    document.getElementById(
-        "vistaAño"
-    ).classList.toggle(
-        "oculto",
-        vista !== "año"
-    );
+    const vistas = {
+
+        año: "vistaAño",
+        mes: "vistaMes",
+        semana: "vistaSemana",
+        dia: "vistaDia",
+        eventos: "vistaEventos"
+
+    };
 
 
-    document.getElementById(
-        "vistaMes"
-    ).classList.toggle(
-        "oculto",
-        vista !== "mes"
-    );
+    Object.keys(vistas).forEach(
+        nombre => {
 
+            const vistaElemento =
+                elemento(
+                    vistas[nombre]
+                );
 
-    document.getElementById(
-        "vistaSemana"
-    ).classList.toggle(
-        "oculto",
-        vista !== "semana"
-    );
+            if (vistaElemento) {
 
+                vistaElemento.classList.toggle(
+                    "oculto",
+                    nombre !== vista
+                );
 
-    document.getElementById(
-        "vistaDia"
-    ).classList.toggle(
-        "oculto",
-        vista !== "dia"
-    );
+            }
 
-
-    document.getElementById(
-        "vistaEventos"
-    ).classList.toggle(
-        "oculto",
-        vista !== "eventos"
+        }
     );
 
 
@@ -392,7 +514,7 @@ function cambiarVista(
 
 
 // =========================================
-// BOTONES VISTAS
+// BOTONES DE VISTAS
 // =========================================
 
 document.querySelectorAll(
@@ -400,14 +522,13 @@ document.querySelectorAll(
 ).forEach(
     boton => {
 
-        boton.onclick =
-            function() {
+        boton.onclick = function () {
 
-                cambiarVista(
-                    boton.dataset.vista
-                );
+            cambiarVista(
+                boton.dataset.vista
+            );
 
-            };
+        };
 
     }
 );
@@ -419,17 +540,24 @@ document.querySelectorAll(
 
 function mostrarAño() {
 
+    if (!calendarioAnual) {
+        return;
+    }
 
-    calendarioAnual.innerHTML =
-        "";
+
+    calendarioAnual.innerHTML = "";
 
 
     const año =
         fechaActual.getFullYear();
 
 
-    tituloCalendario.textContent =
-        año;
+    if (tituloCalendario) {
+
+        tituloCalendario.textContent =
+            año;
+
+    }
 
 
     const contratos =
@@ -442,24 +570,18 @@ function mostrarAño() {
         mes++
     ) {
 
-
         const contenedor =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
         contenedor.className =
             "mes";
 
 
         const titulo =
-            document.createElement(
-                "h3"
-            );
+            document.createElement("h3");
 
         titulo.textContent =
             meses[mes];
-
 
         contenedor.appendChild(
             titulo
@@ -467,9 +589,7 @@ function mostrarAño() {
 
 
         const semana =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
         semana.className =
             "dias-semana";
@@ -479,16 +599,12 @@ function mostrarAño() {
             dia => {
 
                 const d =
-                    document.createElement(
-                        "div"
-                    );
+                    document.createElement("div");
 
                 d.textContent =
                     dia[0];
 
-                semana.appendChild(
-                    d
-                );
+                semana.appendChild(d);
 
             }
         );
@@ -500,9 +616,7 @@ function mostrarAño() {
 
 
         const dias =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
         dias.className =
             "dias-mes";
@@ -516,16 +630,10 @@ function mostrarAño() {
             ).getDay();
 
 
-        if (
-            primerDia === 0
-        ) {
-
+        if (primerDia === 0) {
             primerDia = 6;
-
         } else {
-
             primerDia--;
-
         }
 
 
@@ -536,9 +644,7 @@ function mostrarAño() {
         ) {
 
             dias.appendChild(
-                document.createElement(
-                    "div"
-                )
+                document.createElement("div")
             );
 
         }
@@ -558,18 +664,13 @@ function mostrarAño() {
             dia++
         ) {
 
+            const elementoDia =
+                document.createElement("div");
 
-            const elemento =
-                document.createElement(
-                    "div"
-                );
-
-
-            elemento.className =
+            elementoDia.className =
                 "dia";
 
-
-            elemento.textContent =
+            elementoDia.textContent =
                 dia;
 
 
@@ -588,11 +689,9 @@ function mostrarAño() {
                 );
 
 
-            if (
-                eventos.length > 0
-            ) {
+            if (eventos.length > 0) {
 
-                elemento.classList.add(
+                elementoDia.classList.add(
                     eventos[0].estado ||
                     "reservado"
                 );
@@ -600,23 +699,19 @@ function mostrarAño() {
             }
 
 
-            if (
-                esHoy(fecha)
-            ) {
+            if (esHoy(fecha)) {
 
-                elemento.classList.add(
+                elementoDia.classList.add(
                     "hoy"
                 );
 
             }
 
 
-            elemento.onclick =
-                function() {
+            elementoDia.onclick =
+                function () {
 
-                    if (
-                        eventos.length > 0
-                    ) {
+                    if (eventos.length > 0) {
 
                         mostrarDetalle(
                             eventos[0].id
@@ -634,7 +729,7 @@ function mostrarAño() {
 
 
             dias.appendChild(
-                elemento
+                elementoDia
             );
 
         }
@@ -655,91 +750,45 @@ function mostrarAño() {
 
 
 // =========================================
-// CREAR FECHA
-// =========================================
-
-function crearFecha(
-    año,
-    mes,
-    dia
-) {
-
-    return (
-        año +
-        "-" +
-        String(mes + 1)
-            .padStart(2, "0") +
-        "-" +
-        String(dia)
-            .padStart(2, "0")
-    );
-
-}
-
-
-// =========================================
-// ES HOY
-// =========================================
-
-function esHoy(
-    fecha
-) {
-
-    const hoy =
-        new Date();
-
-
-    const texto =
-        crearFecha(
-            hoy.getFullYear(),
-            hoy.getMonth(),
-            hoy.getDate()
-        );
-
-
-    return fecha === texto;
-
-}
-
-
-// =========================================
 // VISTA MES
 // =========================================
 
 function mostrarMes() {
 
+    if (!calendarioMes) {
+        return;
+    }
+
 
     const año =
         fechaActual.getFullYear();
-
 
     const mes =
         fechaActual.getMonth();
 
 
-    tituloCalendario.textContent =
-        meses[mes] +
-        " " +
-        año;
+    if (tituloCalendario) {
+
+        tituloCalendario.textContent =
+            meses[mes] +
+            " " +
+            año;
+
+    }
 
 
-    calendarioMes.innerHTML =
-        "";
+    calendarioMes.innerHTML = "";
 
 
     const contenedor =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     contenedor.className =
         "mes";
 
 
     const semana =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     semana.className =
         "dias-semana";
@@ -749,16 +798,12 @@ function mostrarMes() {
         dia => {
 
             const d =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
             d.textContent =
                 dia;
 
-            semana.appendChild(
-                d
-            );
+            semana.appendChild(d);
 
         }
     );
@@ -770,9 +815,7 @@ function mostrarMes() {
 
 
     const dias =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     dias.className =
         "dias-mes";
@@ -786,16 +829,10 @@ function mostrarMes() {
         ).getDay();
 
 
-    if (
-        primero === 0
-    ) {
-
+    if (primero === 0) {
         primero = 6;
-
     } else {
-
         primero--;
-
     }
 
 
@@ -806,9 +843,7 @@ function mostrarMes() {
     ) {
 
         dias.appendChild(
-            document.createElement(
-                "div"
-            )
+            document.createElement("div")
         );
 
     }
@@ -832,18 +867,13 @@ function mostrarMes() {
         dia++
     ) {
 
+        const elementoDia =
+            document.createElement("div");
 
-        const elemento =
-            document.createElement(
-                "div"
-            );
-
-
-        elemento.className =
+        elementoDia.className =
             "dia";
 
-
-        elemento.textContent =
+        elementoDia.textContent =
             dia;
 
 
@@ -862,11 +892,9 @@ function mostrarMes() {
             );
 
 
-        if (
-            eventos.length
-        ) {
+        if (eventos.length > 0) {
 
-            elemento.classList.add(
+            elementoDia.classList.add(
                 eventos[0].estado ||
                 "reservado"
             );
@@ -874,23 +902,19 @@ function mostrarMes() {
         }
 
 
-        if (
-            esHoy(fecha)
-        ) {
+        if (esHoy(fecha)) {
 
-            elemento.classList.add(
+            elementoDia.classList.add(
                 "hoy"
             );
 
         }
 
 
-        elemento.onclick =
-            function() {
+        elementoDia.onclick =
+            function () {
 
-                if (
-                    eventos.length
-                ) {
+                if (eventos.length > 0) {
 
                     mostrarDetalle(
                         eventos[0].id
@@ -908,7 +932,7 @@ function mostrarMes() {
 
 
         dias.appendChild(
-            elemento
+            elementoDia
         );
 
     }
@@ -932,30 +956,26 @@ function mostrarMes() {
 
 function mostrarSemana() {
 
+    if (!calendarioSemana) {
+        return;
+    }
+
 
     const fecha =
-        new Date(
-            fechaActual
-        );
+        new Date(fechaActual);
 
 
     let diaSemana =
         fecha.getDay();
 
 
-    if (
-        diaSemana === 0
-    ) {
-
+    if (diaSemana === 0) {
         diaSemana = 7;
-
     }
 
 
     const lunes =
-        new Date(
-            fecha
-        );
+        new Date(fecha);
 
 
     lunes.setDate(
@@ -966,9 +986,7 @@ function mostrarSemana() {
 
 
     const domingo =
-        new Date(
-            lunes
-        );
+        new Date(lunes);
 
 
     domingo.setDate(
@@ -977,24 +995,21 @@ function mostrarSemana() {
     );
 
 
-    tituloCalendario.textContent =
-        formatoCorto(
-            lunes
-        ) +
-        " - " +
-        formatoCorto(
-            domingo
-        );
+    if (tituloCalendario) {
+
+        tituloCalendario.textContent =
+            formatoCorto(lunes) +
+            " - " +
+            formatoCorto(domingo);
+
+    }
 
 
-    calendarioSemana.innerHTML =
-        "";
+    calendarioSemana.innerHTML = "";
 
 
     const grid =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     grid.className =
         "semana-grid";
@@ -1010,16 +1025,12 @@ function mostrarSemana() {
         i++
     ) {
 
-
         const fechaDia =
-            new Date(
-                lunes
-            );
+            new Date(lunes);
 
 
         fechaDia.setDate(
-            lunes.getDate() +
-            i
+            lunes.getDate() + i
         );
 
 
@@ -1032,18 +1043,14 @@ function mostrarSemana() {
 
 
         const columna =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
         columna.className =
             "columna-dia";
 
 
         const titulo =
-            document.createElement(
-                "h3"
-            );
+            document.createElement("h3");
 
 
         titulo.textContent =
@@ -1068,9 +1075,7 @@ function mostrarSemana() {
             evento => {
 
                 const mini =
-                    document.createElement(
-                        "div"
-                    );
+                    document.createElement("div");
 
                 mini.className =
                     "evento-mini " +
@@ -1083,7 +1088,7 @@ function mostrarSemana() {
                 mini.innerHTML =
                     `
                     <b>
-                    ${evento.hora || ""}
+                        ${evento.hora || ""}
                     </b>
                     <br>
                     ${evento.cliente || "Evento"}
@@ -1091,7 +1096,7 @@ function mostrarSemana() {
 
 
                 mini.onclick =
-                    function() {
+                    function () {
 
                         mostrarDetalle(
                             evento.id
@@ -1128,14 +1133,16 @@ function mostrarSemana() {
 
 function mostrarDia() {
 
+    if (!calendarioDia) {
+        return;
+    }
+
 
     const año =
         fechaActual.getFullYear();
 
-
     const mes =
         fechaActual.getMonth();
-
 
     const dia =
         fechaActual.getDate();
@@ -1149,33 +1156,30 @@ function mostrarDia() {
         );
 
 
-    tituloCalendario.textContent =
-        dia +
-        " de " +
-        meses[mes] +
-        " " +
-        año;
+    if (tituloCalendario) {
+
+        tituloCalendario.textContent =
+            dia +
+            " de " +
+            meses[mes] +
+            " " +
+            año;
+
+    }
 
 
-    calendarioDia.innerHTML =
-        "";
+    calendarioDia.innerHTML = "";
 
 
     const contenedor =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     contenedor.className =
         "dia-grande";
 
 
     const titulo =
-        document.createElement(
-            "h3"
-        );
-
+        document.createElement("h3");
 
     titulo.textContent =
         "Eventos del día";
@@ -1193,14 +1197,12 @@ function mostrarDia() {
         );
 
 
-    if (
-        contratos.length === 0
-    ) {
+    if (contratos.length === 0) {
 
         contenedor.innerHTML +=
             `
             <p style="text-align:center">
-            No hay eventos para este día.
+                No hay eventos para este día.
             </p>
             `;
 
@@ -1211,9 +1213,7 @@ function mostrarDia() {
         contrato => {
 
             contenedor.appendChild(
-                crearTarjeta(
-                    contrato
-                )
+                crearTarjeta(contrato)
             );
 
         }
@@ -1233,29 +1233,35 @@ function mostrarDia() {
 
 function mostrarEventos() {
 
+    if (!listaContratos) {
+        return;
+    }
 
-    tituloCalendario.textContent =
-        "Todos los eventos";
+
+    if (tituloCalendario) {
+
+        tituloCalendario.textContent =
+            "Todos los eventos";
+
+    }
 
 
-    listaContratos.innerHTML =
-        "";
+    listaContratos.innerHTML = "";
 
 
     const contratos =
         obtenerContratos();
 
 
-    if (
-        contratos.length === 0
-    ) {
+    if (contratos.length === 0) {
 
         listaContratos.innerHTML =
             `
             <div class="tarjeta-evento">
                 <h3>📋 No hay eventos</h3>
+
                 <p>
-                Todavía no tienes contratos registrados.
+                    Todavía no tienes contratos registrados.
                 </p>
             </div>
             `;
@@ -1278,9 +1284,7 @@ function mostrarEventos() {
         contrato => {
 
             listaContratos.appendChild(
-                crearTarjeta(
-                    contrato
-                )
+                crearTarjeta(contrato)
             );
 
         }
@@ -1293,15 +1297,10 @@ function mostrarEventos() {
 // CREAR TARJETA
 // =========================================
 
-function crearTarjeta(
-    contrato
-) {
-
+function crearTarjeta(contrato) {
 
     const tarjeta =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
 
     tarjeta.className =
@@ -1313,25 +1312,19 @@ function crearTarjeta(
 
 
     const precio =
-        Number(
-            contrato.precio
-        ) || 0;
+        Number(contrato.precio) || 0;
 
 
     const adelanto =
-        Number(
-            contrato.adelanto
-        ) || 0;
+        Number(contrato.adelanto) || 0;
 
 
     const saldo =
-        precio -
-        adelanto;
+        precio - adelanto;
 
 
     tarjeta.innerHTML =
         `
-
         <h3>
             👤
             ${
@@ -1402,20 +1395,19 @@ function crearTarjeta(
                 "reservado"
             }">
 
-            ${
-                nombreEstado(
-                    contrato.estado
-                )
-            }
+                ${
+                    nombreEstado(
+                        contrato.estado
+                    )
+                }
 
             </span>
         </p>
-
         `;
 
 
     tarjeta.onclick =
-        function() {
+        function () {
 
             mostrarDetalle(
                 contrato.id
@@ -1435,46 +1427,23 @@ function crearTarjeta(
 
 function mostrarTodo() {
 
-
-    if (
-        vistaActual === "año"
-    ) {
+    if (vistaActual === "año") {
 
         mostrarAño();
 
-    }
-
-
-    if (
-        vistaActual === "mes"
-    ) {
+    } else if (vistaActual === "mes") {
 
         mostrarMes();
 
-    }
-
-
-    if (
-        vistaActual === "semana"
-    ) {
+    } else if (vistaActual === "semana") {
 
         mostrarSemana();
 
-    }
-
-
-    if (
-        vistaActual === "dia"
-    ) {
+    } else if (vistaActual === "dia") {
 
         mostrarDia();
 
-    }
-
-
-    if (
-        vistaActual === "eventos"
-    ) {
+    } else if (vistaActual === "eventos") {
 
         mostrarEventos();
 
@@ -1487,298 +1456,355 @@ function mostrarTodo() {
 // ANTERIOR
 // =========================================
 
-document.getElementById(
-    "anterior"
-).onclick =
-    function() {
+const anterior =
+    elemento("anterior");
+
+if (anterior) {
+
+    anterior.onclick =
+        function () {
+
+            if (vistaActual === "año") {
+
+                fechaActual.setFullYear(
+                    fechaActual.getFullYear() - 1
+                );
+
+            } else if (
+                vistaActual === "mes"
+            ) {
+
+                fechaActual.setMonth(
+                    fechaActual.getMonth() - 1
+                );
+
+            } else if (
+                vistaActual === "dia"
+            ) {
+
+                fechaActual.setDate(
+                    fechaActual.getDate() - 1
+                );
+
+            } else {
+
+                fechaActual.setDate(
+                    fechaActual.getDate() - 7
+                );
+
+            }
 
 
-        if (
-            vistaActual === "año"
-        ) {
+            mostrarTodo();
 
-            fechaActual.setFullYear(
-                fechaActual.getFullYear() - 1
-            );
+        };
 
-        } else if (
-            vistaActual === "mes"
-        ) {
-
-            fechaActual.setMonth(
-                fechaActual.getMonth() - 1
-            );
-
-        } else {
-
-            fechaActual.setDate(
-                fechaActual.getDate() - 7
-            );
-
-        }
-
-
-        mostrarTodo();
-
-    };
+}
 
 
 // =========================================
 // SIGUIENTE
 // =========================================
 
-document.getElementById(
-    "siguiente"
-).onclick =
-    function() {
+const siguiente =
+    elemento("siguiente");
+
+if (siguiente) {
+
+    siguiente.onclick =
+        function () {
+
+            if (vistaActual === "año") {
+
+                fechaActual.setFullYear(
+                    fechaActual.getFullYear() + 1
+                );
+
+            } else if (
+                vistaActual === "mes"
+            ) {
+
+                fechaActual.setMonth(
+                    fechaActual.getMonth() + 1
+                );
+
+            } else if (
+                vistaActual === "dia"
+            ) {
+
+                fechaActual.setDate(
+                    fechaActual.getDate() + 1
+                );
+
+            } else {
+
+                fechaActual.setDate(
+                    fechaActual.getDate() + 7
+                );
+
+            }
 
 
-        if (
-            vistaActual === "año"
-        ) {
+            mostrarTodo();
 
-            fechaActual.setFullYear(
-                fechaActual.getFullYear() + 1
-            );
+        };
 
-        } else if (
-            vistaActual === "mes"
-        ) {
-
-            fechaActual.setMonth(
-                fechaActual.getMonth() + 1
-            );
-
-        } else {
-
-            fechaActual.setDate(
-                fechaActual.getDate() + 7
-            );
-
-        }
-
-
-        mostrarTodo();
-
-    };
+}
 
 
 // =========================================
 // HOY
 // =========================================
 
-document.getElementById(
-    "btnHoy"
-).onclick =
-    function() {
+const btnHoy =
+    elemento("btnHoy");
 
-        fechaActual =
-            new Date();
+if (btnHoy) {
 
-        mostrarTodo();
+    btnHoy.onclick =
+        function () {
 
-    };
+            fechaActual =
+                new Date();
+
+            mostrarTodo();
+
+        };
+
+}
 
 
 // =========================================
 // ABRIR FORMULARIO
 // =========================================
 
-function abrirFormulario(
-    fecha = ""
-) {
+function abrirFormulario(fecha = "") {
+
+    ponerValor(
+        "tituloFormulario",
+        ""
+    );
 
 
-    document.getElementById(
-        "tituloFormulario"
-    ).textContent =
-        "📝 Nuevo Evento";
+    const titulo =
+        elemento("tituloFormulario");
+
+    if (titulo) {
+
+        titulo.textContent =
+            "📝 Nuevo Evento";
+
+    }
 
 
-    document.getElementById(
-        "guardarContrato"
-    ).dataset.id =
-        "";
+    const guardar =
+        elemento("guardarContrato");
+
+    if (guardar) {
+
+        guardar.dataset.id = "";
+
+    }
 
 
-    document.getElementById(
-        "cliente"
-    ).value = "";
+    ponerValor("cliente", "");
+
+    ponerValor("telefono", "");
+
+    ponerValor(
+        "fechaContrato",
+        fecha
+    );
+
+    ponerValor("horaContrato", "");
+
+    ponerValor("tipoEvento", "");
+
+    ponerValor(
+        "estado",
+        "reservado"
+    );
+
+    ponerValor("lugar", "");
+
+    ponerValor("direccion", "");
+
+    ponerValor("servicio", "");
+
+    ponerValor("precio", "");
+
+    ponerValor("adelanto", "");
+
+    ponerValor("saldo", "0.00");
+
+    ponerValor(
+        "observaciones",
+        ""
+    );
 
 
-    document.getElementById(
-        "telefono"
-    ).value = "";
+    const foto =
+        elemento("fotoContrato");
+
+    if (foto) {
+        foto.value = "";
+    }
 
 
-    document.getElementById(
-        "fechaContrato"
-    ).value =
-        fecha;
+    const vista =
+        elemento("vistaPrevia");
 
-
-    document.getElementById(
-        "horaContrato"
-    ).value = "";
-
-
-    document.getElementById(
-        "tipoEvento"
-    ).value = "";
-
-
-    document.getElementById(
-        "estado"
-    ).value =
-        "reservado";
-
-
-    document.getElementById(
-        "lugar"
-    ).value = "";
-
-
-    document.getElementById(
-        "direccion"
-    
-    ).value = "";
-   
-    document.getElementById(
-        "servicio"
-    ).value = "";
-
-
-    document.getElementById(
-        "precio"
-    ).value = "";
-
-
-    document.getElementById(
-        "adelanto"
-    ).value = "";
-
-
-    document.getElementById(
-        "observaciones"
-    ).value = "";
-
-
-    document.getElementById(
-        "fotoContrato"
-    ).value = "";
-
-
-    document.getElementById(
-        "vistaPrevia"
-    ).style.display =
-        "none";
+    if (vista) {
+        vista.src = "";
+        vista.style.display = "none";
+    }
 
 
     fotoTemporal = "";
+
     latitudSeleccionada = "";
+
     longitudSeleccionada = "";
 
-    document.getElementById("latitud").value = "";
-    document.getElementById("longitud").value = "";
 
-    document.getElementById("mapaUbicacion").style.display = "none";
+    ponerValor(
+        "latitud",
+        ""
+    );
 
-if (marcador) {
-    mapa.removeLayer(marcador);
-    marcador = null;
-}
+    ponerValor(
+        "longitud",
+        ""
+    );
+
+    ponerValor(
+        "ubicacion",
+        ""
+    );
 
 
-    ventanaContrato.style.display =
-        "flex";
+    const mapaContenedor =
+        elemento("mapaUbicacion");
+
+    if (mapaContenedor) {
+
+        mapaContenedor.style.display =
+            "none";
+
+    }
+
+
+    if (marcador && mapa) {
+
+        mapa.removeLayer(
+            marcador
+        );
+
+        marcador = null;
+
+    }
+
+
+    if (ventanaContrato) {
+
+        ventanaContrato.style.display =
+            "flex";
+
+    }
 
 }
 
 
 // =========================================
-// NUEVO
+// NUEVO CONTRATO
 // =========================================
 
-document.getElementById(
-    "nuevoContrato"
-).onclick =
-    function() {
+const nuevoContrato =
+    elemento("nuevoContrato");
 
-        abrirFormulario();
+if (nuevoContrato) {
 
-    };
+    nuevoContrato.onclick =
+        function () {
+
+            abrirFormulario();
+
+        };
+
+}
 
 
-document.getElementById(
-    "btnNuevo"
-).onclick =
-    function() {
+const btnNuevo =
+    elemento("btnNuevo");
 
-        abrirFormulario();
+if (btnNuevo) {
 
-    };
+    btnNuevo.onclick =
+        function () {
+
+            abrirFormulario();
+
+        };
+
+}
 
 
 // =========================================
 // FOTO
 // =========================================
 
-document.getElementById(
-    "fotoContrato"
-).onchange =
-    function(evento) {
+const fotoContrato =
+    elemento("fotoContrato");
+
+if (fotoContrato) {
+
+    fotoContrato.onchange =
+        function (evento) {
+
+            const archivo =
+                evento.target.files[0];
 
 
-        const archivo =
-            evento.target.files[0];
+            if (!archivo) {
+                return;
+            }
 
 
-        if (
-            !archivo
-        ) {
-
-            return;
-
-        }
+            const lector =
+                new FileReader();
 
 
-        const lector =
-            new FileReader();
+            lector.onload =
+                function (e) {
+
+                    comprimirFoto(
+                        e.target.result
+                    );
+
+                };
 
 
-        lector.onload =
-            function(e) {
+            lector.readAsDataURL(
+                archivo
+            );
 
-                comprimirFoto(
-                    e.target.result
-                );
+        };
 
-            };
-
-
-        lector.readAsDataURL(
-            archivo
-        );
-
-    };
+}
 
 
 // =========================================
 // COMPRIMIR FOTO
 // =========================================
 
-function comprimirFoto(
-    imagen
-) {
-
+function comprimirFoto(imagen) {
 
     const img =
         new Image();
 
 
     img.onload =
-        function() {
-
+        function () {
 
             const canvas =
                 document.createElement(
@@ -1793,14 +1819,11 @@ function comprimirFoto(
             let ancho =
                 img.width;
 
-
             let alto =
                 img.height;
 
 
-            if (
-                ancho > maximo
-            ) {
+            if (ancho > maximo) {
 
                 alto =
                     alto *
@@ -1821,9 +1844,7 @@ function comprimirFoto(
 
 
             const contexto =
-                canvas.getContext(
-                    "2d"
-                );
+                canvas.getContext("2d");
 
 
             contexto.drawImage(
@@ -1843,17 +1864,18 @@ function comprimirFoto(
 
 
             const vista =
-                document.getElementById(
-                    "vistaPrevia"
-                );
+                elemento("vistaPrevia");
 
 
-            vista.src =
-                fotoTemporal;
+            if (vista) {
 
+                vista.src =
+                    fotoTemporal;
 
-            vista.style.display =
-                "block";
+                vista.style.display =
+                    "block";
+
+            }
 
         };
 
@@ -1868,265 +1890,326 @@ function comprimirFoto(
 // GUARDAR CONTRATO
 // =========================================
 
-document.getElementById(
-    "guardarContrato"
-).onclick =
-    function() {
+const guardarContrato =
+    elemento("guardarContrato");
 
 
-        const fecha =
-            document.getElementById(
-                "fechaContrato"
-            ).value;
+if (guardarContrato) {
+
+    guardarContrato.onclick =
+        function () {
 
 
-        // Solo la fecha es necesaria
-        // para colocar el evento
-        // correctamente en el calendario.
+            // ===============================
+            // FECHA
+            // ===============================
 
-
-        if (
-            !fecha
-        ) {
-
-            alert(
-                "Selecciona una fecha para guardar el evento."
-            );
-
-            return;
-
-        }
-
-
-        let contratos =
-            obtenerContratos();
-
-
-        const id =
-            document.getElementById(
-                "guardarContrato"
-            ).dataset.id;
-
-
-        const datos = {
-
-    cliente:
-        document.getElementById(
-            "cliente"
-        ).value.trim(),
-
-    telefono:
-        document.getElementById(
-            "telefono"
-        ).value.trim(),
-
-    fecha:
-        fecha,
-
-    hora:
-        document.getElementById(
-            "horaContrato"
-        ).value,
-
-    tipoEvento:
-        document.getElementById(
-            "tipoEvento"
-        ).value,
-
-    estado:
-        document.getElementById(
-            "estado"
-        ).value,
-
-    lugar:
-        document.getElementById(
-            "lugar"
-        ).value.trim(),
-
-    direccion:
-        document.getElementById(
-            "direccion"
-        ).value.trim(),
-
-    ubicacion:
-        latitudSeleccionada && longitudSeleccionada
-            ? `https://www.google.com/maps?q=${latitudSeleccionada},${longitudSeleccionada}`
-            : document.getElementById(
-                "ubicacion"
-            ).value.trim(),
-
-    latitud:
-        latitudSeleccionada,
-
-    longitud:
-        longitudSeleccionada,
-
-    servicio:
-        document.getElementById(
-            "servicio"
-        ).value.trim(),
-
-    precio:
-        Number(
-            document.getElementById(
-                "precio"
-            ).value
-        ) || 0,
-
-    adelanto:
-        Number(
-            document.getElementById(
-                "adelanto"
-            ).value
-        ) || 0,
-
-    observaciones:
-        document.getElementById(
-            "observaciones"
-        ).value.trim(),
-
-    foto:
-        fotoTemporal
-
-
-        };
-
-
-        // =================================
-        // EDITAR
-        // =================================
-
-        if (
-            id
-        ) {
-
-
-            const posicion =
-                contratos.findIndex(
-                    c =>
-                        String(c.id) ===
-                        String(id)
+            const fecha =
+                obtenerValor(
+                    "fechaContrato"
                 );
 
 
-            if (
-                posicion !== -1
-            ) {
+            if (!fecha) {
 
-                contratos[posicion] = {
+                alert(
+                    "Selecciona una fecha para guardar el evento."
+                );
 
-                    ...contratos[posicion],
-
-                    ...datos
-
-                };
+                return;
 
             }
 
-        }
 
-        // =================================
-        // NUEVO
-        // =================================
+            // ===============================
+            // CONTRATOS EXISTENTES
+            // ===============================
 
-        else {
-
-
-            contratos.push({
-
-                id:
-                    Date.now(),
-
-                ...datos
-
-            });
-
-        }
+            let contratos =
+                obtenerContratos();
 
 
-        guardarTodos(
-            contratos
-        );
+            // ===============================
+            // ID
+            // ===============================
+
+            const id =
+                guardarContrato.dataset.id;
 
 
-        ventanaContrato.style.display =
-            "none";
+            // ===============================
+            // DATOS
+            // ===============================
+
+            const datos = {
+
+                cliente:
+                    obtenerValor(
+                        "cliente"
+                    ).trim(),
+
+                telefono:
+                    obtenerValor(
+                        "telefono"
+                    ).trim(),
+
+                fecha:
+                    fecha,
+
+                hora:
+                    obtenerValor(
+                        "horaContrato"
+                    ),
+
+                tipoEvento:
+                    obtenerValor(
+                        "tipoEvento"
+                    ),
+
+                estado:
+                    obtenerValor(
+                        "estado",
+                        "reservado"
+                    ),
+
+                lugar:
+                    obtenerValor(
+                        "lugar"
+                    ).trim(),
+
+                direccion:
+                    obtenerValor(
+                        "direccion"
+                    ).trim(),
+
+               ubicacion:
+    (
+        latitudSeleccionada !== "" &&
+        longitudSeleccionada !== ""
+    )
+    ?
+    `https://www.google.com/maps?q=${latitudSeleccionada},${longitudSeleccionada}`
+    :
+    "",
+
+latitud:
+    latitudSeleccionada,
+
+longitud:
+    longitudSeleccionada,
+
+servicio:
+    obtenerValor(
+        "servicio"
+    ).trim(),
+
+                precio:
+                    Number(
+                        obtenerValor(
+                            "precio"
+                        )
+                    ) || 0,
+
+                adelanto:
+                    Number(
+                        obtenerValor(
+                            "adelanto"
+                        )
+                    ) || 0,
+
+                observaciones:
+                    obtenerValor(
+                        "observaciones"
+                    ).trim(),
+
+                foto:
+                    fotoTemporal
+
+            };
 
 
-        alert(
-            "✅ Evento guardado correctamente."
-        );
+            // ===============================
+            // EDITAR
+            // ===============================
+
+            if (id) {
+
+                const posicion =
+                    contratos.findIndex(
+                        c =>
+                            String(c.id) ===
+                            String(id)
+                    );
 
 
-        mostrarTodo();
+                if (
+                    posicion !== -1
+                ) {
 
-    };
+                    contratos[posicion] = {
+
+                        ...contratos[posicion],
+
+                        ...datos
+
+                    };
+
+                }
+
+            }
+
+
+            // ===============================
+            // NUEVO
+            // ===============================
+
+            else {
+
+                contratos.push({
+
+                    id:
+                        Date.now(),
+
+                    ...datos
+
+                });
+
+            }
+
+
+                // ===============================
+                // GUARDAR
+                // ===============================
+
+                guardarTodos(
+                    contratos
+                );
+
+
+                if (ventanaContrato) {
+
+                    ventanaContrato.style.display =
+                        "none";
+
+                }
+
+
+                alert(
+                    "✅ Evento guardado correctamente."
+                );
+
+
+                mostrarTodo();
+
+            };
+
+    }
 
 
 // =========================================
 // CERRAR FORMULARIO
 // =========================================
 
-document.getElementById(
-    "cerrarFormulario"
-).onclick =
-    cerrarFormulario;
-
-
-document.getElementById(
-    "cancelarFormulario"
-).onclick =
-    cerrarFormulario;
-
-
 function cerrarFormulario() {
 
-    ventanaContrato.style.display =
-        "none";
+    if (ventanaContrato) {
+
+        ventanaContrato.style.display =
+            "none";
+
+    }
 
 }
+
+
+const cerrarFormularioBtn =
+    elemento("cerrarFormulario");
+
+if (cerrarFormularioBtn) {
+
+    cerrarFormularioBtn.onclick =
+        cerrarFormulario;
+
+}
+
+
+const cancelarFormulario =
+    elemento("cancelarFormulario");
+
+if (cancelarFormulario) {
+
+    cancelarFormulario.onclick =
+        cerrarFormulario;
+
+}
+
+
 // =========================================
-// CALCULAR SALDO AUTOMÁTICAMENTE
+// CALCULAR SALDO
 // =========================================
 
 function calcularSaldo() {
 
     const precio =
         Number(
-            document.getElementById("precio").value
+            obtenerValor(
+                "precio"
+            )
         ) || 0;
+
 
     const adelanto =
         Number(
-            document.getElementById("adelanto").value
+            obtenerValor(
+                "adelanto"
+            )
         ) || 0;
 
-    const saldo =
-        precio - adelanto;
 
-    document.getElementById("saldo").value =
-        saldo.toFixed(2);
+    const saldo =
+        precio -
+        adelanto;
+
+
+    ponerValor(
+        "saldo",
+        saldo.toFixed(2)
+    );
 
 }
-document.getElementById("precio").addEventListener(
-    "input",
-    calcularSaldo
-);
 
-document.getElementById("adelanto").addEventListener(
-    "input",
-    calcularSaldo
-);
+
+const precioElemento =
+    elemento("precio");
+
+if (precioElemento) {
+
+    precioElemento.addEventListener(
+        "input",
+        calcularSaldo
+    );
+
+}
+
+
+const adelantoElemento =
+    elemento("adelanto");
+
+if (adelantoElemento) {
+
+    adelantoElemento.addEventListener(
+        "input",
+        calcularSaldo
+    );
+
+}
 
 
 // =========================================
 // MOSTRAR DETALLE
 // =========================================
 
-function mostrarDetalle(
-    id
-) {
-
+function mostrarDetalle(id) {
 
     const contratos =
         obtenerContratos();
@@ -2140,9 +2223,12 @@ function mostrarDetalle(
         );
 
 
-    if (
-        !contrato
-    ) {
+    if (!contrato) {
+
+        console.warn(
+            "No se encontró el contrato:",
+            id
+        );
 
         return;
 
@@ -2172,7 +2258,6 @@ function mostrarDetalle(
 
     let html =
         `
-
         <div class="detalle-info">
 
             <h3>
@@ -2230,27 +2315,37 @@ function mostrarDetalle(
                     "Sin especificar"
                 }
             </p>
-    ${
-    contrato.ubicacion
-    ?
-    `
-    <p>
-        <b>📍 Ubicación exacta:</b><br>
+        `;
 
-        <button
-            type="button"
-            onclick="window.open('${contrato.ubicacion}', '_blank')">
 
-            🗺️ VER UBICACIÓN
+    // =====================================
+    // UBICACIÓN GPS
+    // =====================================
 
-        </button>
+    if (contrato.ubicacion) {
 
-    </p>
-    `
-    :
-    ""
+        html +=
+            `
+            <p>
+                <b>📍 Ubicación exacta:</b>
+                <br><br>
+
+                <button
+                    type="button"
+                    onclick="window.open('${contrato.ubicacion}', '_blank')">
+
+                    🗺️ VER UBICACIÓN
+
+                </button>
+
+            </p>
+            `;
+
     }
 
+
+    html +=
+        `
             <p>
                 <b>🎧 Servicio:</b>
                 ${
@@ -2276,31 +2371,31 @@ function mostrarDetalle(
 
             <p>
                 <b>Estado:</b>
+
                 <span class="estado ${
                     contrato.estado ||
                     "reservado"
                 }">
 
-                ${
-                    nombreEstado(
-                        contrato.estado
-                    )
-                }
+                    ${
+                        nombreEstado(
+                            contrato.estado
+                        )
+                    }
 
                 </span>
-            </p>
 
+            </p>
         `;
 
 
-    if (
-        contrato.observaciones
-    ) {
+    if (contrato.observaciones) {
 
         html +=
             `
             <p>
-                <b>📝 Observaciones:</b><br>
+                <b>📝 Observaciones:</b>
+                <br>
                 ${contrato.observaciones}
             </p>
             `;
@@ -2308,9 +2403,7 @@ function mostrarDetalle(
     }
 
 
-    if (
-        contrato.foto
-    ) {
+    if (contrato.foto) {
 
         html +=
             `
@@ -2327,14 +2420,24 @@ function mostrarDetalle(
         "</div>";
 
 
-    document.getElementById(
-        "contenidoDetalle"
-    ).innerHTML =
-        html;
+    const contenido =
+        elemento("contenidoDetalle");
 
 
-    ventanaDetalle.style.display =
-        "flex";
+    if (contenido) {
+
+        contenido.innerHTML =
+            html;
+
+    }
+
+
+    if (ventanaDetalle) {
+
+        ventanaDetalle.style.display =
+            "flex";
+
+    }
 
 }
 
@@ -2343,412 +2446,524 @@ function mostrarDetalle(
 // CERRAR DETALLE
 // =========================================
 
-document.getElementById(
-    "cerrarDetalle"
-).onclick =
-    function() {
+const cerrarDetalle =
+    elemento("cerrarDetalle");
 
-        ventanaDetalle.style.display =
-            "none";
+if (cerrarDetalle) {
 
-    };
+    cerrarDetalle.onclick =
+        function () {
+
+            if (ventanaDetalle) {
+
+                ventanaDetalle.style.display =
+                    "none";
+
+            }
+
+        };
+
+}
 
 
 // =========================================
 // EDITAR DESDE DETALLE
 // =========================================
 
-document.getElementById(
-    "editarDesdeDetalle"
-).onclick =
-    function() {
+const editarDesdeDetalle =
+    elemento("editarDesdeDetalle");
 
 
-        if (
-            !contratoSeleccionado
-        ) {
+if (editarDesdeDetalle) {
 
-            return;
-
-        }
+    editarDesdeDetalle.onclick =
+        function () {
 
 
-        const c =
-            contratoSeleccionado;
+            if (!contratoSeleccionado) {
+
+                return;
+
+            }
 
 
-        document.getElementById(
-            "tituloFormulario"
-        ).textContent =
-            "✏️ Editar Evento";
+            const c =
+                contratoSeleccionado;
 
 
-        document.getElementById(
-            "guardarContrato"
-        ).dataset.id =
-            c.id;
+            const titulo =
+                elemento(
+                    "tituloFormulario"
+                );
 
 
-        document.getElementById(
-            "cliente"
-        ).value =
-            c.cliente || "";
+            if (titulo) {
+
+                titulo.textContent =
+                    "✏️ Editar Evento";
+
+            }
 
 
-        document.getElementById(
-            "telefono"
-        ).value =
-            c.telefono || "";
+            if (guardarContrato) {
+
+                guardarContrato.dataset.id =
+                    c.id;
+
+            }
 
 
-        document.getElementById(
-            "fechaContrato"
-        ).value =
-            c.fecha || "";
+            ponerValor(
+                "cliente",
+                c.cliente || ""
+            );
 
+            ponerValor(
+                "telefono",
+                c.telefono || ""
+            );
 
-        document.getElementById(
-            "horaContrato"
-        ).value =
-            c.hora || "";
+            ponerValor(
+                "fechaContrato",
+                c.fecha || ""
+            );
 
+            ponerValor(
+                "horaContrato",
+                c.hora || ""
+            );
 
-        document.getElementById(
-            "tipoEvento"
-        ).value =
-            c.tipoEvento || "";
+            ponerValor(
+                "tipoEvento",
+                c.tipoEvento || ""
+            );
 
+            ponerValor(
+                "estado",
+                c.estado || "reservado"
+            );
 
-        document.getElementById(
-            "estado"
-        ).value =
-            c.estado ||
-            "reservado";
+            ponerValor(
+                "lugar",
+                c.lugar || ""
+            );
 
-
-        document.getElementById(
-            "lugar"
-        ).value =
-            c.lugar || "";
-
-
-        document.getElementById(
-            "direccion"
-        ).value =
-            c.direccion || "";
-        document.getElementById(
-           "ubicacion"
-        ).value =
-           c.ubicacion || "";
-
-        latitudSeleccionada =
-        c.latitud || "";
-
-        longitudSeleccionada =
-        c.longitud || "";
-
-
-        document.getElementById(
-            "servicio"
-        ).value =
-            c.servicio || "";
-
-
-        document.getElementById(
-            "precio"
-        ).value =
-            c.precio || "";
-
-
-        document.getElementById(
-            "adelanto"
-        ).value =
-            c.adelanto || "";
-
-
-        document.getElementById(
-            "observaciones"
-        ).value =
-            c.observaciones || "";
-
-
-        fotoTemporal =
-            c.foto || "";
-
-
-        const vista =
-            document.getElementById(
-                "vistaPrevia"
+            ponerValor(
+                "direccion",
+                c.direccion || ""
             );
 
 
-        if (
-            fotoTemporal
-        ) {
+            // ===============================
+            // UBICACIÓN
+            // ===============================
 
-            vista.src =
-                fotoTemporal;
+            latitudSeleccionada =
+                c.latitud || "";
 
-            vista.style.display =
-                "block";
-
-        } else {
-
-            vista.style.display =
-                "none";
-
-        }
+            longitudSeleccionada =
+                c.longitud || "";
 
 
-        ventanaDetalle.style.display =
-            "none";
+            ponerValor(
+                "latitud",
+                latitudSeleccionada
+            );
+
+            ponerValor(
+                "longitud",
+                longitudSeleccionada
+            );
+
+            ponerValor(
+                "ubicacion",
+                c.ubicacion || ""
+            );
 
 
-        ventanaContrato.style.display =
-            "flex";
+            // ===============================
+            // SERVICIO
+            // ===============================
 
-    };
+            ponerValor(
+                "servicio",
+                c.servicio || ""
+            );
+
+
+            // ===============================
+            // PRECIO
+            // ===============================
+
+            ponerValor(
+                "precio",
+                c.precio || ""
+            );
+
+
+            // ===============================
+            // ADELANTO
+            // ===============================
+
+            ponerValor(
+                "adelanto",
+                c.adelanto || ""
+            );
+
+
+            // ===============================
+            // SALDO
+            // ===============================
+
+            calcularSaldo();
+
+
+            // ===============================
+            // OBSERVACIONES
+            // ===============================
+
+            ponerValor(
+                "observaciones",
+                c.observaciones || ""
+            );
+
+
+            // ===============================
+            // FOTO
+            // ===============================
+
+            fotoTemporal =
+                c.foto || "";
+
+
+            const vista =
+                elemento("vistaPrevia");
+
+
+            if (vista) {
+
+                if (fotoTemporal) {
+
+                    vista.src =
+                        fotoTemporal;
+
+                    vista.style.display =
+                        "block";
+
+                } else {
+
+                    vista.src = "";
+
+                    vista.style.display =
+                        "none";
+
+                }
+
+            }
+
+
+            if (ventanaDetalle) {
+
+                ventanaDetalle.style.display =
+                    "none";
+
+            }
+
+
+            if (ventanaContrato) {
+
+                ventanaContrato.style.display =
+                    "flex";
+
+            }
+
+        };
+
+}
 
 
 // =========================================
 // ELIMINAR
 // =========================================
 
-document.getElementById(
-    "eliminarDesdeDetalle"
-).onclick =
-    function() {
+const eliminarDesdeDetalle =
+    elemento(
+        "eliminarDesdeDetalle"
+    );
 
 
-        if (
-            !contratoSeleccionado
-        ) {
+if (eliminarDesdeDetalle) {
 
-            return;
-
-        }
+    eliminarDesdeDetalle.onclick =
+        function () {
 
 
-        const confirmar =
-            confirm(
-                "¿Seguro que deseas eliminar este evento?"
+            if (!contratoSeleccionado) {
+
+                return;
+
+            }
+
+
+            const confirmar =
+                confirm(
+                    "¿Seguro que deseas eliminar este evento?"
+                );
+
+
+            if (!confirmar) {
+
+                return;
+
+            }
+
+
+            let contratos =
+                obtenerContratos();
+
+
+            contratos =
+                contratos.filter(
+                    c =>
+                        String(c.id) !==
+                        String(
+                            contratoSeleccionado.id
+                        )
+                );
+
+
+            guardarTodos(
+                contratos
             );
 
 
-        if (
-            !confirmar
-        ) {
+            if (ventanaDetalle) {
 
-            return;
+                ventanaDetalle.style.display =
+                    "none";
 
-        }
-
-
-        let contratos =
-            obtenerContratos();
+            }
 
 
-        contratos =
-            contratos.filter(
-                c =>
-                    String(c.id) !==
-                    String(
-                        contratoSeleccionado.id
-                    )
+            contratoSeleccionado =
+                null;
+
+
+            alert(
+                "🗑️ Evento eliminado."
             );
 
 
-        guardarTodos(
-            contratos
-        );
+            mostrarTodo();
 
+        };
 
-        ventanaDetalle.style.display =
-            "none";
-
-
-        contratoSeleccionado =
-            null;
-
-
-        alert(
-            "🗑️ Evento eliminado."
-        );
-
-
-        mostrarTodo();
-
-    };
+}
 
 
 // =========================================
 // WHATSAPP
 // =========================================
 
-document.getElementById(
-    "whatsappBtn"
-).onclick =
-    function() {
+const whatsappBtn =
+    elemento("whatsappBtn");
 
 
-        if (
-            !contratoSeleccionado ||
-            !contratoSeleccionado.telefono
-        ) {
+if (whatsappBtn) {
 
-            alert(
-                "Este evento no tiene número de teléfono."
-            );
-
-            return;
-
-        }
+    whatsappBtn.onclick =
+        function () {
 
 
-        let telefono =
-            contratoSeleccionado.telefono
-                .replace(
-                    /\D/g,
-                    ""
+            if (
+                !contratoSeleccionado ||
+                !contratoSeleccionado.telefono
+            ) {
+
+                alert(
+                    "Este evento no tiene número de teléfono."
+                );
+
+                return;
+
+            }
+
+
+            let telefono =
+                contratoSeleccionado.telefono
+                    .replace(
+                        /\D/g,
+                        ""
+                    );
+
+
+            // Bolivia
+
+            if (telefono.length === 8) {
+
+                telefono =
+                    "591" +
+                    telefono;
+
+            }
+
+
+            const mensaje =
+                encodeURIComponent(
+                    "Hola " +
+                    (
+                        contratoSeleccionado.cliente ||
+                        ""
+                    ) +
+                    ", le escribo de Sonido Chicago."
                 );
 
 
-        // Bolivia
-
-        if (
-            telefono.length === 8
-        ) {
-
-            telefono =
-                "591" +
-                telefono;
-
-        }
-
-
-        const mensaje =
-            encodeURIComponent(
-                "Hola " +
-                (
-                    contratoSeleccionado.cliente ||
-                    ""
-                ) +
-                ", le escribo de Sonido Chicago."
+            window.open(
+                "https://wa.me/" +
+                telefono +
+                "?text=" +
+                mensaje,
+                "_blank"
             );
 
+        };
 
-        window.open(
-            "https://wa.me/" +
-            telefono +
-            "?text=" +
-            mensaje,
-            "_blank"
-        );
-
-    };
+}
 
 
 // =========================================
 // GOOGLE MAPS
 // =========================================
 
-document.getElementById(
-    "mapsBtn"
-).onclick =
-    function() {
+const mapsBtn =
+    elemento("mapsBtn");
 
 
-        if (
-            !contratoSeleccionado ||
-            !contratoSeleccionado.direccion
-        ) {
+if (mapsBtn) {
 
-            alert(
-                "Este evento no tiene dirección."
+    mapsBtn.onclick =
+        function () {
+
+
+            if (!contratoSeleccionado) {
+
+                alert(
+                    "No hay evento seleccionado."
+                );
+
+                return;
+
+            }
+
+
+            // Primero intenta usar GPS
+
+            if (
+                contratoSeleccionado.latitud !== "" &&
+                contratoSeleccionado.longitud !== "" &&
+                contratoSeleccionado.latitud != null &&
+                contratoSeleccionado.longitud != null
+            ) {
+
+                const url =
+                    `https://www.google.com/maps?q=${contratoSeleccionado.latitud},${contratoSeleccionado.longitud}`;
+
+
+                window.open(
+                    url,
+                    "_blank"
+                );
+
+                return;
+
+            }
+
+
+            // Si no tiene GPS utiliza dirección
+
+            if (
+                !contratoSeleccionado.direccion
+            ) {
+
+                alert(
+                    "Este evento no tiene ubicación ni dirección."
+                );
+
+                return;
+
+            }
+
+
+            const direccion =
+                encodeURIComponent(
+                    contratoSeleccionado.direccion
+                );
+
+
+            window.open(
+                "https://www.google.com/maps/search/?api=1&query=" +
+                direccion,
+                "_blank"
             );
 
-            return;
+        };
 
-        }
+}
 
-
-        const direccion =
-            encodeURIComponent(
-                contratoSeleccionado.direccion
-            );
-
-
-        window.open(
-            "https://www.google.com/maps/search/?api=1&query=" +
-            direccion,
-            "_blank"
-        );
-
-    };
 
 // =========================================
 // MENÚ CALENDARIO
 // =========================================
 
-document.getElementById(
-    "btnCalendario"
-).onclick =
-    function() {
+const btnCalendario =
+    elemento("btnCalendario");
 
-        cambiarVista(
-            "mes"
-        );
 
-    };
+if (btnCalendario) {
+
+    btnCalendario.onclick =
+        function () {
+
+            cambiarVista(
+                "mes"
+            );
+
+        };
+
+}
 
 
 // =========================================
 // MENÚ CONTRATOS
 // =========================================
 
-document.getElementById(
-    "btnContratos"
-).onclick =
-    function() {
-
-        cambiarVista(
-            "eventos"
-        );
-
-    };
+const btnContratos =
+    elemento("btnContratos");
 
 
-// =========================================
-// FORMATO CORTO
-// =========================================
+if (btnContratos) {
 
-function formatoCorto(
-    fecha
-) {
+    btnContratos.onclick =
+        function () {
 
-    return (
-        fecha.getDate() +
-        "/" +
-        (fecha.getMonth() + 1)
-    );
+            cambiarVista(
+                "eventos"
+            );
+
+        };
 
 }
 
 
 // =========================================
-// INICIAR
+// INICIAR APLICACIÓN
 // =========================================
 
 mostrarTodo();
 
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./service-worker.js")
-            .then(() => {
-                console.log("Service Worker registrado correctamente");
-            })
-            .catch(error => {
-                console.error("Error al registrar Service Worker:", error);
-            });
-    });
-}
+
+// =========================================
+// SERVICE WORKER
+// =========================================
+

@@ -1,4 +1,4 @@
-const CACHE_NAME = "sonido-chicago-v3";
+const CACHE_NAME = "sonido-chicago-v5";
 
 const ARCHIVOS = [
     "./",

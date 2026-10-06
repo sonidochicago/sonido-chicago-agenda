@@ -21,34 +21,30 @@ let fotoTemporal = "";
 
 const meses = [
 
-
-"ENERO",
-"FEBRERO",
-"MARZO",
-"ABRIL",
-"MAYO",
-"JUNIO",
-"JULIO",
-"AGOSTO",
-"SEPTIEMBRE",
-"OCTUBRE",
-"NOVIEMBRE",
-"DICIEMBRE"
-
+    "ENERO",
+    "FEBRERO",
+    "MARZO",
+    "ABRIL",
+    "MAYO",
+    "JUNIO",
+    "JULIO",
+    "AGOSTO",
+    "SEPTIEMBRE",
+    "OCTUBRE",
+    "NOVIEMBRE",
+    "DICIEMBRE"
 
 ];
 
 const diasSemana = [
 
-
-"LUN",
-"MAR",
-"MIÉ",
-"JUE",
-"VIE",
-"SÁB",
-"DOM"
-
+    "LUN",
+    "MAR",
+    "MIÉ",
+    "JUE",
+    "VIE",
+    "SÁB",
+    "DOM"
 
 ];
 
@@ -58,39 +54,33 @@ const diasSemana = [
 
 function elemento(id) {
 
-
-return document.getElementById(id);
-
+    return document.getElementById(id);
 
 }
 
 function obtenerValor(id, valorPorDefecto = "") {
 
+    const el = elemento(id);
 
-const el = elemento(id);
+    if (!el) {
 
-if (!el) {
+        return valorPorDefecto;
 
-    return valorPorDefecto;
+    }
 
-}
-
-return el.value;
-
+    return el.value;
 
 }
 
 function ponerValor(id, valor = "") {
 
+    const el = elemento(id);
 
-const el = elemento(id);
+    if (el) {
 
-if (el) {
+        el.value = valor;
 
-    el.value = valor;
-
-}
-
+    }
 
 }
 
@@ -99,31 +89,31 @@ if (el) {
 // =========================================
 
 const tituloCalendario =
-elemento("tituloCalendario");
+    elemento("tituloCalendario");
 
 const calendarioAnual =
-elemento("calendarioAnual");
+    elemento("calendarioAnual");
 
 const calendarioMes =
-elemento("calendarioMes");
+    elemento("calendarioMes");
 
 const calendarioSemana =
-elemento("calendarioSemana");
+    elemento("calendarioSemana");
 
 const calendarioDia =
-elemento("calendarioDia");
+    elemento("calendarioDia");
 
 const listaContratos =
-elemento("listaContratos");
+    elemento("listaContratos");
 
 const listaTodosContratos =
-elemento("listaTodosContratos");
+    elemento("listaTodosContratos");
 
 const ventanaContrato =
-elemento("ventanaContrato");
+    elemento("ventanaContrato");
 
 const ventanaDetalle =
-elemento("ventanaDetalle");
+    elemento("ventanaDetalle");
 
 // =========================================
 // CONTRATOS
@@ -131,35 +121,31 @@ elemento("ventanaDetalle");
 
 function obtenerContratos() {
 
+    try {
 
-try {
+        return JSON.parse(
+            localStorage.getItem("contratos")
+        ) || [];
 
-    return JSON.parse(
-        localStorage.getItem("contratos")
-    ) || [];
+    } catch (error) {
 
-} catch (error) {
+        console.error(
+            "Error leyendo contratos:",
+            error
+        );
 
-    console.error(
-        "Error leyendo contratos:",
-        error
-    );
+        return [];
 
-    return [];
-
-}
-
+    }
 
 }
 
 function guardarTodos(contratos) {
 
-
-localStorage.setItem(
-    "contratos",
-    JSON.stringify(contratos)
-);
-
+    localStorage.setItem(
+        "contratos",
+        JSON.stringify(contratos)
+    );
 
 }
 
@@ -169,86 +155,76 @@ localStorage.setItem(
 
 function fechaTexto(fecha) {
 
+    if (!fecha) {
 
-if (!fecha) {
+        return "Sin fecha";
 
-    return "Sin fecha";
+    }
 
-}
+    const partes =
+        fecha.split("-");
 
-const partes =
-    fecha.split("-");
+    if (partes.length !== 3) {
 
-if (partes.length !== 3) {
+        return fecha;
 
-    return fecha;
+    }
 
-}
-
-return (
-    partes[2] +
-    "/" +
-    partes[1] +
-    "/" +
-    partes[0]
-);
-
+    return (
+        partes[2] +
+        "/" +
+        partes[1] +
+        "/" +
+        partes[0]
+    );
 
 }
 
 function crearFecha(año, mes, dia) {
 
-
-return (
-    año +
-    "-" +
-    String(mes + 1).padStart(2, "0") +
-    "-" +
-    String(dia).padStart(2, "0")
-);
-
+    return (
+        año +
+        "-" +
+        String(mes + 1).padStart(2, "0") +
+        "-" +
+        String(dia).padStart(2, "0")
+    );
 
 }
 
 function esHoy(fecha) {
 
+    const hoy =
+        new Date();
 
-const hoy =
-    new Date();
-
-return fecha === crearFecha(
-    hoy.getFullYear(),
-    hoy.getMonth(),
-    hoy.getDate()
-);
-
+    return fecha === crearFecha(
+        hoy.getFullYear(),
+        hoy.getMonth(),
+        hoy.getDate()
+    );
 
 }
 
 function formatoCorto(fecha) {
 
-
-return (
-    fecha.getDate() +
-    "/" +
-    (fecha.getMonth() + 1)
-);
-
+    return (
+        fecha.getDate() +
+        "/" +
+        (fecha.getMonth() + 1)
+    );
 
 }
 
 function fechaHoyTexto() {
 
+    const hoy =
+        new Date();
 
-const hoy =
-    new Date();
-
-return crearFecha(
-    hoy.getFullYear(),
-    hoy.getMonth(),
-    hoy.getDate()
-);
-
+    return crearFecha(
+        hoy.getFullYear(),
+        hoy.getMonth(),
+        hoy.getDate()
+    );
 
 }
 
@@ -258,26 +234,67 @@ return crearFecha(
 
 function nombreEstado(estado) {
 
+    const nombres = {
 
-const nombres = {
+        reservado:
+            "🟡 RESERVADO",
 
-    reservado:
-        "🟡 RESERVADO",
+        confirmado:
+            "🟢 CONFIRMADO",
 
-    confirmado:
-        "🟢 CONFIRMADO",
+        realizado:
+            "🔵 REALIZADO",
 
-    realizado:
-        "🔵 REALIZADO",
+        cancelado:
+            "🔴 CANCELADO"
 
-    cancelado:
-        "🔴 CANCELADO"
+    };
 
-};
+    return nombres[estado] ||
+        "🟡 RESERVADO";
 
-return nombres[estado] ||
-    "🟡 RESERVADO";
+}
 
+// =========================================
+// BOTÓN SEGÚN LA VISTA
+// =========================================
+
+function actualizarBotonVista() {
+
+    const btn =
+        elemento("btnHoy");
+
+    if (!btn) {
+
+        return;
+
+    }
+
+    if (vistaActual === "año") {
+
+        btn.textContent = "AÑO";
+
+    } else if (vistaActual === "mes") {
+
+        btn.textContent = "HOY";
+
+    } else if (vistaActual === "semana") {
+
+        btn.textContent = "HOY";
+
+    } else if (vistaActual === "dia") {
+
+        btn.textContent = "HOY";
+
+    } else if (vistaActual === "eventos") {
+
+        btn.textContent = "EVENTOS";
+
+    } else if (vistaActual === "contratos") {
+
+        btn.textContent = "CONTRATOS";
+
+    }
 
 }
 
@@ -287,92 +304,85 @@ return nombres[estado] ||
 
 function cambiarVista(vista) {
 
+    vistaActual =
+        vista;
 
-vistaActual =
-    vista;
+    document.querySelectorAll(
+        ".vista-btn"
+    ).forEach(
+        boton => {
 
+            boton.classList.toggle(
+                "activo",
+                boton.dataset.vista === vista
+            );
+
+        }
+    );
+
+    const vistas = {
+
+        año:
+            "vistaAño",
+
+        mes:
+            "vistaMes",
+
+        semana:
+            "vistaSemana",
+
+        dia:
+            "vistaDia",
+
+        eventos:
+            "vistaEventos",
+
+        contratos:
+            "vistaContratos"
+
+    };
+
+    Object.keys(vistas).forEach(
+        nombre => {
+
+            const vistaElemento =
+                elemento(
+                    vistas[nombre]
+                );
+
+            if (vistaElemento) {
+
+                vistaElemento.classList.toggle(
+                    "oculto",
+                    nombre !== vista
+                );
+
+            }
+
+        }
+    );
+
+    actualizarBotonVista();
+
+    mostrarTodo();
+
+}
 
 document.querySelectorAll(
     ".vista-btn"
 ).forEach(
     boton => {
 
-        boton.classList.toggle(
-            "activo",
-            boton.dataset.vista === vista
-        );
+        boton.onclick =
+            function () {
+
+                cambiarVista(
+                    boton.dataset.vista
+                );
+
+            };
 
     }
-);
-
-
-const vistas = {
-
-    año:
-        "vistaAño",
-
-    mes:
-        "vistaMes",
-
-    semana:
-        "vistaSemana",
-
-    dia:
-        "vistaDia",
-
-    eventos:
-        "vistaEventos",
-
-    contratos:
-        "vistaContratos"
-
-};
-
-
-Object.keys(vistas).forEach(
-    nombre => {
-
-        const vistaElemento =
-            elemento(
-                vistas[nombre]
-            );
-
-        if (vistaElemento) {
-
-            vistaElemento.classList.toggle(
-                "oculto",
-                nombre !== vista
-            );
-
-        }
-
-    }
-);
-
-
-mostrarTodo();
-
-
-}
-
-document.querySelectorAll(
-".vista-btn"
-).forEach(
-boton => {
-
-
-    boton.onclick =
-        function () {
-
-            cambiarVista(
-                boton.dataset.vista
-            );
-
-        };
-
-}
-
-
 );
 
 // =========================================
@@ -381,35 +391,227 @@ boton => {
 
 function mostrarAño() {
 
+    if (!calendarioAnual) {
 
-if (!calendarioAnual) {
+        return;
 
-    return;
+    }
+
+    calendarioAnual.innerHTML =
+        "";
+
+    const año =
+        fechaActual.getFullYear();
+
+    tituloCalendario.textContent =
+        año;
+
+    const contratos =
+        obtenerContratos();
+
+    for (
+        let mes = 0;
+        mes < 12;
+        mes++
+    ) {
+
+        const contenedor =
+            document.createElement("div");
+
+        contenedor.className =
+            "mes";
+
+        const titulo =
+            document.createElement("h3");
+
+        titulo.textContent =
+            meses[mes];
+
+        contenedor.appendChild(
+            titulo
+        );
+
+        const semana =
+            document.createElement("div");
+
+        semana.className =
+            "dias-semana";
+
+        diasSemana.forEach(
+            dia => {
+
+                const d =
+                    document.createElement("div");
+
+                d.textContent =
+                    dia[0];
+
+                semana.appendChild(d);
+
+            }
+        );
+
+        contenedor.appendChild(
+            semana
+        );
+
+        const dias =
+            document.createElement("div");
+
+        dias.className =
+            "dias-mes";
+
+        let primerDia =
+            new Date(
+                año,
+                mes,
+                1
+            ).getDay();
+
+        if (primerDia === 0) {
+
+            primerDia = 6;
+
+        } else {
+
+            primerDia--;
+
+        }
+
+        for (
+            let i = 0;
+            i < primerDia;
+            i++
+        ) {
+
+            dias.appendChild(
+                document.createElement("div")
+            );
+
+        }
+
+        const cantidad =
+            new Date(
+                año,
+                mes + 1,
+                0
+            ).getDate();
+
+        for (
+            let dia = 1;
+            dia <= cantidad;
+            dia++
+        ) {
+
+            const elementoDia =
+                document.createElement("div");
+
+            elementoDia.className =
+                "dia";
+
+            elementoDia.textContent =
+                dia;
+
+            const fecha =
+                crearFecha(
+                    año,
+                    mes,
+                    dia
+                );
+
+            const eventos =
+                contratos.filter(
+                    c =>
+                        c.fecha === fecha
+                );
+
+            if (eventos.length > 0) {
+
+                elementoDia.classList.add(
+                    eventos[0].estado ||
+                    "reservado"
+                );
+
+            }
+
+            if (esHoy(fecha)) {
+
+                elementoDia.classList.add(
+                    "hoy"
+                );
+
+            }
+
+            elementoDia.onclick =
+                function () {
+
+                    if (eventos.length === 1) {
+
+                        mostrarDetalle(
+                            eventos[0].id
+                        );
+
+                    } else if (
+                        eventos.length > 1
+                    ) {
+
+                        mostrarEventosDelDia(
+                            fecha
+                        );
+
+                    } else {
+
+                        abrirFormulario(
+                            fecha
+                        );
+
+                    }
+
+                };
+
+            dias.appendChild(
+                elementoDia
+            );
+
+        }
+
+        contenedor.appendChild(
+            dias
+        );
+
+        calendarioAnual.appendChild(
+            contenedor
+        );
+
+    }
 
 }
 
+// =========================================
+// VISTA MES
+// =========================================
 
-calendarioAnual.innerHTML =
-    "";
+function mostrarMes() {
 
+    if (!calendarioMes) {
 
-const año =
-    fechaActual.getFullYear();
+        return;
 
+    }
 
-tituloCalendario.textContent =
-    año;
+    const año =
+        fechaActual.getFullYear();
 
+    const mes =
+        fechaActual.getMonth();
 
-const contratos =
-    obtenerContratos();
+    tituloCalendario.textContent =
+        meses[mes] +
+        " " +
+        año;
 
-
-for (
-    let mes = 0;
-    mes < 12;
-    mes++
-) {
+    calendarioMes.innerHTML =
+        "";
 
     const contenedor =
         document.createElement("div");
@@ -417,24 +619,11 @@ for (
     contenedor.className =
         "mes";
 
-
-    const titulo =
-        document.createElement("h3");
-
-    titulo.textContent =
-        meses[mes];
-
-    contenedor.appendChild(
-        titulo
-    );
-
-
     const semana =
         document.createElement("div");
 
     semana.className =
         "dias-semana";
-
 
     diasSemana.forEach(
         dia => {
@@ -443,18 +632,16 @@ for (
                 document.createElement("div");
 
             d.textContent =
-                dia[0];
+                dia;
 
             semana.appendChild(d);
 
         }
     );
 
-
     contenedor.appendChild(
         semana
     );
-
 
     const dias =
         document.createElement("div");
@@ -462,29 +649,26 @@ for (
     dias.className =
         "dias-mes";
 
-
-    let primerDia =
+    let primero =
         new Date(
             año,
             mes,
             1
         ).getDay();
 
+    if (primero === 0) {
 
-    if (primerDia === 0) {
-
-        primerDia = 6;
+        primero = 6;
 
     } else {
 
-        primerDia--;
+        primero--;
 
     }
 
-
     for (
         let i = 0;
-        i < primerDia;
+        i < primero;
         i++
     ) {
 
@@ -494,7 +678,6 @@ for (
 
     }
 
-
     const cantidad =
         new Date(
             año,
@@ -502,6 +685,8 @@ for (
             0
         ).getDate();
 
+    const contratos =
+        obtenerContratos();
 
     for (
         let dia = 1;
@@ -518,7 +703,6 @@ for (
         elementoDia.textContent =
             dia;
 
-
         const fecha =
             crearFecha(
                 año,
@@ -526,13 +710,11 @@ for (
                 dia
             );
 
-
         const eventos =
             contratos.filter(
                 c =>
                     c.fecha === fecha
             );
-
 
         if (eventos.length > 0) {
 
@@ -543,7 +725,6 @@ for (
 
         }
 
-
         if (esHoy(fecha)) {
 
             elementoDia.classList.add(
@@ -551,7 +732,6 @@ for (
             );
 
         }
-
 
         elementoDia.onclick =
             function () {
@@ -580,238 +760,19 @@ for (
 
             };
 
-
         dias.appendChild(
             elementoDia
         );
 
     }
 
-
     contenedor.appendChild(
         dias
     );
 
-
-    calendarioAnual.appendChild(
+    calendarioMes.appendChild(
         contenedor
     );
-
-}
-
-
-}
-
-// =========================================
-// VISTA MES
-// =========================================
-
-function mostrarMes() {
-
-
-if (!calendarioMes) {
-
-    return;
-
-}
-
-
-const año =
-    fechaActual.getFullYear();
-
-const mes =
-    fechaActual.getMonth();
-
-
-tituloCalendario.textContent =
-    meses[mes] +
-    " " +
-    año;
-
-
-calendarioMes.innerHTML =
-    "";
-
-
-const contenedor =
-    document.createElement("div");
-
-contenedor.className =
-    "mes";
-
-
-const semana =
-    document.createElement("div");
-
-semana.className =
-    "dias-semana";
-
-
-diasSemana.forEach(
-    dia => {
-
-        const d =
-            document.createElement("div");
-
-        d.textContent =
-            dia;
-
-        semana.appendChild(d);
-
-    }
-);
-
-
-contenedor.appendChild(
-    semana
-);
-
-
-const dias =
-    document.createElement("div");
-
-dias.className =
-    "dias-mes";
-
-
-let primero =
-    new Date(
-        año,
-        mes,
-        1
-    ).getDay();
-
-
-if (primero === 0) {
-
-    primero = 6;
-
-} else {
-
-    primero--;
-
-}
-
-
-for (
-    let i = 0;
-    i < primero;
-    i++
-) {
-
-    dias.appendChild(
-        document.createElement("div")
-    );
-
-}
-
-
-const cantidad =
-    new Date(
-        año,
-        mes + 1,
-        0
-    ).getDate();
-
-
-const contratos =
-    obtenerContratos();
-
-
-for (
-    let dia = 1;
-    dia <= cantidad;
-    dia++
-) {
-
-    const elementoDia =
-        document.createElement("div");
-
-    elementoDia.className =
-        "dia";
-
-    elementoDia.textContent =
-        dia;
-
-
-    const fecha =
-        crearFecha(
-            año,
-            mes,
-            dia
-        );
-
-
-    const eventos =
-        contratos.filter(
-            c =>
-                c.fecha === fecha
-        );
-
-
-    if (eventos.length > 0) {
-
-        elementoDia.classList.add(
-            eventos[0].estado ||
-            "reservado"
-        );
-
-    }
-
-
-    if (esHoy(fecha)) {
-
-        elementoDia.classList.add(
-            "hoy"
-        );
-
-    }
-
-
-    elementoDia.onclick =
-        function () {
-
-            if (eventos.length === 1) {
-
-                mostrarDetalle(
-                    eventos[0].id
-                );
-
-            } else if (
-                eventos.length > 1
-            ) {
-
-                mostrarEventosDelDia(
-                    fecha
-                );
-
-            } else {
-
-                abrirFormulario(
-                    fecha
-                );
-
-            }
-
-        };
-
-
-    dias.appendChild(
-        elementoDia
-    );
-
-}
-
-
-contenedor.appendChild(
-    dias
-);
-
-
-calendarioMes.appendChild(
-    contenedor
-);
-
 
 }
 
@@ -821,107 +782,99 @@ calendarioMes.appendChild(
 
 function mostrarEventosDelDia(fecha) {
 
+    const contratos =
+        obtenerContratos().filter(
+            c =>
+                c.fecha === fecha
+        );
 
-const contratos =
-    obtenerContratos().filter(
-        c =>
-            c.fecha === fecha
-    );
+    if (!contratos.length) {
 
-
-if (!contratos.length) {
-
-    return;
-
-}
-
-
-let html = `
-
-    <div class="detalle-info">
-
-        <h3>
-            📅 Eventos del ${fechaTexto(fecha)}
-        </h3>
-
-`;
-
-
-contratos.forEach(
-    contrato => {
-
-        html += `
-
-            <div class="tarjeta-evento ${
-                contrato.estado || "reservado"
-            }">
-
-                <h3>
-                    👤
-                    ${contrato.cliente || "Cliente"}
-                </h3>
-
-                <p>
-                    🎉
-                    ${
-                        contrato.nombreEvento ||
-                        contrato.tipoEvento ||
-                        "Evento"
-                    }
-                </p>
-
-                <p>
-                    🕐
-                    ${
-                        contrato.hora ||
-                        "Sin hora"
-                    }
-                </p>
-
-                <p>
-
-                    <span class="estado ${
-                        contrato.estado ||
-                        "reservado"
-                    }">
-
-                        ${nombreEstado(
-                            contrato.estado
-                        )}
-
-                    </span>
-
-                </p>
-
-                <button
-                    type="button"
-                    onclick="mostrarDetalle(${contrato.id})">
-
-                    📋 VER DETALLE
-
-                </button>
-
-            </div>
-
-        `;
+        return;
 
     }
-);
 
+    let html = `
 
-html +=
-    "</div>";
+        <div class="detalle-info">
 
+            <h3>
+                📅 Eventos del ${fechaTexto(fecha)}
+            </h3>
 
-elemento(
-    "contenidoDetalle"
-).innerHTML =
-    html;
+    `;
 
+    contratos.forEach(
+        contrato => {
 
-ventanaDetalle.style.display =
-    "flex";
+            html += `
 
+                <div class="tarjeta-evento ${
+                    contrato.estado || "reservado"
+                }">
+
+                    <h3>
+                        👤
+                        ${contrato.cliente || "Cliente"}
+                    </h3>
+
+                    <p>
+                        🎉
+                        ${
+                            contrato.nombreEvento ||
+                            contrato.tipoEvento ||
+                            "Evento"
+                        }
+                    </p>
+
+                    <p>
+                        🕐
+                        ${
+                            contrato.hora ||
+                            "Sin hora"
+                        }
+                    </p>
+
+                    <p>
+
+                        <span class="estado ${
+                            contrato.estado ||
+                            "reservado"
+                        }">
+
+                            ${nombreEstado(
+                                contrato.estado
+                            )}
+
+                        </span>
+
+                    </p>
+
+                    <button
+                        type="button"
+                        onclick="mostrarDetalle(${contrato.id})">
+
+                        📋 VER DETALLE
+
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+    html +=
+        "</div>";
+
+    elemento(
+        "contenidoDetalle"
+    ).innerHTML =
+        html;
+
+    ventanaDetalle.style.display =
+        "flex";
 
 }
 
@@ -931,188 +884,163 @@ ventanaDetalle.style.display =
 
 function mostrarSemana() {
 
+    if (!calendarioSemana) {
 
-if (!calendarioSemana) {
+        return;
 
-    return;
-
-}
-
-
-const fecha =
-    new Date(fechaActual);
-
-
-let diaSemana =
-    fecha.getDay();
-
-
-if (diaSemana === 0) {
-
-    diaSemana = 7;
-
-}
-
-
-const lunes =
-    new Date(fecha);
-
-
-lunes.setDate(
-    fecha.getDate() -
-    diaSemana +
-    1
-);
-
-
-const domingo =
-    new Date(lunes);
-
-
-domingo.setDate(
-    lunes.getDate() + 6
-);
-
-
-tituloCalendario.textContent =
-    formatoCorto(lunes) +
-    " - " +
-    formatoCorto(domingo);
-
-
-calendarioSemana.innerHTML =
-    "";
-
-
-const grid =
-    document.createElement("div");
-
-grid.className =
-    "semana-grid";
-
-
-const contratos =
-    obtenerContratos();
-
-
-for (
-    let i = 0;
-    i < 7;
-    i++
-) {
-
-    const fechaDia =
-        new Date(lunes);
-
-
-    fechaDia.setDate(
-        lunes.getDate() + i
-    );
-
+    }
 
     const fecha =
-        crearFecha(
-            fechaDia.getFullYear(),
-            fechaDia.getMonth(),
-            fechaDia.getDate()
-        );
+        new Date(fechaActual);
 
+    let diaSemana =
+        fecha.getDay();
 
-    const columna =
+    if (diaSemana === 0) {
+
+        diaSemana = 7;
+
+    }
+
+    const lunes =
+        new Date(fecha);
+
+    lunes.setDate(
+        fecha.getDate() -
+        diaSemana +
+        1
+    );
+
+    const domingo =
+        new Date(lunes);
+
+    domingo.setDate(
+        lunes.getDate() + 6
+    );
+
+    tituloCalendario.textContent =
+        formatoCorto(lunes) +
+        " - " +
+        formatoCorto(domingo);
+
+    calendarioSemana.innerHTML =
+        "";
+
+    const grid =
         document.createElement("div");
 
-    columna.className =
-        "columna-dia";
+    grid.className =
+        "semana-grid";
 
+    const contratos =
+        obtenerContratos();
 
-    const titulo =
-        document.createElement("h3");
+    for (
+        let i = 0;
+        i < 7;
+        i++
+    ) {
 
-    titulo.textContent =
-        diasSemana[i] +
-        " " +
-        fechaDia.getDate();
+        const fechaDia =
+            new Date(lunes);
 
-
-    columna.appendChild(
-        titulo
-    );
-
-
-    contratos
-        .filter(
-            c =>
-                c.fecha === fecha
-        )
-        .forEach(
-            evento => {
-
-                const mini =
-                    document.createElement("div");
-
-                mini.className =
-                    "evento-mini " +
-                    (
-                        evento.estado ||
-                        "reservado"
-                    );
-
-
-                mini.innerHTML = `
-
-                    <b>
-                        ${evento.hora || ""}
-                    </b>
-
-                    <br>
-
-                    ${
-                        evento.cliente ||
-                        "Evento"
-                    }
-
-                    <br>
-
-                    <small>
-                        ${
-                            evento.nombreEvento ||
-                            evento.tipoEvento ||
-                            ""
-                        }
-                    </small>
-
-                `;
-
-
-                mini.onclick =
-                    function () {
-
-                        mostrarDetalle(
-                            evento.id
-                        );
-
-                    };
-
-
-                columna.appendChild(
-                    mini
-                );
-
-            }
+        fechaDia.setDate(
+            lunes.getDate() + i
         );
 
+        const fecha =
+            crearFecha(
+                fechaDia.getFullYear(),
+                fechaDia.getMonth(),
+                fechaDia.getDate()
+            );
 
-    grid.appendChild(
-        columna
+        const columna =
+            document.createElement("div");
+
+        columna.className =
+            "columna-dia";
+
+        const titulo =
+            document.createElement("h3");
+
+        titulo.textContent =
+            diasSemana[i] +
+            " " +
+            fechaDia.getDate();
+
+        columna.appendChild(
+            titulo
+        );
+
+        contratos
+            .filter(
+                c =>
+                    c.fecha === fecha
+            )
+            .forEach(
+                evento => {
+
+                    const mini =
+                        document.createElement("div");
+
+                    mini.className =
+                        "evento-mini " +
+                        (
+                            evento.estado ||
+                            "reservado"
+                        );
+
+                    mini.innerHTML = `
+
+                        <b>
+                            ${evento.hora || ""}
+                        </b>
+
+                        <br>
+
+                        ${
+                            evento.cliente ||
+                            "Evento"
+                        }
+
+                        <br>
+
+                        <small>
+                            ${
+                                evento.nombreEvento ||
+                                evento.tipoEvento ||
+                                ""
+                            }
+                        </small>
+
+                    `;
+
+                    mini.onclick =
+                        function () {
+
+                            mostrarDetalle(
+                                evento.id
+                            );
+
+                        };
+
+                    columna.appendChild(
+                        mini
+                    );
+
+                }
+            );
+
+        grid.appendChild(
+            columna
+        );
+
+    }
+
+    calendarioSemana.appendChild(
+        grid
     );
-
-}
-
-
-calendarioSemana.appendChild(
-    grid
-);
-
 
 }
 
@@ -1122,100 +1050,87 @@ calendarioSemana.appendChild(
 
 function mostrarDia() {
 
+    if (!calendarioDia) {
 
-if (!calendarioDia) {
-
-    return;
-
-}
-
-
-const año =
-    fechaActual.getFullYear();
-
-const mes =
-    fechaActual.getMonth();
-
-const dia =
-    fechaActual.getDate();
-
-
-const fecha =
-    crearFecha(
-        año,
-        mes,
-        dia
-    );
-
-
-tituloCalendario.textContent =
-    dia +
-    " de " +
-    meses[mes] +
-    " " +
-    año;
-
-
-calendarioDia.innerHTML =
-    "";
-
-
-const contenedor =
-    document.createElement("div");
-
-contenedor.className =
-    "dia-grande";
-
-
-const titulo =
-    document.createElement("h3");
-
-titulo.textContent =
-    "Eventos del día";
-
-
-contenedor.appendChild(
-    titulo
-);
-
-
-const contratos =
-    obtenerContratos().filter(
-        c =>
-            c.fecha === fecha
-    );
-
-
-if (!contratos.length) {
-
-    contenedor.innerHTML += `
-
-        <p style="text-align:center">
-
-            No hay eventos para este día.
-
-        </p>
-
-    `;
-
-}
-
-
-contratos.forEach(
-    contrato => {
-
-        contenedor.appendChild(
-            crearTarjeta(contrato)
-        );
+        return;
 
     }
-);
 
+    const año =
+        fechaActual.getFullYear();
 
-calendarioDia.appendChild(
-    contenedor
-);
+    const mes =
+        fechaActual.getMonth();
 
+    const dia =
+        fechaActual.getDate();
+
+    const fecha =
+        crearFecha(
+            año,
+            mes,
+            dia
+        );
+
+    tituloCalendario.textContent =
+        dia +
+        " de " +
+        meses[mes] +
+        " " +
+        año;
+
+    calendarioDia.innerHTML =
+        "";
+
+    const contenedor =
+        document.createElement("div");
+
+    contenedor.className =
+        "dia-grande";
+
+    const titulo =
+        document.createElement("h3");
+
+    titulo.textContent =
+        "Eventos del día";
+
+    contenedor.appendChild(
+        titulo
+    );
+
+    const contratos =
+        obtenerContratos().filter(
+            c =>
+                c.fecha === fecha
+        );
+
+    if (!contratos.length) {
+
+        contenedor.innerHTML += `
+
+            <p style="text-align:center">
+
+                No hay eventos para este día.
+
+            </p>
+
+        `;
+
+    }
+
+    contratos.forEach(
+        contrato => {
+
+            contenedor.appendChild(
+                crearTarjeta(contrato)
+            );
+
+        }
+    );
+
+    calendarioDia.appendChild(
+        contenedor
+    );
 
 }
 
@@ -1225,105 +1140,96 @@ calendarioDia.appendChild(
 
 function mostrarEventos() {
 
+    if (!listaContratos) {
 
-if (!listaContratos) {
+        return;
 
-    return;
+    }
 
-}
+    tituloCalendario.textContent =
+        "Eventos pendientes";
 
+    listaContratos.innerHTML =
+        "";
 
-tituloCalendario.textContent =
-    "Eventos pendientes";
+    const hoy =
+        fechaHoyTexto();
 
+    let contratos =
+        obtenerContratos();
 
-listaContratos.innerHTML =
-    "";
+    contratos =
+        contratos.filter(
+            contrato => {
 
+                const pendiente =
+                    contrato.estado === "reservado" ||
+                    contrato.estado === "confirmado" ||
+                    !contrato.estado;
 
-const hoy =
-    fechaHoyTexto();
+                const fechaValida =
+                    contrato.fecha &&
+                    contrato.fecha >= hoy;
 
+                return pendiente &&
+                    fechaValida;
 
-let contratos =
-    obtenerContratos();
+            }
+        );
 
+    contratos.sort(
+        (a, b) => {
 
-contratos =
-    contratos.filter(
-        contrato => {
+            const fechaA =
+                (a.fecha || "") +
+                " " +
+                (a.hora || "");
 
-            const pendiente =
-                contrato.estado === "reservado" ||
-                contrato.estado === "confirmado";
+            const fechaB =
+                (b.fecha || "") +
+                " " +
+                (b.hora || "");
 
-            const fechaValida =
-                contrato.fecha &&
-                contrato.fecha >= hoy;
-
-            return pendiente &&
-                fechaValida;
+            return fechaA.localeCompare(
+                fechaB
+            );
 
         }
     );
 
+    if (!contratos.length) {
 
-contratos.sort(
-    (a, b) => {
+        listaContratos.innerHTML = `
 
-        const fechaA =
-            (a.fecha || "") +
-            " " +
-            (a.hora || "");
+            <div class="tarjeta-evento">
 
-        const fechaB =
-            (b.fecha || "") +
-            " " +
-            (b.hora || "");
+                <h3>
+                    📋 No hay eventos pendientes
+                </h3>
 
-        return fechaA.localeCompare(
-            fechaB
-        );
+                <p>
+                    No tienes eventos pendientes registrados.
+                </p>
 
-    }
-);
+            </div>
 
+        `;
 
-if (!contratos.length) {
-
-    listaContratos.innerHTML = `
-
-        <div class="tarjeta-evento">
-
-            <h3>
-                📋 No hay eventos pendientes
-            </h3>
-
-            <p>
-                No tienes eventos pendientes registrados.
-            </p>
-
-        </div>
-
-    `;
-
-    return;
-
-}
-
-
-contratos.forEach(
-    contrato => {
-
-        listaContratos.appendChild(
-            crearTarjetaResumida(
-                contrato
-            )
-        );
+        return;
 
     }
-);
 
+    contratos.forEach(
+        contrato => {
+
+            listaContratos.appendChild(
+                crearTarjetaResumida(
+                    contrato
+                )
+            );
+
+        }
+    );
 
 }
 
@@ -1333,80 +1239,72 @@ contratos.forEach(
 
 function mostrarContratos() {
 
+    if (!listaTodosContratos) {
 
-if (!listaTodosContratos) {
-
-    return;
-
-}
-
-
-tituloCalendario.textContent =
-    "Todos los contratos";
-
-
-listaTodosContratos.innerHTML =
-    "";
-
-
-let contratos =
-    obtenerContratos();
-
-
-contratos.sort(
-    (a, b) => {
-
-        const fechaA =
-            (a.fecha || "") +
-            " " +
-            (a.hora || "");
-
-        const fechaB =
-            (b.fecha || "") +
-            " " +
-            (b.hora || "");
-
-        return fechaB.localeCompare(
-            fechaA
-        );
+        return;
 
     }
-);
 
+    tituloCalendario.textContent =
+        "Todos los contratos";
 
-if (!contratos.length) {
+    listaTodosContratos.innerHTML =
+        "";
 
-    listaTodosContratos.innerHTML = `
+    let contratos =
+        obtenerContratos();
 
-        <div class="tarjeta-evento">
+    contratos.sort(
+        (a, b) => {
 
-            <h3>
-                📋 No hay contratos
-            </h3>
+            const fechaA =
+                (a.fecha || "") +
+                " " +
+                (a.hora || "");
 
-            <p>
-                Todavía no tienes contratos registrados.
-            </p>
+            const fechaB =
+                (b.fecha || "") +
+                " " +
+                (b.hora || "");
 
-        </div>
+            return fechaB.localeCompare(
+                fechaA
+            );
 
-    `;
+        }
+    );
 
-    return;
+    if (!contratos.length) {
 
-}
+        listaTodosContratos.innerHTML = `
 
+            <div class="tarjeta-evento">
 
-contratos.forEach(
-    contrato => {
+                <h3>
+                    📋 No hay contratos
+                </h3>
 
-        listaTodosContratos.appendChild(
-            crearTarjeta(contrato)
-        );
+                <p>
+                    Todavía no tienes contratos registrados.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
 
     }
-);
 
+    contratos.forEach(
+        contrato => {
+
+            listaTodosContratos.appendChild(
+                crearTarjeta(contrato)
+            );
+
+        }
+    );
 
 }
 
@@ -1416,1144 +1314,59 @@ contratos.forEach(
 
 function crearTarjetaResumida(contrato) {
 
-
-const tarjeta =
-    document.createElement("div");
-
-
-tarjeta.className =
-    "tarjeta-evento evento-resumido " +
-    (
-        contrato.estado ||
-        "reservado"
-    );
-
-
-tarjeta.innerHTML = `
-
-    <h3>
-
-        👤
-        ${
-            contrato.cliente ||
-            "Cliente no especificado"
-        }
-
-    </h3>
-
-
-    <p class="nombre-evento">
-
-        🎉
-        ${
-            contrato.nombreEvento ||
-            contrato.tipoEvento ||
-            "Evento sin nombre"
-        }
-
-    </p>
-
-
-    <p>
-
-        📅
-        ${fechaTexto(contrato.fecha)}
-
-    </p>
-
-
-    ${
-        contrato.hora
-        ?
-        `
-            <p>
-                🕐 ${contrato.hora}
-            </p>
-        `
-        :
-        ""
-    }
-
-`;
-
-
-tarjeta.onclick =
-    function () {
-
-        mostrarDetalle(
-            contrato.id
-        );
-
-    };
-
-
-return tarjeta;
-
-
-}
-
-// =========================================
-// TARJETA COMPLETA
-// =========================================
-
-function crearTarjeta(contrato) {
-
-
-const tarjeta =
-    document.createElement("div");
-
-
-tarjeta.className =
-    "tarjeta-evento " +
-    (
-        contrato.estado ||
-        "reservado"
-    );
-
-
-const precio =
-    Number(contrato.precio) || 0;
-
-
-const adelanto =
-    Number(contrato.adelanto) || 0;
-
-
-const saldo =
-    precio -
-    adelanto;
-
-
-let pagoHTML;
-
-
-if (contrato.pagado) {
-
-    pagoHTML = `
-
-        <div class="contrato-pagado">
-
-            ✅ CONTRATO PAGADO
-
-        </div>
-
-    `;
-
-} else {
-
-    pagoHTML = `
-
-        <div class="contrato-pendiente">
-
-            💳 PAGO PENDIENTE
-
-        </div>
-
-    `;
-
-}
-
-
-tarjeta.innerHTML = `
-
-    <h3>
-
-        👤
-        ${
-            contrato.cliente ||
-            "Cliente no especificado"
-        }
-
-    </h3>
-
-
-    <p>
-
-        🎉
-        ${
-            contrato.nombreEvento ||
-            contrato.tipoEvento ||
-            "Evento no especificado"
-        }
-
-    </p>
-
-
-    <p>
-
-        📅
-        ${fechaTexto(contrato.fecha)}
-
-    </p>
-
-
-    <p>
-
-        🕐
-        ${
-            contrato.hora ||
-            "Hora no especificada"
-        }
-
-    </p>
-
-
-    <p>
-
-        📍
-        ${
-            contrato.lugar ||
-            "Lugar no especificado"
-        }
-
-    </p>
-
-
-    <p>
-
-        🏠
-        ${
-            contrato.direccion ||
-            "Dirección no especificada"
-        }
-
-    </p>
-
-
-    <p>
-
-        🎧
-        ${
-            contrato.servicio ||
-            "Servicio no especificado"
-        }
-
-    </p>
-
-
-    <p>
-
-        💰 Total:
-        Bs. ${precio.toFixed(2)}
-
-    </p>
-
-
-    <p>
-
-        💵 Adelanto:
-        Bs. ${adelanto.toFixed(2)}
-
-    </p>
-
-
-    <p>
-
-        💳 Saldo:
-        Bs. ${saldo.toFixed(2)}
-
-    </p>
-
-
-    ${pagoHTML}
-
-
-    <p>
-
-        <span class="estado ${
+    const tarjeta =
+        document.createElement("div");
+
+    tarjeta.className =
+        "tarjeta-evento evento-resumido " +
+        (
             contrato.estado ||
             "reservado"
-        }">
-
-            ${
-                nombreEstado(
-                    contrato.estado
-                )
-            }
-
-        </span>
-
-    </p>
-
-`;
-
-
-tarjeta.onclick =
-    function () {
-
-        mostrarDetalle(
-            contrato.id
         );
 
-    };
-
-
-return tarjeta;
-
-
-}
-
-// =========================================
-// MOSTRAR TODO
-// =========================================
-
-function mostrarTodo() {
-
-
-if (vistaActual === "año") {
-
-    mostrarAño();
-
-} else if (
-    vistaActual === "mes"
-) {
-
-    mostrarMes();
-
-} else if (
-    vistaActual === "semana"
-) {
-
-    mostrarSemana();
-
-} else if (
-    vistaActual === "dia"
-) {
-
-    mostrarDia();
-
-} else if (
-    vistaActual === "eventos"
-) {
-
-    mostrarEventos();
-
-} else if (
-    vistaActual === "contratos"
-) {
-
-    mostrarContratos();
-
-}
-
-
-}
-
-// =========================================
-// ANTERIOR
-// =========================================
-
-const anterior =
-elemento("anterior");
-
-if (anterior) {
-
-
-anterior.onclick =
-    function () {
-
-        if (
-            vistaActual === "año"
-        ) {
-
-            fechaActual.setFullYear(
-                fechaActual.getFullYear() - 1
-            );
-
-        } else if (
-            vistaActual === "mes"
-        ) {
-
-            fechaActual.setMonth(
-                fechaActual.getMonth() - 1
-            );
-
-        } else if (
-            vistaActual === "dia"
-        ) {
-
-            fechaActual.setDate(
-                fechaActual.getDate() - 1
-            );
-
-        } else if (
-            vistaActual === "contratos" ||
-            vistaActual === "eventos"
-        ) {
-
-            return;
-
-        } else {
-
-            fechaActual.setDate(
-                fechaActual.getDate() - 7
-            );
-
-        }
-
-
-        mostrarTodo();
-
-    };
-
-
-}
-
-// =========================================
-// SIGUIENTE
-// =========================================
-
-const siguiente =
-elemento("siguiente");
-
-if (siguiente) {
-
-
-siguiente.onclick =
-    function () {
-
-        if (
-            vistaActual === "año"
-        ) {
-
-            fechaActual.setFullYear(
-                fechaActual.getFullYear() + 1
-            );
-
-        } else if (
-            vistaActual === "mes"
-        ) {
-
-            fechaActual.setMonth(
-                fechaActual.getMonth() + 1
-            );
-
-        } else if (
-            vistaActual === "dia"
-        ) {
-
-            fechaActual.setDate(
-                fechaActual.getDate() + 1
-            );
-
-        } else if (
-            vistaActual === "contratos" ||
-            vistaActual === "eventos"
-        ) {
-
-            return;
-
-        } else {
-
-            fechaActual.setDate(
-                fechaActual.getDate() + 7
-            );
-
-        }
-
-
-        mostrarTodo();
-
-    };
-
-
-}
-
-// =========================================
-// HOY
-// =========================================
-
-const btnHoy =
-elemento("btnHoy");
-
-if (btnHoy) {
-
-
-btnHoy.onclick =
-    function () {
-
-        fechaActual =
-            new Date();
-
-        mostrarTodo();
-
-    };
-
-
-}
-
-// =========================================
-// ABRIR FORMULARIO
-// =========================================
-
-function abrirFormulario(fecha = "") {
-
-
-elemento(
-    "tituloFormulario"
-).textContent =
-    "📝 Nuevo Evento";
-
-
-guardarContrato.dataset.id =
-    "";
-
-
-ponerValor("cliente", "");
-
-ponerValor("nombreEvento", "");
-
-ponerValor("telefono", "");
-
-ponerValor("fechaContrato", fecha);
-
-ponerValor("horaContrato", "");
-
-ponerValor("tipoEvento", "");
-
-ponerValor("estado", "reservado");
-
-ponerValor("lugar", "");
-
-ponerValor("direccion", "");
-
-ponerValor("servicio", "");
-
-ponerValor("precio", "");
-
-ponerValor("adelanto", "");
-
-ponerValor("saldo", "0.00");
-
-ponerValor("observaciones", "");
-
-
-elemento("pagado").checked =
-    false;
-
-
-actualizarEstadoPago();
-
-
-elemento("fotoContrato").value =
-    "";
-
-
-elemento("vistaPrevia").src =
-    "";
-
-elemento("vistaPrevia").style.display =
-    "none";
-
-
-fotoTemporal =
-    "";
-
-
-ventanaContrato.style.display =
-    "flex";
-
-
-}
-
-// =========================================
-// BOTONES NUEVO
-// =========================================
-
-const nuevoContrato =
-elemento("nuevoContrato");
-
-if (nuevoContrato) {
-
-
-nuevoContrato.onclick =
-    function () {
-
-        abrirFormulario();
-
-    };
-
-
-}
-
-const btnNuevo =
-elemento("btnNuevo");
-
-if (btnNuevo) {
-
-
-btnNuevo.onclick =
-    function () {
-
-        abrirFormulario();
-
-    };
-
-
-}
-
-// =========================================
-// FOTO
-// =========================================
-
-const fotoContrato =
-elemento("fotoContrato");
-
-if (fotoContrato) {
-
-
-fotoContrato.onchange =
-    function (evento) {
-
-        const archivo =
-            evento.target.files[0];
-
-
-        if (!archivo) {
-
-            return;
-
-        }
-
-
-        const lector =
-            new FileReader();
-
-
-        lector.onload =
-            function (e) {
-
-                comprimirFoto(
-                    e.target.result
-                );
-
-            };
-
-
-        lector.readAsDataURL(
-            archivo
-        );
-
-    };
-
-
-}
-
-// =========================================
-// COMPRIMIR FOTO
-// =========================================
-
-function comprimirFoto(imagen) {
-
-
-const img =
-    new Image();
-
-
-img.onload =
-    function () {
-
-        const canvas =
-            document.createElement(
-                "canvas"
-            );
-
-
-        const maximo =
-            1000;
-
-
-        let ancho =
-            img.width;
-
-        let alto =
-            img.height;
-
-
-        if (ancho > maximo) {
-
-            alto =
-                alto *
-                maximo /
-                ancho;
-
-            ancho =
-                maximo;
-
-        }
-
-
-        canvas.width =
-            ancho;
-
-        canvas.height =
-            alto;
-
-
-        const contexto =
-            canvas.getContext(
-                "2d"
-            );
-
-
-        contexto.drawImage(
-            img,
-            0,
-            0,
-            ancho,
-            alto
-        );
-
-
-        fotoTemporal =
-            canvas.toDataURL(
-                "image/jpeg",
-                0.7
-            );
-
-
-        elemento(
-            "vistaPrevia"
-        ).src =
-            fotoTemporal;
-
-
-        elemento(
-            "vistaPrevia"
-        ).style.display =
-            "block";
-
-    };
-
-
-img.src =
-    imagen;
-
-
-}
-
-// =========================================
-// GUARDAR CONTRATO
-// =========================================
-
-const guardarContrato =
-elemento("guardarContrato");
-
-if (guardarContrato) {
-
-
-guardarContrato.onclick =
-    function () {
-
-        const fecha =
-            obtenerValor(
-                "fechaContrato"
-            );
-
-
-        if (!fecha) {
-
-            alert(
-                "Selecciona una fecha para guardar el evento."
-            );
-
-            return;
-
-        }
-
-
-        let contratos =
-            obtenerContratos();
-
-
-        const id =
-            guardarContrato.dataset.id;
-
-
-        const precio =
-            Number(
-                obtenerValor("precio")
-            ) || 0;
-
-
-        const adelanto =
-            Number(
-                obtenerValor("adelanto")
-            ) || 0;
-
-
-        const pagado =
-            elemento("pagado").checked;
-
-
-        const datos = {
-
-            cliente:
-                obtenerValor("cliente").trim(),
-
-            nombreEvento:
-                obtenerValor("nombreEvento").trim(),
-
-            telefono:
-                obtenerValor("telefono").trim(),
-
-            fecha:
-                fecha,
-
-            hora:
-                obtenerValor("horaContrato"),
-
-            tipoEvento:
-                obtenerValor("tipoEvento"),
-
-            estado:
-                obtenerValor(
-                    "estado",
-                    "reservado"
-                ),
-
-            lugar:
-                obtenerValor("lugar").trim(),
-
-            direccion:
-                obtenerValor("direccion").trim(),
-
-            servicio:
-                obtenerValor("servicio").trim(),
-
-            precio:
-                precio,
-
-            adelanto:
-                adelanto,
-
-            pagado:
-                pagado,
-
-            observaciones:
-                obtenerValor(
-                    "observaciones"
-                ).trim(),
-
-            foto:
-                fotoTemporal
-
-        };
-
-
-        if (id) {
-
-            const posicion =
-                contratos.findIndex(
-                    c =>
-                        String(c.id) ===
-                        String(id)
-                );
-
-
-            if (posicion !== -1) {
-
-                contratos[posicion] = {
-
-                    ...contratos[posicion],
-
-                    ...datos
-
-                };
-
-            }
-
-        } else {
-
-            contratos.push({
-
-                id:
-                    Date.now(),
-
-                ...datos
-
-            });
-
-        }
-
-
-        guardarTodos(
-            contratos
-        );
-
-
-        ventanaContrato.style.display =
-            "none";
-
-
-        alert(
-            "✅ Evento guardado correctamente."
-        );
-
-
-        mostrarTodo();
-
-    };
-
-
-}
-
-// =========================================
-// CERRAR FORMULARIO
-// =========================================
-
-function cerrarFormulario() {
-
-
-ventanaContrato.style.display =
-    "none";
-
-
-}
-
-elemento(
-"cerrarFormulario"
-).onclick =
-cerrarFormulario;
-
-elemento(
-"cancelarFormulario"
-).onclick =
-cerrarFormulario;
-
-// =========================================
-// CALCULAR SALDO
-// =========================================
-
-function calcularSaldo() {
-
-
-const precio =
-    Number(
-        obtenerValor("precio")
-    ) || 0;
-
-
-const adelanto =
-    Number(
-        obtenerValor("adelanto")
-    ) || 0;
-
-
-const saldo =
-    precio -
-    adelanto;
-
-
-ponerValor(
-    "saldo",
-    saldo.toFixed(2)
-);
-
-
-}
-
-elemento("precio")
-.addEventListener(
-"input",
-calcularSaldo
-);
-
-elemento("adelanto")
-.addEventListener(
-"input",
-calcularSaldo
-);
-
-// =========================================
-// ESTADO DE PAGO
-// =========================================
-
-function actualizarEstadoPago() {
-
-
-const pagado =
-    elemento("pagado");
-
-
-const estadoPago =
-    elemento("estadoPago");
-
-
-if (pagado.checked) {
-
-    estadoPago.textContent =
-        "✅ CONTRATO PAGADO";
-
-    estadoPago.style.color =
-        "#166534";
-
-} else {
-
-    estadoPago.textContent =
-        "💳 PAGO PENDIENTE";
-
-    estadoPago.style.color =
-        "#92400e";
-
-}
-
-
-}
-
-elemento("pagado")
-.addEventListener(
-"change",
-actualizarEstadoPago
-);
-
-// =========================================
-// MOSTRAR DETALLE
-// =========================================
-
-function mostrarDetalle(id) {
-
-
-const contratos =
-    obtenerContratos();
-
-
-const contrato =
-    contratos.find(
-        c =>
-            String(c.id) ===
-            String(id)
-    );
-
-
-if (!contrato) {
-
-    return;
-
-}
-
-
-contratoSeleccionado =
-    contrato;
-
-
-const precio =
-    Number(contrato.precio) || 0;
-
-
-const adelanto =
-    Number(contrato.adelanto) || 0;
-
-
-const saldo =
-    precio -
-    adelanto;
-
-
-let html = `
-
-    <div class="detalle-info">
+    tarjeta.innerHTML = `
 
         <h3>
 
+            👤
             ${
                 contrato.cliente ||
-                "Evento sin cliente"
+                "Cliente no especificado"
             }
 
         </h3>
 
+        <p class="nombre-evento">
 
-        <p>
-            <b>🎉 Nombre del evento:</b>
+            🎉
             ${
                 contrato.nombreEvento ||
-                "Sin especificar"
-            }
-        </p>
-
-
-        <p>
-            <b>📅 Fecha:</b>
-            ${fechaTexto(contrato.fecha)}
-        </p>
-
-
-        <p>
-            <b>🕐 Hora:</b>
-            ${
-                contrato.hora ||
-                "Sin especificar"
-            }
-        </p>
-
-
-        <p>
-            <b>🎊 Tipo de evento:</b>
-            ${
                 contrato.tipoEvento ||
-                "Sin especificar"
+                "Evento sin nombre"
             }
+
         </p>
-
-
-        <p>
-            <b>📞 Teléfono:</b>
-            ${
-                contrato.telefono ||
-                "Sin especificar"
-            }
-        </p>
-
-
-        <p>
-            <b>📍 Lugar:</b>
-            ${
-                contrato.lugar ||
-                "Sin especificar"
-            }
-        </p>
-
-
-        <p>
-            <b>🏠 Dirección:</b>
-            ${
-                contrato.direccion ||
-                "Sin especificar"
-            }
-        </p>
-
-
-        <p>
-            <b>🎧 Servicio:</b>
-            ${
-                contrato.servicio ||
-                "Sin especificar"
-            }
-        </p>
-
-
-        <p>
-            <b>💰 Total:</b>
-            Bs. ${precio.toFixed(2)}
-        </p>
-
-
-        <p>
-            <b>💵 Adelanto:</b>
-            Bs. ${adelanto.toFixed(2)}
-        </p>
-
-
-        <p>
-            <b>💳 Saldo:</b>
-            Bs. ${saldo.toFixed(2)}
-        </p>
-
 
         <p>
 
-            <b>Estado del evento:</b>
+            📅
+            ${fechaTexto(contrato.fecha)}
+
+        </p>
+
+        ${
+            contrato.hora
+            ?
+            `
+                <p>
+                    🕐 ${contrato.hora}
+                </p>
+            `
+            :
+            ""
+        }
+
+        <p>
 
             <span class="estado ${
                 contrato.estado ||
@@ -2570,82 +1383,1069 @@ let html = `
 
         </p>
 
-`;
-
-
-if (contrato.pagado) {
-
-    html += `
-
-        <div class="contrato-pagado">
-
-            ✅ CONTRATO PAGADO
-
-        </div>
-
     `;
 
-} else {
+    tarjeta.onclick =
+        function () {
 
-    html += `
+            mostrarDetalle(
+                contrato.id
+            );
 
-        <div class="contrato-pendiente">
+        };
 
-            💳 PAGO PENDIENTE
-
-        </div>
-
-    `;
+    return tarjeta;
 
 }
 
+// =========================================
+// TARJETA COMPLETA
+// =========================================
 
-if (contrato.observaciones) {
+function crearTarjeta(contrato) {
 
-    html += `
+    const tarjeta =
+        document.createElement("div");
+
+    tarjeta.className =
+        "tarjeta-evento " +
+        (
+            contrato.estado ||
+            "reservado"
+        );
+
+    const precio =
+        Number(contrato.precio) || 0;
+
+    const adelanto =
+        Number(contrato.adelanto) || 0;
+
+    const saldo =
+        precio -
+        adelanto;
+
+    let pagoHTML;
+
+    if (contrato.pagado) {
+
+        pagoHTML = `
+
+            <div class="contrato-pagado">
+
+                ✅ CONTRATO PAGADO
+
+            </div>
+
+        `;
+
+    } else {
+
+        pagoHTML = `
+
+            <div class="contrato-pendiente">
+
+                💳 PAGO PENDIENTE
+
+            </div>
+
+        `;
+
+    }
+
+    tarjeta.innerHTML = `
+
+        <h3>
+
+            👤
+            ${
+                contrato.cliente ||
+                "Cliente no especificado"
+            }
+
+        </h3>
 
         <p>
 
-            <b>📝 Observaciones:</b>
+            🎉
+            ${
+                contrato.nombreEvento ||
+                contrato.tipoEvento ||
+                "Evento no especificado"
+            }
 
-            <br>
+        </p>
 
-            ${contrato.observaciones}
+        <p>
+
+            📅
+            ${fechaTexto(contrato.fecha)}
+
+        </p>
+
+        <p>
+
+            🕐
+            ${
+                contrato.hora ||
+                "Hora no especificada"
+            }
+
+        </p>
+
+        <p>
+
+            📍
+            ${
+                contrato.lugar ||
+                "Lugar no especificado"
+            }
+
+        </p>
+
+        <p>
+
+            🏠
+            ${
+                contrato.direccion ||
+                "Dirección no especificada"
+            }
+
+        </p>
+
+        <p>
+
+            🎧
+            ${
+                contrato.servicio ||
+                "Servicio no especificado"
+            }
+
+        </p>
+
+        <p>
+
+            💰 Total:
+            Bs. ${precio.toFixed(2)}
+
+        </p>
+
+        <p>
+
+            💵 Adelanto:
+            Bs. ${adelanto.toFixed(2)}
+
+        </p>
+
+        <p>
+
+            💳 Saldo:
+            Bs. ${saldo.toFixed(2)}
+
+        </p>
+
+        ${pagoHTML}
+
+        <p>
+
+            <span class="estado ${
+                contrato.estado ||
+                "reservado"
+            }">
+
+                ${
+                    nombreEstado(
+                        contrato.estado
+                    )
+                }
+
+            </span>
 
         </p>
 
     `;
 
+    tarjeta.onclick =
+        function () {
+
+            mostrarDetalle(
+                contrato.id
+            );
+
+        };
+
+    return tarjeta;
+
 }
 
+// =========================================
+// MOSTRAR TODO
+// =========================================
 
-if (contrato.foto) {
+function mostrarTodo() {
 
-    html += `
+    if (vistaActual === "año") {
 
-        <img
-            src="${contrato.foto}"
-            class="foto-detalle"
-            alt="Foto del contrato">
+        mostrarAño();
+
+    } else if (
+        vistaActual === "mes"
+    ) {
+
+        mostrarMes();
+
+    } else if (
+        vistaActual === "semana"
+    ) {
+
+        mostrarSemana();
+
+    } else if (
+        vistaActual === "dia"
+    ) {
+
+        mostrarDia();
+
+    } else if (
+        vistaActual === "eventos"
+    ) {
+
+        mostrarEventos();
+
+    } else if (
+        vistaActual === "contratos"
+    ) {
+
+        mostrarContratos();
+
+    }
+
+}
+
+// =========================================
+// ANTERIOR
+// =========================================
+
+const anterior =
+    elemento("anterior");
+
+if (anterior) {
+
+    anterior.onclick =
+        function () {
+
+            if (
+                vistaActual === "año"
+            ) {
+
+                fechaActual.setFullYear(
+                    fechaActual.getFullYear() - 1
+                );
+
+            } else if (
+                vistaActual === "mes"
+            ) {
+
+                fechaActual.setMonth(
+                    fechaActual.getMonth() - 1
+                );
+
+            } else if (
+                vistaActual === "dia"
+            ) {
+
+                fechaActual.setDate(
+                    fechaActual.getDate() - 1
+                );
+
+            } else if (
+                vistaActual === "contratos" ||
+                vistaActual === "eventos"
+            ) {
+
+                return;
+
+            } else {
+
+                fechaActual.setDate(
+                    fechaActual.getDate() - 7
+                );
+
+            }
+
+            mostrarTodo();
+
+        };
+
+}
+
+// =========================================
+// SIGUIENTE
+// =========================================
+
+const siguiente =
+    elemento("siguiente");
+
+if (siguiente) {
+
+    siguiente.onclick =
+        function () {
+
+            if (
+                vistaActual === "año"
+            ) {
+
+                fechaActual.setFullYear(
+                    fechaActual.getFullYear() + 1
+                );
+
+            } else if (
+                vistaActual === "mes"
+            ) {
+
+                fechaActual.setMonth(
+                    fechaActual.getMonth() + 1
+                );
+
+            } else if (
+                vistaActual === "dia"
+            ) {
+
+                fechaActual.setDate(
+                    fechaActual.getDate() + 1
+                );
+
+            } else if (
+                vistaActual === "contratos" ||
+                vistaActual === "eventos"
+            ) {
+
+                return;
+
+            } else {
+
+                fechaActual.setDate(
+                    fechaActual.getDate() + 7
+                );
+
+            }
+
+            mostrarTodo();
+
+        };
+
+}
+
+// =========================================
+// BOTÓN SEGÚN VISTA
+// =========================================
+
+const btnHoy =
+    elemento("btnHoy");
+
+if (btnHoy) {
+
+    btnHoy.onclick =
+        function () {
+
+            // En EVENTOS y CONTRATOS
+            // el botón solamente muestra
+            // el nombre de la vista.
+            if (
+                vistaActual === "eventos" ||
+                vistaActual === "contratos"
+            ) {
+
+                return;
+
+            }
+
+            fechaActual =
+                new Date();
+
+            mostrarTodo();
+
+        };
+
+}
+
+// =========================================
+// ABRIR FORMULARIO
+// =========================================
+
+function abrirFormulario(fecha = "") {
+
+    elemento(
+        "tituloFormulario"
+    ).textContent =
+        "📝 Nuevo Evento";
+
+    guardarContrato.dataset.id =
+        "";
+
+    ponerValor("cliente", "");
+
+    ponerValor("nombreEvento", "");
+
+    ponerValor("telefono", "");
+
+    ponerValor("fechaContrato", fecha);
+
+    ponerValor("horaContrato", "");
+
+    ponerValor("tipoEvento", "");
+
+    ponerValor("estado", "reservado");
+
+    ponerValor("lugar", "");
+
+    ponerValor("direccion", "");
+
+    ponerValor("servicio", "");
+
+    ponerValor("precio", "");
+
+    ponerValor("adelanto", "");
+
+    ponerValor("saldo", "0.00");
+
+    ponerValor("observaciones", "");
+
+    elemento("pagado").checked =
+        false;
+
+    actualizarEstadoPago();
+
+    elemento("fotoContrato").value =
+        "";
+
+    elemento("vistaPrevia").src =
+        "";
+
+    elemento("vistaPrevia").style.display =
+        "none";
+
+    fotoTemporal =
+        "";
+
+    ventanaContrato.style.display =
+        "flex";
+
+}
+
+// =========================================
+// BOTONES NUEVO
+// =========================================
+
+const nuevoContrato =
+    elemento("nuevoContrato");
+
+if (nuevoContrato) {
+
+    nuevoContrato.onclick =
+        function () {
+
+            abrirFormulario();
+
+        };
+
+}
+
+const btnNuevo =
+    elemento("btnNuevo");
+
+if (btnNuevo) {
+
+    btnNuevo.onclick =
+        function () {
+
+            abrirFormulario();
+
+        };
+
+}
+
+// =========================================
+// FOTO
+// =========================================
+
+const fotoContrato =
+    elemento("fotoContrato");
+
+if (fotoContrato) {
+
+    fotoContrato.onchange =
+        function (evento) {
+
+            const archivo =
+                evento.target.files[0];
+
+            if (!archivo) {
+
+                return;
+
+            }
+
+            const lector =
+                new FileReader();
+
+            lector.onload =
+                function (e) {
+
+                    comprimirFoto(
+                        e.target.result
+                    );
+
+                };
+
+            lector.readAsDataURL(
+                archivo
+            );
+
+        };
+
+}
+
+// =========================================
+// COMPRIMIR FOTO
+// =========================================
+
+function comprimirFoto(imagen) {
+
+    const img =
+        new Image();
+
+    img.onload =
+        function () {
+
+            const canvas =
+                document.createElement(
+                    "canvas"
+                );
+
+            const maximo =
+                1000;
+
+            let ancho =
+                img.width;
+
+            let alto =
+                img.height;
+
+            if (ancho > maximo) {
+
+                alto =
+                    alto *
+                    maximo /
+                    ancho;
+
+                ancho =
+                    maximo;
+
+            }
+
+            canvas.width =
+                ancho;
+
+            canvas.height =
+                alto;
+
+            const contexto =
+                canvas.getContext(
+                    "2d"
+                );
+
+            contexto.drawImage(
+                img,
+                0,
+                0,
+                ancho,
+                alto
+            );
+
+            fotoTemporal =
+                canvas.toDataURL(
+                    "image/jpeg",
+                    0.7
+                );
+
+            elemento(
+                "vistaPrevia"
+            ).src =
+                fotoTemporal;
+
+            elemento(
+                "vistaPrevia"
+            ).style.display =
+                "block";
+
+        };
+
+    img.src =
+        imagen;
+
+}
+
+// =========================================
+// GUARDAR CONTRATO
+// =========================================
+
+const guardarContrato =
+    elemento("guardarContrato");
+
+if (guardarContrato) {
+
+    guardarContrato.onclick =
+        function () {
+
+            const fecha =
+                obtenerValor(
+                    "fechaContrato"
+                );
+
+            if (!fecha) {
+
+                alert(
+                    "Selecciona una fecha para guardar el evento."
+                );
+
+                return;
+
+            }
+
+            let contratos =
+                obtenerContratos();
+
+            const id =
+                guardarContrato.dataset.id;
+
+            const precio =
+                Number(
+                    obtenerValor("precio")
+                ) || 0;
+
+            const adelanto =
+                Number(
+                    obtenerValor("adelanto")
+                ) || 0;
+
+            const pagado =
+                elemento("pagado").checked;
+
+            const datos = {
+
+                cliente:
+                    obtenerValor("cliente").trim(),
+
+                nombreEvento:
+                    obtenerValor("nombreEvento").trim(),
+
+                telefono:
+                    obtenerValor("telefono").trim(),
+
+                fecha:
+                    fecha,
+
+                hora:
+                    obtenerValor("horaContrato"),
+
+                tipoEvento:
+                    obtenerValor("tipoEvento"),
+
+                estado:
+                    obtenerValor(
+                        "estado",
+                        "reservado"
+                    ),
+
+                lugar:
+                    obtenerValor("lugar").trim(),
+
+                direccion:
+                    obtenerValor("direccion").trim(),
+
+                servicio:
+                    obtenerValor("servicio").trim(),
+
+                precio:
+                    precio,
+
+                adelanto:
+                    adelanto,
+
+                pagado:
+                    pagado,
+
+                observaciones:
+                    obtenerValor(
+                        "observaciones"
+                    ).trim(),
+
+                foto:
+                    fotoTemporal
+
+            };
+
+            if (id) {
+
+                const posicion =
+                    contratos.findIndex(
+                        c =>
+                            String(c.id) ===
+                            String(id)
+                    );
+
+                if (posicion !== -1) {
+
+                    contratos[posicion] = {
+
+                        ...contratos[posicion],
+
+                        ...datos
+
+                    };
+
+                }
+
+            } else {
+
+                contratos.push({
+
+                    id:
+                        Date.now(),
+
+                    ...datos
+
+                });
+
+            }
+
+            guardarTodos(
+                contratos
+            );
+
+            ventanaContrato.style.display =
+                "none";
+
+            alert(
+                "✅ Evento guardado correctamente."
+            );
+
+            mostrarTodo();
+
+        };
+
+}
+
+// =========================================
+// CERRAR FORMULARIO
+// =========================================
+
+function cerrarFormulario() {
+
+    ventanaContrato.style.display =
+        "none";
+
+}
+
+elemento(
+    "cerrarFormulario"
+).onclick =
+    cerrarFormulario;
+
+elemento(
+    "cancelarFormulario"
+).onclick =
+    cerrarFormulario;
+
+// =========================================
+// CALCULAR SALDO
+// =========================================
+
+function calcularSaldo() {
+
+    const precio =
+        Number(
+            obtenerValor("precio")
+        ) || 0;
+
+    const adelanto =
+        Number(
+            obtenerValor("adelanto")
+        ) || 0;
+
+    const saldo =
+        precio -
+        adelanto;
+
+    ponerValor(
+        "saldo",
+        saldo.toFixed(2)
+    );
+
+}
+
+elemento("precio")
+    .addEventListener(
+        "input",
+        calcularSaldo
+    );
+
+elemento("adelanto")
+    .addEventListener(
+        "input",
+        calcularSaldo
+    );
+
+// =========================================
+// ESTADO DE PAGO
+// =========================================
+
+function actualizarEstadoPago() {
+
+    const pagado =
+        elemento("pagado");
+
+    const estadoPago =
+        elemento("estadoPago");
+
+    if (pagado.checked) {
+
+        estadoPago.textContent =
+            "✅ CONTRATO PAGADO";
+
+        estadoPago.style.color =
+            "#166534";
+
+    } else {
+
+        estadoPago.textContent =
+            "💳 PAGO PENDIENTE";
+
+        estadoPago.style.color =
+            "#92400e";
+
+    }
+
+}
+
+elemento("pagado")
+    .addEventListener(
+        "change",
+        actualizarEstadoPago
+    );
+
+// =========================================
+// MOSTRAR DETALLE
+// =========================================
+
+function mostrarDetalle(id) {
+
+    const contratos =
+        obtenerContratos();
+
+    const contrato =
+        contratos.find(
+            c =>
+                String(c.id) ===
+                String(id)
+        );
+
+    if (!contrato) {
+
+        return;
+
+    }
+
+    contratoSeleccionado =
+        contrato;
+
+    const precio =
+        Number(contrato.precio) || 0;
+
+    const adelanto =
+        Number(contrato.adelanto) || 0;
+
+    const saldo =
+        precio -
+        adelanto;
+
+    let html = `
+
+        <div class="detalle-info">
+
+            <h3>
+
+                ${
+                    contrato.cliente ||
+                    "Evento sin cliente"
+                }
+
+            </h3>
+
+            <p>
+                <b>🎉 Nombre del evento:</b>
+                ${
+                    contrato.nombreEvento ||
+                    "Sin especificar"
+                }
+            </p>
+
+            <p>
+                <b>📅 Fecha:</b>
+                ${fechaTexto(contrato.fecha)}
+            </p>
+
+            <p>
+                <b>🕐 Hora:</b>
+                ${
+                    contrato.hora ||
+                    "Sin especificar"
+                }
+            </p>
+
+            <p>
+                <b>🎊 Tipo de evento:</b>
+                ${
+                    contrato.tipoEvento ||
+                    "Sin especificar"
+                }
+            </p>
+
+            <p>
+                <b>📞 Teléfono:</b>
+                ${
+                    contrato.telefono ||
+                    "Sin especificar"
+                }
+            </p>
+
+            <p>
+                <b>📍 Lugar:</b>
+                ${
+                    contrato.lugar ||
+                    "Sin especificar"
+                }
+            </p>
+
+            <p>
+                <b>🏠 Dirección:</b>
+                ${
+                    contrato.direccion ||
+                    "Sin especificar"
+                }
+            </p>
+
+            <p>
+                <b>🎧 Servicio:</b>
+                ${
+                    contrato.servicio ||
+                    "Sin especificar"
+                }
+            </p>
+
+            <p>
+                <b>💰 Total:</b>
+                Bs. ${precio.toFixed(2)}
+            </p>
+
+            <p>
+                <b>💵 Adelanto:</b>
+                Bs. ${adelanto.toFixed(2)}
+            </p>
+
+            <p>
+                <b>💳 Saldo:</b>
+                Bs. ${saldo.toFixed(2)}
+            </p>
+
+            <p>
+
+                <b>Estado del evento:</b>
+
+                <span class="estado ${
+                    contrato.estado ||
+                    "reservado"
+                }">
+
+                    ${
+                        nombreEstado(
+                            contrato.estado
+                        )
+                    }
+
+                </span>
+
+            </p>
 
     `;
 
-}
+    if (contrato.pagado) {
 
+        html += `
 
-html +=
-    "</div>";
+            <div class="contrato-pagado">
 
+                ✅ CONTRATO PAGADO
 
-elemento(
-    "contenidoDetalle"
-).innerHTML =
-    html;
+            </div>
 
+        `;
 
-ventanaDetalle.style.display =
-    "flex";
+    } else {
 
+        html += `
+
+            <div class="contrato-pendiente">
+
+                💳 PAGO PENDIENTE
+
+            </div>
+
+        `;
+
+    }
+
+    if (contrato.observaciones) {
+
+        html += `
+
+            <p>
+
+                <b>📝 Observaciones:</b>
+
+                <br>
+
+                ${contrato.observaciones}
+
+            </p>
+
+        `;
+
+    }
+
+    if (contrato.foto) {
+
+        html += `
+
+            <img
+                src="${contrato.foto}"
+                class="foto-detalle"
+                alt="Foto del contrato">
+
+        `;
+
+    }
+
+    html +=
+        "</div>";
+
+    elemento(
+        "contenidoDetalle"
+    ).innerHTML =
+        html;
+
+    ventanaDetalle.style.display =
+        "flex";
 
 }
 
@@ -2654,296 +2454,611 @@ ventanaDetalle.style.display =
 // =========================================
 
 elemento(
-"cerrarDetalle"
+    "cerrarDetalle"
 ).onclick =
-function () {
+    function () {
 
+        ventanaDetalle.style.display =
+            "none";
 
-    ventanaDetalle.style.display =
-        "none";
-
-};
-
+    };
 
 // =========================================
 // EDITAR
 // =========================================
 
 elemento(
-"editarDesdeDetalle"
+    "editarDesdeDetalle"
 ).onclick =
-function () {
+    function () {
 
+        if (!contratoSeleccionado) {
 
-    if (!contratoSeleccionado) {
+            return;
 
-        return;
+        }
 
-    }
-
-
-    const c =
-        contratoSeleccionado;
-
-
-    elemento(
-        "tituloFormulario"
-    ).textContent =
-        "✏️ Editar Evento";
-
-
-    guardarContrato.dataset.id =
-        c.id;
-
-
-    ponerValor("cliente", c.cliente || "");
-
-    ponerValor("nombreEvento", c.nombreEvento || "");
-
-    ponerValor("telefono", c.telefono || "");
-
-    ponerValor("fechaContrato", c.fecha || "");
-
-    ponerValor("horaContrato", c.hora || "");
-
-    ponerValor("tipoEvento", c.tipoEvento || "");
-
-    ponerValor("estado", c.estado || "reservado");
-
-    ponerValor("lugar", c.lugar || "");
-
-    ponerValor("direccion", c.direccion || "");
-
-    ponerValor("servicio", c.servicio || "");
-
-    ponerValor("precio", c.precio || "");
-
-    ponerValor("adelanto", c.adelanto || "");
-
-
-    calcularSaldo();
-
-
-    elemento("pagado").checked =
-        c.pagado === true;
-
-
-    actualizarEstadoPago();
-
-
-    ponerValor(
-        "observaciones",
-        c.observaciones || ""
-    );
-
-
-    fotoTemporal =
-        c.foto || "";
-
-
-    if (fotoTemporal) {
+        const c =
+            contratoSeleccionado;
 
         elemento(
-            "vistaPrevia"
-        ).src =
-            fotoTemporal;
+            "tituloFormulario"
+        ).textContent =
+            "✏️ Editar Evento";
 
-        elemento(
-            "vistaPrevia"
-        ).style.display =
-            "block";
+        guardarContrato.dataset.id =
+            c.id;
 
-    } else {
+        ponerValor(
+            "cliente",
+            c.cliente || ""
+        );
 
-        elemento(
-            "vistaPrevia"
-        ).style.display =
+        ponerValor(
+            "nombreEvento",
+            c.nombreEvento || ""
+        );
+
+        ponerValor(
+            "telefono",
+            c.telefono || ""
+        );
+
+        ponerValor(
+            "fechaContrato",
+            c.fecha || ""
+        );
+
+        ponerValor(
+            "horaContrato",
+            c.hora || ""
+        );
+
+        ponerValor(
+            "tipoEvento",
+            c.tipoEvento || ""
+        );
+
+        ponerValor(
+            "estado",
+            c.estado || "reservado"
+        );
+
+        ponerValor(
+            "lugar",
+            c.lugar || ""
+        );
+
+        ponerValor(
+            "direccion",
+            c.direccion || ""
+        );
+
+        ponerValor(
+            "servicio",
+            c.servicio || ""
+        );
+
+        ponerValor(
+            "precio",
+            c.precio || ""
+        );
+
+        ponerValor(
+            "adelanto",
+            c.adelanto || ""
+        );
+
+        calcularSaldo();
+
+        elemento("pagado").checked =
+            c.pagado === true;
+
+        actualizarEstadoPago();
+
+        ponerValor(
+            "observaciones",
+            c.observaciones || ""
+        );
+
+        fotoTemporal =
+            c.foto || "";
+
+        if (fotoTemporal) {
+
+            elemento(
+                "vistaPrevia"
+            ).src =
+                fotoTemporal;
+
+            elemento(
+                "vistaPrevia"
+            ).style.display =
+                "block";
+
+        } else {
+
+            elemento(
+                "vistaPrevia"
+            ).style.display =
+                "none";
+
+        }
+
+        ventanaDetalle.style.display =
             "none";
 
-    }
+        ventanaContrato.style.display =
+            "flex";
 
-
-    ventanaDetalle.style.display =
-        "none";
-
-
-    ventanaContrato.style.display =
-        "flex";
-
-};
-
+    };
 
 // =========================================
 // ELIMINAR
 // =========================================
 
 elemento(
-"eliminarDesdeDetalle"
+    "eliminarDesdeDetalle"
 ).onclick =
-function () {
+    function () {
 
+        if (!contratoSeleccionado) {
 
-    if (!contratoSeleccionado) {
+            return;
 
-        return;
+        }
 
-    }
+        const confirmar =
+            confirm(
+                "¿Seguro que deseas eliminar este evento?"
+            );
 
+        if (!confirmar) {
 
-    const confirmar =
-        confirm(
-            "¿Seguro que deseas eliminar este evento?"
+            return;
+
+        }
+
+        let contratos =
+            obtenerContratos();
+
+        contratos =
+            contratos.filter(
+                c =>
+                    String(c.id) !==
+                    String(
+                        contratoSeleccionado.id
+                    )
+            );
+
+        guardarTodos(
+            contratos
         );
 
+        ventanaDetalle.style.display =
+            "none";
 
-    if (!confirmar) {
+        contratoSeleccionado =
+            null;
 
-        return;
-
-    }
-
-
-    let contratos =
-        obtenerContratos();
-
-
-    contratos =
-        contratos.filter(
-            c =>
-                String(c.id) !==
-                String(
-                    contratoSeleccionado.id
-                )
+        alert(
+            "🗑️ Evento eliminado."
         );
 
+        mostrarTodo();
 
-    guardarTodos(
-        contratos
-    );
-
-
-    ventanaDetalle.style.display =
-        "none";
-
-
-    contratoSeleccionado =
-        null;
-
-
-    alert(
-        "🗑️ Evento eliminado."
-    );
-
-
-    mostrarTodo();
-
-};
-
+    };
 
 // =========================================
 // WHATSAPP
 // =========================================
 
 elemento(
-"whatsappBtn"
+    "whatsappBtn"
 ).onclick =
-function () {
+    function () {
 
+        if (
+            !contratoSeleccionado ||
+            !contratoSeleccionado.telefono
+        ) {
 
-    if (
-        !contratoSeleccionado ||
-        !contratoSeleccionado.telefono
-    ) {
-
-        alert(
-            "Este evento no tiene número de teléfono."
-        );
-
-        return;
-
-    }
-
-
-    let telefono =
-        contratoSeleccionado.telefono
-            .replace(
-                /\D/g,
-                ""
+            alert(
+                "Este evento no tiene número de teléfono."
             );
 
+            return;
 
-    if (telefono.length === 8) {
+        }
 
-        telefono =
-            "591" +
-            telefono;
+        let telefono =
+            contratoSeleccionado.telefono
+                .replace(
+                    /\D/g,
+                    ""
+                );
 
-    }
+        if (telefono.length === 8) {
 
+            telefono =
+                "591" +
+                telefono;
 
-    const mensaje =
-        encodeURIComponent(
+        }
 
-            "Hola " +
-            (
-                contratoSeleccionado.cliente ||
-                ""
-            ) +
-            ", le escribo de Sonido Chicago."
+        const mensaje =
+            encodeURIComponent(
+
+                "Hola " +
+                (
+                    contratoSeleccionado.cliente ||
+                    ""
+                ) +
+                ", le escribo de Sonido Chicago."
+
+            );
+
+        window.open(
+
+            "https://wa.me/" +
+            telefono +
+            "?text=" +
+            mensaje,
+
+            "_blank"
 
         );
 
-
-    window.open(
-
-        "https://wa.me/" +
-        telefono +
-        "?text=" +
-        mensaje,
-
-        "_blank"
-
-    );
-
-};
-
+    };
 
 // =========================================
 // MENÚ CALENDARIO
 // =========================================
 
 elemento(
-"btnCalendario"
+    "btnCalendario"
 ).onclick =
-function () {
+    function () {
 
+        cambiarVista(
+            "mes"
+        );
 
-    cambiarVista(
-        "mes"
-    );
-
-};
-
+    };
 
 // =========================================
 // MENÚ CONTRATOS
 // =========================================
 
 elemento(
-"btnContratos"
+    "btnContratos"
 ).onclick =
-function () {
+    function () {
 
+        cambiarVista(
+            "contratos"
+        );
 
-    cambiarVista(
-        "contratos"
+    };
+
+// =========================================
+// AVISOS DE EVENTOS PRÓXIMOS
+// =========================================
+
+function revisarEventosProximos() {
+
+    const contratos =
+        obtenerContratos();
+
+    if (!contratos.length) {
+
+        return;
+
+    }
+
+    const hoy =
+        new Date();
+
+    hoy.setHours(
+        0,
+        0,
+        0,
+        0
     );
 
-};
+    let avisosGuardados = {};
 
+    try {
 
+        avisosGuardados =
+            JSON.parse(
+                localStorage.getItem(
+                    "avisosEventos"
+                )
+            ) || {};
+
+    } catch (error) {
+
+        avisosGuardados = {};
+
+    }
+
+    const avisosNuevos = [];
+
+    contratos.forEach(
+        contrato => {
+
+            const estado =
+                contrato.estado ||
+                "reservado";
+
+            // Solo avisamos de eventos
+            // reservados o confirmados.
+            if (
+                estado !== "reservado" &&
+                estado !== "confirmado"
+            ) {
+
+                return;
+
+            }
+
+            if (!contrato.fecha) {
+
+                return;
+
+            }
+
+            const partes =
+                contrato.fecha.split("-");
+
+            if (partes.length !== 3) {
+
+                return;
+
+            }
+
+            const año =
+                Number(partes[0]);
+
+            const mes =
+                Number(partes[1]) - 1;
+
+            const dia =
+                Number(partes[2]);
+
+            const fechaEvento =
+                new Date(
+                    año,
+                    mes,
+                    dia
+                );
+
+            fechaEvento.setHours(
+                0,
+                0,
+                0,
+                0
+            );
+
+            const diferencia =
+                Math.round(
+                    (
+                        fechaEvento.getTime() -
+                        hoy.getTime()
+                    ) /
+                    (
+                        1000 *
+                        60 *
+                        60 *
+                        24
+                    )
+                );
+
+            // Avisar 7, 3, 1 día antes
+            // y el mismo día.
+            if (
+                diferencia !== 7 &&
+                diferencia !== 3 &&
+                diferencia !== 1 &&
+                diferencia !== 0
+            ) {
+
+                return;
+
+            }
+
+            const clave =
+                contrato.id +
+                "-" +
+                contrato.fecha +
+                "-" +
+                diferencia;
+
+            // Si ya se mostró este aviso,
+            // no lo mostramos nuevamente.
+            if (
+                avisosGuardados[clave]
+            ) {
+
+                return;
+
+            }
+
+            avisosNuevos.push({
+
+                contrato:
+                    contrato,
+
+                diferencia:
+                    diferencia,
+
+                clave:
+                    clave
+
+            });
+
+        }
+    );
+
+    if (!avisosNuevos.length) {
+
+        return;
+
+    }
+
+    let mensaje =
+        "🔔 SONIDO CHICAGO\n\n";
+
+    avisosNuevos.forEach(
+        aviso => {
+
+            const contrato =
+                aviso.contrato;
+
+            let cuando = "";
+
+            if (
+                aviso.diferencia === 0
+            ) {
+
+                cuando =
+                    "🔴 ES HOY";
+
+            } else if (
+                aviso.diferencia === 1
+            ) {
+
+                cuando =
+                    "🟠 FALTA 1 DÍA";
+
+            } else {
+
+                cuando =
+                    "🟡 FALTAN " +
+                    aviso.diferencia +
+                    " DÍAS";
+
+            }
+
+            mensaje +=
+                cuando +
+                "\n";
+
+            mensaje +=
+                "👤 " +
+                (
+                    contrato.cliente ||
+                    "Cliente"
+                ) +
+                "\n";
+
+            mensaje +=
+                "🎉 " +
+                (
+                    contrato.nombreEvento ||
+                    contrato.tipoEvento ||
+                    "Evento"
+                ) +
+                "\n";
+
+            mensaje +=
+                "📅 " +
+                fechaTexto(
+                    contrato.fecha
+                ) +
+                "\n";
+
+            if (contrato.hora) {
+
+                mensaje +=
+                    "🕐 " +
+                    contrato.hora +
+                    "\n";
+
+            }
+
+            if (contrato.lugar) {
+
+                mensaje +=
+                    "📍 " +
+                    contrato.lugar +
+                    "\n";
+
+            }
+
+            mensaje +=
+                "Estado: " +
+                nombreEstado(
+                contrato.estado
+                ) +
+                "\n\n";
+
+            avisosGuardados[
+                aviso.clave
+            ] = true;
+
+        }
+    );
+
+    localStorage.setItem(
+        "avisosEventos",
+        JSON.stringify(
+            avisosGuardados
+        )
+    );
+
+    alert(mensaje);
+
+}
+// =========================================
+// EXPORTAR CONTRATOS
+// =========================================
+
+function exportarContratos() {
+
+    const contratos =
+        obtenerContratos();
+
+    const datos =
+        JSON.stringify(
+            contratos,
+            null,
+            2
+        );
+
+    const archivo =
+        new Blob(
+            [datos],
+            {
+                type: "application/json"
+            }
+        );
+
+    const enlace =
+        document.createElement("a");
+
+    enlace.href =
+        URL.createObjectURL(
+            archivo
+        );
+
+    enlace.download =
+        "contratos-sonido-chicago.json";
+
+    enlace.click();
+
+    URL.revokeObjectURL(
+        enlace.href
+    );
+
+}
 // =========================================
 // INICIAR
 // =========================================
 
+actualizarBotonVista();
+
 mostrarTodo();
+
+revisarEventosProximos();

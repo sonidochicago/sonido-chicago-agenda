@@ -3098,6 +3098,278 @@ function importarContratos(archivo) {
     lector.readAsText(archivo);
 
 }
+
+// =========================================
+// AVISOS DE EVENTOS PRÓXIMOS
+// =========================================
+
+function revisarEventosProximos() {
+
+    const contratos =
+        obtenerContratos();
+
+    if (!contratos.length) {
+
+        return;
+
+    }
+
+    const hoy =
+        new Date();
+
+    hoy.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+    let avisosGuardados = {};
+
+    try {
+
+        avisosGuardados =
+            JSON.parse(
+                localStorage.getItem(
+                    "avisosEventos"
+                )
+            ) || {};
+
+    } catch (error) {
+
+        avisosGuardados = {};
+
+    }
+
+    const avisosNuevos = [];
+
+    contratos.forEach(
+        contrato => {
+
+            const estado =
+                contrato.estado ||
+                "reservado";
+
+            // Solo avisamos de eventos
+            // reservados o confirmados.
+            if (
+                estado !== "reservado" &&
+                estado !== "confirmado"
+            ) {
+
+                return;
+
+            }
+
+            if (!contrato.fecha) {
+
+                return;
+
+            }
+
+            const partes =
+                contrato.fecha.split("-");
+
+            if (partes.length !== 3) {
+
+                return;
+
+            }
+
+            const año =
+                Number(partes[0]);
+
+            const mes =
+                Number(partes[1]) - 1;
+
+            const dia =
+                Number(partes[2]);
+
+            const fechaEvento =
+                new Date(
+                    año,
+                    mes,
+                    dia
+                );
+
+            fechaEvento.setHours(
+                0,
+                0,
+                0,
+                0
+            );
+
+            const diferencia =
+                Math.round(
+                    (
+                        fechaEvento.getTime() -
+                        hoy.getTime()
+                    ) /
+                    (
+                        1000 *
+                        60 *
+                        60 *
+                        24
+                    )
+                );
+
+            // Avisar 3,2 1 día antes
+            // y el mismo día.
+            if (
+                diferencia !== 3 &&
+                diferencia !== 2 &&
+                diferencia !== 1 &&
+                diferencia !== 0
+            ) {
+
+                return;
+
+            }
+
+            const clave =
+                contrato.id +
+                "-" +
+                contrato.fecha +
+                "-" +
+                diferencia;
+
+            // Si ya se mostró este aviso,
+            // no lo mostramos nuevamente.
+            if (
+                avisosGuardados[clave]
+            ) {
+
+                return;
+
+            }
+
+            avisosNuevos.push({
+
+                contrato:
+                    contrato,
+
+                diferencia:
+                    diferencia,
+
+                clave:
+                    clave
+
+            });
+
+        }
+    );
+
+    if (!avisosNuevos.length) {
+
+        return;
+
+    }
+
+    let mensaje =
+        "🔔 SONIDO CHICAGO\n\n";
+
+    avisosNuevos.forEach(
+        aviso => {
+
+            const contrato =
+                aviso.contrato;
+
+            let cuando = "";
+
+            if (
+                aviso.diferencia === 0
+            ) {
+
+                cuando =
+                    "🔴 ES HOY";
+
+            } else if (
+                aviso.diferencia === 1
+            ) {
+
+                cuando =
+                    "🟠 FALTA 1 DÍA";
+
+            } else {
+
+                cuando =
+                    "🟡 FALTAN " +
+                    aviso.diferencia +
+                    " DÍAS";
+
+            }
+
+            mensaje +=
+                cuando +
+                "\n";
+
+            mensaje +=
+                "👤 " +
+                (
+                    contrato.cliente ||
+                    "Cliente"
+                ) +
+                "\n";
+
+            mensaje +=
+                "🎉 " +
+                (
+                    contrato.nombreEvento ||
+                    contrato.tipoEvento ||
+                    "Evento"
+                ) +
+                "\n";
+
+            mensaje +=
+                "📅 " +
+                fechaTexto(
+                    contrato.fecha
+                ) +
+                "\n";
+
+            if (contrato.hora) {
+
+                mensaje +=
+                    "🕐 " +
+                    contrato.hora +
+                    "\n";
+
+            }
+
+            if (contrato.lugar) {
+
+                mensaje +=
+                    "📍 " +
+                    contrato.lugar +
+                    "\n";
+
+            }
+
+            mensaje +=
+                "Estado: " +
+                nombreEstado(
+                    contrato.estado
+                ) +
+                "\n\n";
+
+            avisosGuardados[
+                aviso.clave
+            ] = true;
+
+        }   
+    );
+
+    localStorage.setItem(
+        "avisosEventos",
+        JSON.stringify(
+            avisosGuardados
+        )
+    );
+
+    alert(mensaje);
+
+}
+
 // =========================================
 // INICIAR
 // =========================================

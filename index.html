@@ -80,18 +80,7 @@
 
 
 </div>
-<!-- EXPORTAR CONTRATOS -->
 
-<div style="text-align: center; margin: 10px;">
-
-    <button type="button"
-            onclick="exportarContratos()">
-
-        📥 EXPORTAR CONTRATOS
-
-    </button>
-
-</div>
 <main>
 
 
@@ -219,7 +208,6 @@
 
 <nav>
 
-
 <button id="btnCalendario">
 
     📅
@@ -253,9 +241,38 @@
 </button>
 
 
-</nav>
+<button type="button"
+        onclick="exportarContratos()">
 
-<!-- =========================================
+    📥
+
+    <span>
+        Exportar
+    </span>
+
+</button>
+
+
+<button type="button"
+        onclick="document.getElementById('archivoImportar').click()">
+
+    📤
+
+    <span>
+        Importar
+    </span>
+
+</button>
+
+
+<input type="file"
+       id="archivoImportar"
+       accept=".json"
+       style="display: none;"
+       onchange="importarContratos(this.files[0])">
+
+</nav>
+    <!-- =========================================
      FORMULARIO
      ========================================= -->
 

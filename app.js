@@ -3054,6 +3054,51 @@ function exportarContratos() {
 
 }
 // =========================================
+// IMPORTAR CONTRATOS
+// =========================================
+
+function importarContratos(archivo) {
+
+    const lector = new FileReader();
+
+    lector.onload = function () {
+
+        try {
+
+            const contratosImportados =
+                JSON.parse(lector.result);
+
+            if (!Array.isArray(contratosImportados)) {
+
+                alert("El archivo no contiene contratos válidos.");
+
+                return;
+            }
+
+            guardarTodos(contratosImportados);
+
+            alert(
+                "Se importaron " +
+                contratosImportados.length +
+                " contratos correctamente."
+            );
+
+            mostrarTodo();
+
+        } catch (error) {
+
+            alert("No se pudo leer el archivo de contratos.");
+
+            console.error(error);
+
+        }
+
+    };
+
+    lector.readAsText(archivo);
+
+}
+// =========================================
 // INICIAR
 // =========================================
 

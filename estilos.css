@@ -1951,21 +1951,27 @@ CELULAR
 }
 @media (max-width: 600px) {
 
-    .btn-generar-pdf {
-        padding: 4px 3px;
-        font-size: 9px;
-        font-weight: normal;
-        height: 38px;
-        margin-top: 10px;
-    }
-
     #btnGenerarPDF,
     #btnCerrarEdicionCotizacion {
+        width: 48%;
+        height: 38px;
+        box-sizing: border-box;
+        padding: 3px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         vertical-align: top;
     }
 
+    #btnGenerarPDF {
+        font-size: 9px;
+        font-weight: normal;
+        line-height: 10px;
+        margin-top: 10px;
+    }
+
     #btnCerrarEdicionCotizacion {
-        height: 38px;
+        margin-top: 10px;
     }
 
 }

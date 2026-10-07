@@ -1952,9 +1952,10 @@ CELULAR
 @media (max-width: 600px) {
 
     .btn-generar-pdf {
-        padding: 7px 3px;
+        padding: 4px 3px;
         font-size: 9px;
         font-weight: normal;
+        height: 32px;
     }
 
 }

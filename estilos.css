@@ -1949,3 +1949,11 @@ CELULAR
 #formCotizacionIndividual #btnCerrarEdicionCotizacion:hover {
     opacity: 0.9;
 }
+@media (max-width: 600px) {
+
+    .btn-generar-pdf {
+        padding: 9px 4px;
+        font-size: 10px;
+    }
+
+}

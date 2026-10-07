@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+
+<link rel="icon" type="image/png" href="icon-192.png">
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<meta name="theme-color"
+      content="#111827">
+
+<link rel="manifest"
+      href="manifest.json">
+
+<title>Sonido Chicago - Agenda</title>
+
+<link rel="stylesheet"
+      href="estilos.css">
+
+
+</head>
+
+<body>
+
+<header>
+
+
+<img src="logo.png"
+     alt="Sonido Chicago">
+
+<h1>SONIDO CHICAGO</h1>
+
+<p>Agenda de Contratos</p>
+
+
+</header>
+
+<!-- =========================================
+     VISTAS
+     ========================================= -->
+
+<div class="barra-vistas">
+
+
+<button class="vista-btn activo"
+        data-vista="año">
+    AÑO
+</button>
+
+<button class="vista-btn"
+        data-vista="mes">
+    MES
+</button>
+
+<button class="vista-btn"
+        data-vista="semana">
+    SEMANA
+</button>
+
+<button class="vista-btn"
+        data-vista="dia">
+    DÍA
+</button>
+
+<button class="vista-btn"
+        data-vista="eventos">
+    EVENTOS
+</button>
+
+<button class="vista-btn"
+        data-vista="contratos">
+    CONTRATOS
+</button>
+<button class="vista-btn" data-vista="cotizacion">COTIZACION</button>
+
+</div>
+
+<main>
+
+
+<div class="navegacion-fecha">
+
+    <button id="anterior">
+        ◀
+    </button>
+
+    <h2 id="tituloCalendario"></h2>
+
+    <button id="siguiente">
+        ▶
+    </button>
+
+</div>
+
+
+<button id="btnHoy"
+        class="btn-hoy">
+    HOY
+</button>
+
+
+<!-- AÑO -->
+
+<section id="vistaAño">
+
+    <div id="calendarioAnual"
+         class="calendario-anual">
+    </div>
+
+</section>
+
+
+<!-- MES -->
+
+<section id="vistaMes"
+         class="oculto">
+
+    <div id="calendarioMes"></div>
+
+</section>
+
+
+<!-- SEMANA -->
+
+<section id="vistaSemana"
+         class="oculto">
+
+    <div id="calendarioSemana"></div>
+
+</section>
+
+
+<!-- DÍA -->
+
+<section id="vistaDia"
+         class="oculto">
+
+    <div id="calendarioDia"></div>
+
+</section>
+
+
+<!-- EVENTOS PENDIENTES -->
+
+<section id="vistaEventos"
+         class="oculto">
+
+    <div id="listaContratos"></div>
+
+</section>
+
+
+<!-- TODOS LOS CONTRATOS -->
+
+<section id="vistaContratos"
+         class="oculto">
+
+    <div id="listaTodosContratos"></div>
+
+</section>
+
+<!-- COTIZACIONES -->
+<section id="vistaCotizacion" class="vista-seccion">
+
+    <h2 style="text-align: center;">Cotización Sonido Chicago</h2>
+
+   <!-- OPCIONES DE COTIZACIÓN -->
+<div id="opcionesCotizacion" class="opciones-cotizacion">
+
+    <button type="button" id="btnCotizacionIndividual" class="btn-opcion-cotizacion">
+        📋 COTIZACIÓN INDIVIDUAL
+    </button>
+
+    <button type="button" id="btnTodosPaquetes" class="btn-opcion-cotizacion">
+        📄 VER TODOS LOS PAQUETES
+    </button>
+
+    <button type="button" id="btnVerCotizaciones" class="btn-opcion-cotizacion">
+        📋 VER COTIZACIONES GUARDADAS
+    </button>
+
+</div>
+<!-- LISTA DE COTIZACIONES GUARDADAS -->
+<div id="listaCotizaciones" class="lista-cotizaciones" style="display: none;">
+
+    <h3>Cotizaciones guardadas</h3>
+
+    <div id="contenedorCotizaciones"></div>
+
+</div>
+
+
+<!-- OPCIONES DEL PDF -->
+<div id="opcionesPDF" class="opciones-pdf" style="display: none;">
+
+    <button type="button" id="btnVerPDF" class="btn-pdf">
+        👁️ Ver PDF
+    </button>
+
+    <button type="button" id="btnCompartirPDF" class="btn-pdf">
+        📤 Compartir PDF
+    </button>
+
+    <button type="button" id="btnWhatsAppPDF" class="btn-pdf">
+        💬 WhatsApp
+    </button>
+
+</div>
+
+    </div>
+
+
+        <!-- FORMULARIO DE COTIZACIÓN INDIVIDUAL -->
+        <div id="formCotizacionIndividual" class="formulario-cotizacion" style="display: none;">
+
+            <h3>📋 Cotización individual</h3>
+
+            <label>Nombre del cliente</label>
+            <input type="text" id="cotCliente" placeholder="Nombre del cliente">
+
+            <label>Teléfono</label>
+            <input type="tel" id="cotTelefono" placeholder="Número de teléfono">
+
+            <label>Tipo de evento</label>
+            <input type="text" id="cotEvento" placeholder="Ej. Matrimonio, 15 años, cumpleaños">
+
+            <label>Fecha del evento</label>
+            <input type="date" id="cotFecha">
+
+            <label>Lugar del evento</label>
+            <input type="text" id="cotLugar" placeholder="Lugar del evento">
+
+            <label>Dirección</label>
+            <input type="text" id="cotDireccion" placeholder="Dirección del evento">
+
+            <label>Seleccionar paquete</label>
+
+            <select id="cotPaquete">
+                <option value="1000">Básico (Económico) - Bs 1.000</option>
+                <option value="1400">Básico (Intermedio) - Bs 1.400</option>
+                <option value="1700">Bronce - Bs 1.700</option>
+                <option value="2000">Plata - Bs 2.000</option>
+                <option value="3000">Oro - Bs 3.000</option>
+                <option value="5000">Premium (Platino) - Bs 5.000</option>
+            </select>
+
+            <div id="precioPaquete" class="precio-cotizacion"></div>
+
+            <div id="detallePaquete" class="detalle-paquete"></div>
+
+
+            <label>Descuento</label>
+
+            <input
+                type="number"
+                id="cotDescuento"
+                placeholder="Descuento en Bs"
+                min="0"
+            >
+
+
+            <!-- SERVICIOS ADICIONALES -->
+            <div class="servicios-adicionales">
+
+                <button type="button" id="btnServicios">
+                    ➕ Servicios adicionales
+                </button>
+
+                <div id="listaServicios" class="lista-servicios">
+
+                    <label>
+                        <input type="checkbox" id="servicioMC">
+                        Maestro de Ceremonia — Bs 400
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="servicioNiebla">
+                        Niebla baja — Bs 500
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="servicioPirotecnia">
+                        Pirotecnia fría — Bs 100 c/u
+                    </label>
+
+                    <label>
+                        Cantidad de pirotecnia:
+                        <input
+                            type="number"
+                            id="cantidadPirotecnia"
+                            value="0"
+                            min="0"
+                        >
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="servicioData">
+                        Pantalla 2x2 Data Display — Bs 250
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="servicioLed">
+                        Pantallas LED 2x2 — Bs 1.500
+                    </label>
+
+                </div>
+
+
+                <!-- RESUMEN -->
+                <div id="resumenCotizacion" class="resumen-cotizacion">
+
+                    <h3>📋 Resumen de cotización</h3>
+
+                    <p>
+                        Precio del paquete:
+                        <strong id="resumenPaquete">Bs 0</strong>
+                    </p>
+
+                    <p>
+                        Descuento:
+                        <strong id="resumenDescuento">Bs 0</strong>
+                    </p>
+
+                    <p>
+                        <strong>Servicios adicionales:</strong>
+                    </p>
+
+                    <div id="detalleAdicionales">
+                        <p>Bs 0</p>
+                    </div>
+
+                    <hr>
+
+                    <p class="total-cotizacion">
+                        TOTAL:
+                        <strong id="resumenTotal">Bs 0</strong>
+                    </p>
+
+                </div>
+
+
+                <!-- GENERAR PDF -->
+                <button type="button" id="btnGenerarPDF" class="btn-generar-pdf">
+                    📄 GENERAR COTIZACIÓN PDF
+                </button>
+                <button
+                type="button"
+                id="btnCerrarEdicionCotizacion"
+                class="btn-cerrar-edicion">
+                ✖ CERRAR
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+<button id="nuevoContrato"
+        class="btn-principal">
+
+    ＋ AGREGAR NUEVO CONTRATO
+
+</button>
+
+
+</main>
+
+<!-- LEYENDA -->
+
+<div class="leyenda">
+
+
+<div>
+    <span class="punto reservado"></span>
+    Reservado
+</div>
+
+<div>
+    <span class="punto confirmado"></span>
+    Confirmado
+</div>
+
+<div>
+    <span class="punto realizado"></span>
+    Realizado
+</div>
+
+<div>
+    <span class="punto cancelado"></span>
+    Cancelado
+</div>
+
+
+</div>
+
+<!-- MENÚ INFERIOR -->
+
+<nav>
+
+<button id="btnCalendario">
+
+    📅
+
+    <span>
+        Calendario
+    </span>
+
+</button>
+
+
+<button id="btnContratos">
+
+    📋
+
+    <span>
+        Contratos
+    </span>
+
+</button>
+
+
+<button id="btnNuevo">
+
+    ＋
+
+    <span>
+        Nuevo Contrato
+    </span>
+
+</button>
+
+
+<button type="button"
+        onclick="exportarContratos()">
+
+    📥
+
+    <span>
+        Exportar
+    </span>
+
+</button>
+
+
+<button type="button"
+        onclick="document.getElementById('archivoImportar').click()">
+
+    📤
+
+    <span>
+        Importar
+    </span>
+
+</button>
+
+
+<input type="file"
+       id="archivoImportar"
+       accept=".json"
+       style="display: none;"
+       onchange="importarContratos(this.files[0])">
+
+</nav>
+    <!-- =========================================
+     FORMULARIO
+     ========================================= -->
+
+<div id="ventanaContrato"
+     class="modal">
+
+
+<div class="formulario">
+
+
+    <div class="titulo-formulario">
+
+        <h2 id="tituloFormulario">
+            📝 Nuevo Evento
+        </h2>
+
+        <button id="cerrarFormulario"
+                class="cerrar"
+                type="button">
+            ✕
+        </button>
+
+    </div>
+
+
+    <label for="cliente">
+        Nombre del cliente
+    </label>
+
+    <input type="text"
+           id="cliente"
+           placeholder="Nombre del Cliente">
+
+
+    <label for="nombreEvento">
+        Nombre del evento
+    </label>
+
+    <input type="text"
+           id="nombreEvento"
+           placeholder="Ej: Matrimonio de Juan y María">
+
+
+    <label for="telefono">
+        Teléfono
+    </label>
+
+    <input type="tel"
+           id="telefono"
+           placeholder="Teléfono">
+
+
+    <label for="fechaContrato">
+        Fecha
+    </label>
+
+    <input type="date"
+           id="fechaContrato">
+
+
+    <label for="horaContrato">
+        Hora
+    </label>
+
+    <input type="time"
+           id="horaContrato">
+
+
+    <label for="tipoEvento">
+        Tipo de evento
+    </label>
+
+    <select id="tipoEvento">
+
+        <option value="">
+            Sin especificar
+        </option>
+
+        <option>Matrimonio</option>
+        <option>15 años</option>
+        <option>Cumpleaños</option>
+        <option>Graduación</option>
+        <option>Bautizo</option>
+        <option>Evento empresarial</option>
+        <option>Fiesta Patronal</option>
+        <option>Alquiler de equipo</option>
+        <option>Alquiler de luces</option>
+        <option>Alquiler de sonido</option>
+        <option>Amplificación</option>
+        <option>Otro</option>
+
+    </select>
+
+
+    <label for="estado">
+        Estado
+    </label>
+
+    <select id="estado">
+
+        <option value="reservado">
+            🟡 Reservado
+        </option>
+
+        <option value="confirmado">
+            🟢 Confirmado
+        </option>
+
+        <option value="realizado">
+            🔵 Realizado
+        </option>
+
+        <option value="cancelado">
+            🔴 Cancelado
+        </option>
+
+    </select>
+
+
+    <label for="lugar">
+        Lugar
+    </label>
+
+    <input type="text"
+           id="lugar"
+           placeholder="Salón de eventos - Domicilio">
+
+
+    <label for="direccion">
+        Dirección
+    </label>
+
+    <input type="text"
+           id="direccion"
+           placeholder="Dirección del evento">
+
+
+    <label for="servicio">
+        Servicio
+    </label>
+
+    <input type="text"
+           id="servicio"
+           placeholder="Ej: Amplificación + luces">
+
+
+    <label for="precio">
+        Precio total (Bs.)
+    </label>
+
+    <input type="number"
+           id="precio"
+           min="0"
+           step="0.01"
+           placeholder="0">
+
+
+    <label for="adelanto">
+        Adelanto (Bs.)
+    </label>
+
+    <input type="number"
+           id="adelanto"
+           min="0"
+           step="0.01"
+           placeholder="0">
+
+
+    <label for="saldo">
+        Saldo pendiente (Bs.)
+    </label>
+
+    <input type="number"
+           id="saldo"
+           readonly>
+
+
+    <div class="pago-container">
+
+        <label class="checkbox-pagado">
+
+            <input type="checkbox"
+                   id="pagado">
+
+            <span>
+                ✅ PAGADO
+            </span>
+
+        </label>
+
+        <div id="estadoPago"
+             class="estado-pago">
+        </div>
+
+    </div>
+
+
+    <label for="observaciones">
+        Observaciones
+    </label>
+
+    <textarea id="observaciones"
+              placeholder="Ingrese alguna observación"></textarea>
+
+
+    <label for="fotoContrato">
+
+        📎 Foto del contrato
+
+        <small>
+            (Opcional)
+        </small>
+
+    </label>
+
+    <input type="file"
+           id="fotoContrato"
+           accept="image/*">
+
+
+    <img id="vistaPrevia"
+         class="vista-previa"
+         alt="Vista previa del contrato"
+         style="display: none;">
+
+
+    <div class="botones-formulario">
+
+        <button id="guardarContrato"
+                class="btn-guardar"
+                type="button">
+
+            💾 GUARDAR
+
+        </button>
+
+
+        <button id="cancelarFormulario"
+                class="btn-cancelar"
+                type="button">
+
+            CANCELAR
+
+        </button>
+
+    </div>
+
+</div>
+
+
+</div>
+
+<!-- =========================================
+     DETALLE
+     ========================================= -->
+
+<div id="ventanaDetalle"
+     class="modal">
+
+
+<div class="detalle">
+
+
+    <div class="titulo-formulario">
+
+        <h2>
+            📋 Evento
+        </h2>
+
+        <button id="cerrarDetalle"
+                class="cerrar"
+                type="button">
+
+            ✕
+
+        </button>
+
+    </div>
+
+
+    <div id="contenidoDetalle"></div>
+
+
+    <div class="botones-detalle">
+
+        <button id="editarDesdeDetalle"
+                class="btn-editar"
+                type="button">
+
+            ✏️ EDITAR
+
+        </button>
+
+
+        <button id="eliminarDesdeDetalle"
+                class="btn-eliminar"
+                type="button">
+
+            🗑️ ELIMINAR
+
+        </button>
+
+    </div>
+
+
+    <div class="botones-extra">
+
+        <button id="whatsappBtn"
+                type="button">
+
+            📱 WhatsApp
+
+        </button>
+
+    </div>
+
+</div>
+
+
+</div>
+<script src="archivos/jspdf.umd.min.js"></script>
+<script src="app.js"></script>
+
+</body>
+
+</html>

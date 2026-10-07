@@ -1959,4 +1959,9 @@ CELULAR
         margin-top: 10px;
     }
 
+    #btnGenerarPDF,
+    #btnCerrarEdicionCotizacion {
+        vertical-align: top;
+    }
+
 }

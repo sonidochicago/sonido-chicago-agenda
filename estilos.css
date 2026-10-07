@@ -1964,4 +1964,8 @@ CELULAR
         vertical-align: top;
     }
 
+    #btnCerrarEdicionCotizacion {
+        height: 38px;
+    }
+
 }
